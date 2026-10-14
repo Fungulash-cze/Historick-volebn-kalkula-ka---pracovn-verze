@@ -603,11 +603,11 @@ Již na podzim 1920 však v ČSSD propukl hluboký rozkol mezi demokratickým k�
       },
       {
         id: 39,
-        title: 'Zkrácení povinné vojenské služby',
+        title: 'Délka povinné vojenské služby (zkrácení na 14 měsíců)',
         category: 'Obrana a bezpečnost',
-        statement: 'Délka povinné vojenské služby u stálé armády by měla být zkrácena.',
-        historicalNote: 'Při zavádění branné povinnosti se vedla debata o délce vojenské služby. Zvažovalo se, zda je k zajištění obranyschopnosti nutný delší vojenský výcvik, anebo zda prezenční službu zkrátit, aby mladí muži nechyběli v zemědělství a hospodářství.',
-        context: 'Při zavádění branné povinnosti se vedla debata o délce vojenské služby. Zvažovalo se, zda je k zajištění obranyschopnosti nutný delší vojenský výcvik, anebo zda prezenční službu zkrátit, aby mladí muži nechyběli v zemědělství a hospodářství.',
+        statement: 'Délka povinné vojenské služby by měla být zkrácena z dosavadních dvou let (24 měsíců) na 14 měsíců.',
+        historicalNote: 'Při přijímání branného zákona na jaře 1920 se o úplném zrušení branné povinnosti neuvažovalo, neboť nová republika potřebovala zajistit obranu svých dosud neklidných hranic. Zásadní spor se vedl o délku prezenční služby: na jedné straně stál požadavek na dvouletou službu (24 měsíců) pro zajištění důkladného výcviku a stálé bojeschopnosti, na druhé straně požadavek na zkrácení na 14 měsíců z důvodu úspor státního rozpočtu a snahy, aby odvedenci dlouhodobě nechyběli v zemědělství a hospodářství.',
+        context: 'Při přijímání branného zákona na jaře 1920 se o úplném zrušení branné povinnosti neuvažovalo, neboť nová republika potřebovala zajistit obranu svých dosud neklidných hranic. Zásadní spor se vedl o délku prezenční služby: na jedné straně stál požadavek na dvouletou službu (24 měsíců) pro zajištění důkladného výcviku a stálé bojeschopnosti, na druhé straně požadavek na zkrácení na 14 měsíců z důvodu úspor státního rozpočtu a snahy, aby odvedenci dlouhodobě nechyběli v zemědělství a hospodářství.',
         partyStances: { cssd: 1, rszml: 0, csl: 0, csns: -1, csnd: -1, dsap: 1, bdl: 1, sls: 1 }
       },
       {
