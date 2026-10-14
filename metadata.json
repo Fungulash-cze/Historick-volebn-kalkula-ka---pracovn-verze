@@ -1,0 +1,6 @@
+{
+  "name": "Historická volební kalkulačka (1920, 1946, 1990)",
+  "description": "Interaktivní historická volební kalkulačka pro klíčové československé parlamentní volby 1920, 1946 a 1990 s autentickými dobovými programy a statistikami.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
