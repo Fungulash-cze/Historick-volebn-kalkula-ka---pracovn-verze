@@ -207,7 +207,7 @@ function renderHomeView(): string {
           Koho byste volili v minulosti?
         </h1>
         <p class="text-sm sm:text-base text-zinc-600 leading-relaxed font-normal">
-          Zvolte si jedny ze tří zlomových voleb. Odpovězte na 15 dobových otázek a zjistěte, ke komu byste tehdy měli nejblíž.
+          Zvolte si jedny ze tří zlomových voleb. Můžete si vyzkoušet základní (15 otázek) i rozšířenou (40 otázek) verzi kalkulačky a zjistit, ke komu byste tehdy měli názorově nejblíž.
         </p>
       </section>
 
@@ -292,22 +292,22 @@ function renderHomeView(): string {
                   <span>Volební systém a další info</span>
                 </button>
 
-                ${y === 1920 ? `
-                  <!-- Přepínač verze pro rok 1920 -->
+                ${meta.expandedQuestions && meta.expandedQuestions.length > 0 ? `
+                  <!-- Přepínač verze otázek -->
                   <div class="bg-zinc-100 p-1 rounded-lg border border-zinc-200 flex items-center gap-1 text-[11px] font-medium w-full">
                     <button 
                       type="button"
-                      onclick="window.calcSetYearMode(1920, 'standard')"
-                      class="flex-1 py-1.5 px-2 rounded-md transition-all cursor-pointer text-center ${state.selectedYearMode[1920] === 'standard' ? 'bg-white text-zinc-900 font-bold shadow-xs border border-zinc-200' : 'text-zinc-600 hover:text-zinc-900'}"
+                      onclick="window.calcSetYearMode(${y}, 'standard')"
+                      class="flex-1 py-1.5 px-2 rounded-md transition-all cursor-pointer text-center ${state.selectedYearMode[y] === 'standard' ? 'bg-white text-zinc-900 font-bold shadow-xs border border-zinc-200' : 'text-zinc-600 hover:text-zinc-900'}"
                     >
                       Základní (${meta.questions.length})
                     </button>
                     <button 
                       type="button"
-                      onclick="window.calcSetYearMode(1920, 'expanded')"
-                      class="flex-1 py-1.5 px-2 rounded-md transition-all cursor-pointer text-center ${state.selectedYearMode[1920] === 'expanded' ? 'bg-white text-zinc-900 font-bold shadow-xs border border-zinc-200' : 'text-zinc-600 hover:text-zinc-900'}"
+                      onclick="window.calcSetYearMode(${y}, 'expanded')"
+                      class="flex-1 py-1.5 px-2 rounded-md transition-all cursor-pointer text-center ${state.selectedYearMode[y] === 'expanded' ? 'bg-white text-zinc-900 font-bold shadow-xs border border-zinc-200' : 'text-zinc-600 hover:text-zinc-900'}"
                     >
-                      Rozšířená (${meta.expandedQuestions ? meta.expandedQuestions.length : 40})
+                      Rozšířená (${meta.expandedQuestions.length})
                     </button>
                   </div>
                 ` : ''}
@@ -333,8 +333,8 @@ function renderHomeView(): string {
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs text-zinc-600 leading-relaxed text-justify [hyphens:auto]">
           <div>
-            <strong class="text-zinc-900 block mb-1 font-semibold">15 dobových otázek pro každý rok</strong>
-            Otázky pokrývají klíčová hospodářská, společenská, zahraničněpolitická i státoprávní témata, která určovala ráz volebních kampaní.
+            <strong class="text-zinc-900 block mb-1 font-semibold">Základní (15) i rozšířená (40) verze</strong>
+            Můžete si vybrat rychlou základní verzi (15 otázek) nebo podrobnou rozšířenou verzi (40 otázek). Otázky pokrývají klíčová hospodářská, společenská, zahraničněpolitická i státoprávní témata.
           </div>
           <div>
             <strong class="text-zinc-900 block mb-1 font-semibold">Historicky doložené postoje stran</strong>

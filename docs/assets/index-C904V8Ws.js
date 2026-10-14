@@ -56,7 +56,7 @@ Byla vytvořena koaliční federální vláda v čele s Marianem Čalfou (OF/VPN
           Koho byste volili v minulosti?
         </h1>
         <p class="text-sm sm:text-base text-zinc-600 leading-relaxed font-normal">
-          Zvolte si jedny ze tří zlomových voleb. Odpovězte na 15 dobových otázek a zjistěte, ke komu byste tehdy měli nejblíž.
+          Zvolte si jedny ze tří zlomových voleb. Můžete si vyzkoušet základní (15 otázek) i rozšířenou (40 otázek) verzi kalkulačky a zjistit, ke komu byste tehdy měli názorově nejblíž.
         </p>
       </section>
 
@@ -137,22 +137,22 @@ Byla vytvořena koaliční federální vláda v čele s Marianem Čalfou (OF/VPN
                   <span>Volební systém a další info</span>
                 </button>
 
-                ${e===1920?`
-                  <!-- Přepínač verze pro rok 1920 -->
+                ${t.expandedQuestions&&t.expandedQuestions.length>0?`
+                  <!-- Přepínač verze otázek -->
                   <div class="bg-zinc-100 p-1 rounded-lg border border-zinc-200 flex items-center gap-1 text-[11px] font-medium w-full">
                     <button 
                       type="button"
-                      onclick="window.calcSetYearMode(1920, 'standard')"
-                      class="flex-1 py-1.5 px-2 rounded-md transition-all cursor-pointer text-center ${i.selectedYearMode[1920]===`standard`?`bg-white text-zinc-900 font-bold shadow-xs border border-zinc-200`:`text-zinc-600 hover:text-zinc-900`}"
+                      onclick="window.calcSetYearMode(${e}, 'standard')"
+                      class="flex-1 py-1.5 px-2 rounded-md transition-all cursor-pointer text-center ${i.selectedYearMode[e]===`standard`?`bg-white text-zinc-900 font-bold shadow-xs border border-zinc-200`:`text-zinc-600 hover:text-zinc-900`}"
                     >
                       Základní (${t.questions.length})
                     </button>
                     <button 
                       type="button"
-                      onclick="window.calcSetYearMode(1920, 'expanded')"
-                      class="flex-1 py-1.5 px-2 rounded-md transition-all cursor-pointer text-center ${i.selectedYearMode[1920]===`expanded`?`bg-white text-zinc-900 font-bold shadow-xs border border-zinc-200`:`text-zinc-600 hover:text-zinc-900`}"
+                      onclick="window.calcSetYearMode(${e}, 'expanded')"
+                      class="flex-1 py-1.5 px-2 rounded-md transition-all cursor-pointer text-center ${i.selectedYearMode[e]===`expanded`?`bg-white text-zinc-900 font-bold shadow-xs border border-zinc-200`:`text-zinc-600 hover:text-zinc-900`}"
                     >
-                      Rozšířená (${t.expandedQuestions?t.expandedQuestions.length:40})
+                      Rozšířená (${t.expandedQuestions.length})
                     </button>
                   </div>
                 `:``}
@@ -177,8 +177,8 @@ Byla vytvořena koaliční federální vláda v čele s Marianem Čalfou (OF/VPN
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs text-zinc-600 leading-relaxed text-justify [hyphens:auto]">
           <div>
-            <strong class="text-zinc-900 block mb-1 font-semibold">15 dobových otázek pro každý rok</strong>
-            Otázky pokrývají klíčová hospodářská, společenská, zahraničněpolitická i státoprávní témata, která určovala ráz volebních kampaní.
+            <strong class="text-zinc-900 block mb-1 font-semibold">Základní (15) i rozšířená (40) verze</strong>
+            Můžete si vybrat rychlou základní verzi (15 otázek) nebo podrobnou rozšířenou verzi (40 otázek). Otázky pokrývají klíčová hospodářská, společenská, zahraničněpolitická i státoprávní témata.
           </div>
           <div>
             <strong class="text-zinc-900 block mb-1 font-semibold">Historicky doložené postoje stran</strong>
