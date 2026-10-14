@@ -1265,32 +1265,45 @@ function renderFooter(): string {
 
 function renderApp() {
   const root = document.getElementById('app');
-  if (!root) return;
-
-  let viewContent = '';
-  switch (state.view) {
-    case 'home':
-      viewContent = renderHomeView();
-      break;
-    case 'quiz':
-      viewContent = renderQuizView();
-      break;
-    case 'results':
-      viewContent = renderResultsView();
-      break;
+  if (!root) {
+    console.error('Historická kalkulačka: Element s id="app" nebyl v dokumentu nalezen.');
+    return;
   }
 
-  root.innerHTML = `
-    ${renderHeader()}
-    ${viewContent}
-    ${renderPartySlider()}
-    ${renderFooter()}
-    ${renderPartyModal()}
-    ${renderSystemModal()}
-    ${renderToast()}
-  `;
+  try {
+    let viewContent = '';
+    switch (state.view) {
+      case 'home':
+        viewContent = renderHomeView();
+        break;
+      case 'quiz':
+        viewContent = renderQuizView();
+        break;
+      case 'results':
+        viewContent = renderResultsView();
+        break;
+    }
 
-  attachEventListeners();
+    root.innerHTML = `
+      ${renderHeader()}
+      ${viewContent}
+      ${renderPartySlider()}
+      ${renderFooter()}
+      ${renderPartyModal()}
+      ${renderSystemModal()}
+      ${renderToast()}
+    `;
+
+    attachEventListeners();
+  } catch (err) {
+    console.error('Chyba při vykreslování Historické kalkulačky:', err);
+    root.innerHTML = `
+      <div class="max-w-xl mx-auto my-12 p-6 bg-white rounded-xl border border-zinc-200 text-center font-sans">
+        <h2 class="text-base font-bold text-zinc-900 mb-2">Historická volební kalkulačka se načítá...</h2>
+        <p class="text-xs text-zinc-500 mb-4">Pokud tato zpráva nezmizí, zkuste prosím obnovit stránku (F5 / Ctrl+R).</p>
+      </div>
+    `;
+  }
 }
 
 function attachEventListeners() {
@@ -1401,4 +1414,8 @@ window.calcShareResult = () => {
   }
 };
 
-renderApp();
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => renderApp());
+} else {
+  renderApp();
+}

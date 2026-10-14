@@ -9,11 +9,18 @@
     <meta property="og:description" content="Které straně byste dali svůj hlas v klíčových momentech československých dějin? Vyzkoušejte interaktivní volební kalkulačku pro volby 1920, 1946 a 1990." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+    <script>
+      // Ošetření GitHub Pages: pokud chybí koncové lomítko na konci URL repo,
+      // relativní cesty k ./assets/... by vracely 404 (bílá stránka).
+      if (window.location.pathname && !window.location.pathname.endsWith('/') && !window.location.pathname.split('/').pop().includes('.')) {
+        window.location.replace(window.location.pathname + '/' + window.location.search + window.location.hash);
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="./assets/index-BVF6yKK1.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-9dopfuAr.css">
+    <script type="module" crossorigin src="./assets/index-BX_WtlJ_.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DOY8gRiF.css">
   </head>
   <body class="bg-[#f4f4f5] text-zinc-900 antialiased selection:bg-zinc-800 selection:text-white min-h-screen flex flex-col font-sans">
     <div id="app" class="flex-1 flex flex-col"></div>
