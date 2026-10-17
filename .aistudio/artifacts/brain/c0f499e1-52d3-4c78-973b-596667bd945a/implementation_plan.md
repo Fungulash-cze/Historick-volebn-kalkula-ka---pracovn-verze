@@ -1,103 +1,74 @@
-# Rozšířená volební kalkulačka 1946 (15 základních + 25 rozšiřujících otázek)
+# Rozšířená volební kalkulačka 1990 (15 základních + 25 rozšiřujících otázek)
 
-Tento plán detailně popisuje architekturu a postup přidání rozšířené varianty volební kalkulačky pro parlamentní volby do Ústavodárného národního shromáždění v květnu 1946. Kalkulačka bude mít k dispozici jak základní verzi (15 stěžejních otázek), tak plnou rozšířenou verzi (40 otázek), shodně s rokem 1920.
+Tento plán popisuje postup aktualizace základní sady (otázky 1–15) a vytvoření kompletní rozšířené sady (otázky 1–40) pro první svobodné volby v červnu 1990. Tím budou mít všechny tři historické volby (1920, 1946, 1990) sjednocenou strukturu s volbou mezi základní (15 otázek) a rozšířenou (40 otázek) verzí.
 
 ---
 
-## 1. Uživatelská rozhodnutí a metodologický rámec
+## 1. Uživatelský záměr a shrnutí podkladů
 
-Na základě potvrzených preferencí:
-1. **Struktura sady pro rok 1946:**
-   - **Základní verze (15 otázek):** Zůstává 15 původních otázek (id: 1–15) pokrývajících zásadní poválečné otázky (odsun, Košický vládní program, znárodnění průmyslu, zahraniční orientace na SSSR vs. Západ, retribuční soudnictví atd.).
-   - **Rozšířená verze (40 otázek):** Skládá se z původních 15 základních otázek (id: 1–15) + 25 nových tematických otázek (id: 16–40).
-2. **Přísně neutrální a objektivní styl vysvětlivek:**
-   - Texty v polích `context` a `historicalNote` nesmí vyzrazovat, které konkrétní strany hlasovaly PRO a které PROTI.
-   - Kontext musí popsat věcný spor, historické dilema a argumenty obou stran bez hodnotících soudů a bez jmenování stranických zkratek, aby vysvětlivka nepředjímala výsledek respondenta.
-   - Jazyk tvrzení dodržuje doporučující formát (*„stát by měl / neměl“*), bez expresivních slov.
-3. **Fázování doplňování otázek:**
-   - **Fáze 1 (okamžitá):** Příprava infrastruktury v `electionsData.ts` a nasazení kompletních otázek **16, 17 a 18** (včetně neutrálního kontextu a ověřených stranických postojů).
-   - **Fáze 2 (navazující):** Doplnění otázek **19 až 40** podle finálního seznamu (otázka 19 byla načata: *Zrušení přídělového systému na potraviny*; zbývající otázky uživatel dodá nebo je doplníme v dohodnutém znění).
+Uživatel poskytl kompletní sadu všech 40 otázek v jednom zadání (není nutné je posílat po částech):
+1. **Část I – Základní sada (otázky 1–15):**
+   - Kompletně aktualizované znění stávajících otázek 1–15 s vyčištěnými formulacemi a upřesněnými postoji stran.
+   - Nahradí dosavadních 16 položek v poli `questions` u roku 1990.
+2. **Část II – Rozšiřující sada (otázky 16–40):**
+   - 25 nových tematických otázek (trest smrti, Temelín, církevní lesy, zbrojovky, jazykový zákon, rozpad federace, devalvace, atd.).
+   - Společně s otázkami 1–15 vytvoří pole `expandedQuestions` o celkovém počtu **40 otázek**.
+3. **Mapování stranických postojů:**
+   - Všech 8 kandidujících subjektů z roku 1990 má v kódu stabilní identifikátory:
+     - `of`: Občanské fórum
+     - `vpn`: Verejnosť proti násiliu
+     - `kscs`: Komunistická strana Československa
+     - `kdu`: Křesťanská a demokratická unie (KDU/KDH)
+     - `hsd_sms`: Hnutí za samosprávnou demokracii – Společnost pro Moravu a Slezsko
+     - `sns`: Slovenská národná strana
+     - `css`: Československá strana socialistická
+     - `sz`: Strana zelených
 
 ---
 
 ## 2. Navržené změny v kódu
 
-### A. Datová vrstva (`src/data/electionsData.ts`)
+### `src/data/electionsData.ts`
+- **Aktualizace `questions` (1–15):**
+  - Dosadit nová znění tvrzení, kategorií, neutrálních vysvětlivek a postojů stran pro otázky 1 až 15.
+- **Implementace `expandedQuestions` (1–40):**
+  - Vložit všech 40 otázek s unifikovanou strukturou:
+    - `id`: 1 až 40
+    - `title`: stručný výstižný název otázky
+    - `category`: tematická kategorie
+    - `statement`: vyvážené tvrzení
+    - `historicalNote` & `context`: objektivní historické pozadí bez vyzrazování stranických postojů
+    - `partyStances`: ověřené postoje 8 stran `{ of, vpn, kscs, kdu, hsd_sms, sns, css, sz }`
 
-1. **Definice `expandedQuestions` pro rok 1946:**
-   - Přidání pole `expandedQuestions: Question[]` do objektu `ELECTIONS_DATA[1946]`.
-   - Prvních 15 položek bude odpovídat stávajícím otázkám 1–15 z roku 1946, se zachováním jejich postojů stran `ksc`, `csns`, `csl`, `ds`, `cssd`, `kss` (příp. `ssl`, `sp`).
-   - Přidání otázek 16–18:
-     - **Otázka 16: Velikost přídělů půdy v pohraničí**
-       - *Kategorie:* Zemědělství a osidlování
-       - *Tvrzení:* Zkonfiskovaná půda v pohraničí by měla být rozdělena na menší příděly pro co nejvyšší počet bezzemků namísto vytváření větších selských statků.
-       - *Kontext / HistoricalNote:* Objektivní popis sporu mezi snahou o sociální stabilitu drobných rolníků (usedlosti do 13 ha) versus hospodářskou efektivitou větších statků.
-       - *Postoje:* `{ ksc: 1, csns: -1, csl: -1, ds: -1, cssd: 0, kss: 1 }`
-     - **Otázka 17: Zachování zemského zřízení Čech a Moravy se Slezskem**
-       - *Kategorie:* Státní správa a samospráva
-       - *Tvrzení:* V nové ústavě by mělo být zachováno historické zemské zřízení Čech a Moravy se Slezskem namísto rozdělení státu na menší kraje.
-       - *Kontext / HistoricalNote:* Spor o zachování tradiční zemské samosprávy s centry v Praze a Brně versus centralizovanější model menších krajů.
-       - *Postoje:* `{ ksc: -1, csns: 1, csl: 1, ds: 0, cssd: 0, kss: -1 }`
-     - **Otázka 18: Uvolnění vázaných vkladů z měnové reformy**
-       - *Kategorie:* Měnová politika a finance
-       - *Tvrzení:* Stát by měl občanům rychleji uvolnit peněžní úspory zmrazené na vázaných vkladech při měnové reformě z roku 1945.
-       - *Kontext / HistoricalNote:* Dilema mezi uvolněním úspor drobných střadatelů pro podporu spotřeby a investic versus obavou z inflační spirály a přebytečné kupní síly.
-       - *Postoje:* `{ ksc: -1, csns: 1, csl: 1, ds: 1, cssd: -1, kss: -1 }`
-     - **Příprava slotů pro otázky 19–40.**
-
-### B. Uživatelské rozhraní (`src/main.ts`)
-
-1. **Automatické zobrazení přepínače verzí pro rok 1946:**
-   - Karta roku 1946 na hlavní stránce již v šabloně obsahuje podmínku `${meta.expandedQuestions && meta.expandedQuestions.length > 0 ? ... : ''}`. Jakmile bude `expandedQuestions` přítomno, přepínač *Základní (15)* vs. *Rozšířená (40)* se u roku 1946 okamžitě a bezpečně aktivuje.
-2. **Přepínání stavu a volba počtu otázek:**
-   - Ve `state.selectedYearMode[1946]` bude možnost volit mezi `'standard'` a `'expanded'`.
-   - V kvízu i výsledcích se správně zobrazí počet otázek (např. *Otázka 1 z 40*).
+### `src/main.ts`
+- Šablona na hlavní stránce již obsahuje dynamický přepínač:
+  `${meta.expandedQuestions && meta.expandedQuestions.length > 0 ? ... : ''}`
+- Jakmile `expandedQuestions` přidáme, u karty roku 1990 se automaticky aktivují tlačítka:
+  - `Základní (15)`
+  - `Rozšířená (40)`
+- Ve stavu aplikace je již předpřipraveno `state.selectedYearMode[1990]`.
 
 ---
 
 ## 3. Plán verifikace
 
-1. **Typová kontrola a build:**
-   - Spuštění `compile_applet` pro ověření bezchybné kompilace TypeScriptu a Vite bundle.
-2. **Funkční ověření:**
-   - Otevření úvodní stránky: ověření, že u roku 1946 se zobrazuje volba režimu (15 vs. 40 otázek).
-   - Spuštění kalkulačky pro rok 1946 v základním i rozšířeném režimu.
-   - Kontrola zobrazení kontextového okna s neutrálním vysvětlením (žádné prozrazení postojů stran).
-   - Kontrola správného výpočtu procentuální shody se stranami (KSČ, ČSNS, ČSL, DS, ČSSD, KSS).
+1. **Syntaktická a typová kontrola:**
+   - Spuštění `lint_applet` a `compile_applet`.
+2. **Konzistence datové vrstvy:**
+   - Ověření, že všech 40 otázek má správné klíče v `partyStances` (včetně `hsd_sms`).
+   - Kontrola, že délka základní sady je 15 a rozšířené sady 40.
+3. **Uživatelské rozhraní:**
+   - Ověření zobrazení přepínače verzí na kartě 1990.
+   - Spuštění kvízu v obou režimech a ověření výpočtu shody s 8 subjekty.
 
 ---
 
 ## 4. Stav realizace
 
-- [x] **Fáze 1 (Hotovo):**
-  - Do `ELECTIONS_DATA[1946]` bylo implementováno pole `expandedQuestions`.
-  - Začleněno 15 základních otázek (id 1–15) s doplněnými stručnými názvy (`title`) a historickými kontexty.
-  - Úspěšně přidány otázky 16, 17 a 18 s neutrálními, objektivními texty bez prozrazení postojů stran:
-    - **16:** Velikost přídělů půdy v pohraničí
-    - **17:** Zachování zemského zřízení Čech a Moravy se Slezskem
-    - **18:** Uvolnění vázaných vkladů z měnové reformy
-  - Aplikace zkompilována a otestována bez chyb (`compile_applet` & `lint_applet` proběhly úspěšně).
-  - Přepínač základní/rozšířené verze na kartě roku 1946 se automaticky zobrazil a je funkční.
-
-- [x] **Fáze 2 (Hotovo v plném rozsahu):**
-  - Do `expandedQuestions` pro rok 1946 bylo úspěšně integrováno všech 25 rozšiřujících otázek (id: 16–40).
-  - Celkový počet otázek v rozšířené sadě roku 1946 nyní činí **přesně 40 otázek** (15 základních + 25 rozšiřujících).
-  - Všechny otázky (27–40):
-    - **27:** Volební právo od 18 let
-    - **28:** Daňové zrovnoprávnění živnostníků a družstev
-    - **29:** Obnova Senátu v nové ústavě
-    - **30:** Zachování víceletých gymnázií
-    - **31:** Rozdělování nadměrných bytů ve městech
-    - **32:** Zrušení všeobecné pracovní povinnosti
-    - **33:** Přesun průmyslových strojů z českého pohraničí na Slovensko
-    - **34:** Platové ohodnocení úředníků a inteligence
-    - **35:** Sjednocení zdravotního a sociálního pojištění
-    - **36:** Vyplacení náhrad za majetek znárodněný v roce 1945
-    - **37:** Rozdělování zemědělské techniky
-    - **38:** Vrácení majetku obětem nacistické perzekuce
-    - **39:** Pravomoci prezidenta republiky v nové ústavě
-    - **40:** Ochrana církevního pozemkového majetku
-  - Všechna tvrzení a vysvětlivky zachovávají maximální neutralitu, věcnost a absenci jakéhokoliv prozrazování stranických postojů.
-  - Tlačítko na úvodní kartě nyní automaticky nabízí: `Základní (15)` a `Rozšířená (40)`.
-  - Projekt bezchybně kompiluje a prošel typovou kontrolou.
-
+- [x] **Hotovo v plném rozsahu:**
+  - Základní sada (`questions`) pro rok 1990 byla aktualizována na přesně 15 otázek s vyčištěnými formulacemi a ověřenými postoji.
+  - Rozšířená sada (`expandedQuestions`) pro rok 1990 byla kompletně implementována o počtu **přesně 40 otázek** (1–15 základních + 25 nových rozšiřujících 16–40).
+  - Všech 8 kandidujících politických subjektů (`of`, `vpn`, `kscs`, `kdu`, `hsd_sms`, `sns`, `css`, `sz`) má u všech 40 otázek kompletní a validované postoje (`-1`, `0`, `1`).
+  - Odstraněna redundantní duplicita objektu `expandedQuestions` v `src/data/electionsData.ts`.
+  - Přepínač základní (15) vs. rozšířené (40) verze na kartě roku 1990 funguje automaticky a dynamicky v souladu s rokem 1920 a 1946.
+  - Úspěšně proběhl `lint_applet` a `compile_applet` bez jediné chyby či varování.

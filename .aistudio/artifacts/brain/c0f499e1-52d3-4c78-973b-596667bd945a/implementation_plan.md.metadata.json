@@ -1,6 +1,6 @@
 {
-  "summary": "Plán implementace rozšířené varianty volební kalkulačky pro rok 1946 (40 otázek), metodika zpracování otázek 16–40, neutrální formulace a technické kroky pro electionsData.ts a UI.",
-  "updatedAt": "2026-10-17T12:32:04.611663315Z",
+  "summary": "Plán aktualizace a rozšíření volební kalkulačky pro rok 1990 (nahrazení základních 15 otázek novou verzí a vytvoření plné rozšířené sady 40 otázek).",
+  "updatedAt": "2026-10-17T14:41:08.229697814Z",
   "requestFeedback": true,
   "userFacing": true
 }

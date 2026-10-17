@@ -1332,115 +1332,500 @@ Byla vytvořena koaliční federální vláda v čele s Marianem Čalfou (OF/VPN
     questions: [
       {
         id: 1,
+        title: 'Tempo ekonomické transformace',
         category: 'Ekonomická transformace',
-        statement: 'Tržní transformace (liberalizace cen, privatizace a otevření trhů) by měla proběhnout rychle v podobě radikálních reforem, i za cenu dočasného poklesu životní úrovně.',
-        historicalNote: 'Při přechodu od centrálně plánované ekonomiky k tržnímu hospodářství se řešila strategie a tempo reforem. Zvažovalo se, zda provést rychlou liberalizaci cen a otevření trhů za cenu krátkodobých sociálních otřesů, anebo zvolit postupnější, regulovaný přechod.',
+        statement: 'Přechod na tržní hospodářství by měl proběhnout rychle, i za cenu dočasného poklesu životní úrovně obyvatel.',
+        historicalNote: 'Při přechodu od centrálně plánované ekonomiky k tržnímu hospodářství se v roce 1990 řešila strategie a tempo reforem. Zvažovalo se, zda provést rychlé uvolnění cen a tržních vztahů za cenu krátkodobých sociálních otřesů, anebo zvolit postupnější přechod rozložený do delšího období.',
+        context: 'Při přechodu od centrálně plánované ekonomiky k tržnímu hospodářství se v roce 1990 řešila strategie a tempo reforem. Zvažovalo se, zda provést rychlé uvolnění cen a tržních vztahů za cenu krátkodobých sociálních otřesů, anebo zvolit postupnější přechod rozložený do delšího období.',
         partyStances: { of: 1, vpn: 1, kscs: -1, kdu: 0, hsd_sms: 0, sns: -1, css: -1, sz: 0 }
       },
       {
         id: 2,
-        category: 'Kuponová privatizace',
-        statement: 'Státní podniky by měly být zprivatizovány širokou účastí občanů formou investičních kuponů za symbolický poplatek.',
-        historicalNote: 'Kuponová privatizace byla navržena jako metoda rychlého převodu velkého množství státních podniků do rukou občanů při nedostatku domácího kapitálu. Řešilo se, zda je tento masový model efektivní cestou k nalezení skutečných vlastníků, nebo zda upřednostnit standardní prodeje konkrétním investorům.',
+        title: 'Kuponová privatizace',
+        category: 'Ekonomika a privatizace',
+        statement: 'Akcie státních podniků by měly být občanům nabídnuty prostřednictvím investičních kuponů za symbolický poplatek.',
+        historicalNote: 'Kuponová privatizace byla navržena jako metoda rychlého převodu velkého množství státních podniků do soukromých rukou při nedostatku domácího kapitálu. Řešilo se, zda je toto masové zapojení občanů vhodnou cestou k nalezení nových vlastníků, nebo zda upřednostnit standardní prodeje podniků konkrétním kupcům.',
+        context: 'Kuponová privatizace byla navržena jako metoda rychlého převodu velkého množství státních podniků do soukromých rukou při nedostatku domácího kapitálu. Řešilo se, zda je toto masové zapojení občanů vhodnou cestou k nalezení nových vlastníků, nebo zda upřednostnit standardní prodeje podniků konkrétním kupcům.',
         partyStances: { of: 1, vpn: 1, kscs: -1, kdu: 1, hsd_sms: 0, sns: 0, css: -1, sz: 0 }
       },
       {
         id: 3,
-        category: 'Sociální jistoty',
-        statement: 'Přechod na tržní hospodářství by měl být regulován a rozfázován státem tak, aby nevznikla vysoká nezaměstnanost a neohrozila sociálně slabší skupiny.',
-        historicalNote: 'S nástupem hospodářských změn panovaly obavy z rychlého růstu nezaměstnanosti a sociálních dopadů na obyvatelstvo. Diskutovalo se o tom, do jaké míry by měl stát aktivně tlumit dopady trhu v ohrožených podnicích a regionech, či zda nechat plně působit tržní síly.',
+        title: 'Státní ochrana zaměstnanosti',
+        category: 'Sociální jistoty a práce',
+        statement: 'Stát by měl v době ekonomických změn bránit vzniku vyšší nezaměstnanosti dotováním ohrožených podniků.',
+        historicalNote: 'S přípravou hospodářských reforem panovaly obavy ze zavírání neefektivních provozů a ztráty pracovních míst. Diskutovalo se o tom, do jaké míry má stát aktivně tlumit dopady trhu a udržovat zaměstnanost v ohrožených odvětvích a regionech, či zda nechat plně působit tržní prostředí.',
+        context: 'S přípravou hospodářských reforem panovaly obavy ze zavírání neefektivních provozů a ztráty pracovních míst. Diskutovalo se o tom, do jaké míry má stát aktivně tlumit dopady trhu a udržovat zaměstnanost v ohrožených odvětvích a regionech, či zda nechat plně působit tržní prostředí.',
         partyStances: { of: -1, vpn: 0, kscs: 1, kdu: 1, hsd_sms: 1, sns: 1, css: 1, sz: 1 }
       },
       {
         id: 4,
-        category: 'Zákaz KSČ',
-        statement: 'Komunistická strana by měla být jako totalitní organizace postavena mimo zákon a její majetek by měl připadnout státu.',
-        historicalNote: 'Po pádu totalitního režimu vyvstala otázka právního naložení s bývalou vládnoucí stranou. Zvažovalo se, zda ji z důvodu jejího čtyřicetiletého monopolu na moc zakázat a vyloučit z politického života, anebo jí umožnit účast v demokratické soutěži podle nových pravidel.',
-        partyStances: { of: 0, vpn: 0, kscs: -1, kdu: 1, hsd_sms: 0, sns: 0, css: 0, sz: 0 }
-      },
-      {
-        id: 5,
-        category: 'Lustrace a vyrovnání s minulostí',
-        statement: 'Bývalí agenti a spolupracovníci StB a vysocí funkcionáři KSČ by měli být zákonem vyloučeni z veřejných funkcí a justice.',
-        historicalNote: 'V otázce vyrovnání se s minulostí se zvažovalo zavedení lustračních pravidel. Diskutovalo se o potřebě očistit klíčové státní a bezpečnostní orgány od exponentů minulého režimu na straně jedné a o rizicích uplatnění principu kolektivní viny a spolehlivosti dochovaných záznamů na straně druhé.',
+        title: 'Lustrace a očista veřejného života',
+        category: 'Vyrovnání s minulostí',
+        statement: 'Bývalí spolupracovníci StB a vysocí funkcionáři minulého režimu by měli být zákonem vyloučeni z veřejných funkcí.',
+        historicalNote: 'V otázce vyrovnání se s minulostí se zvažovalo zavedení lustračních pravidel pro státní správu, justici a veřejnoprávní média. Na jedné straně stála snaha očistit státní a bezpečnostní orgány od pracovníků represivního aparátu, na straně druhé obavy z uplatnění principu kolektivní viny a z nespolehlivosti dochovaných archivních záznamů.',
+        context: 'V otázce vyrovnání se s minulostí se zvažovalo zavedení lustračních pravidel pro státní správu, justici a veřejnoprávní média. Na jedné straně stála snaha očistit státní a bezpečnostní orgány od pracovníků represivního aparátu, na straně druhé obavy z uplatnění principu kolektivní viny a z nespolehlivosti dochovaných archivních záznamů.',
         partyStances: { of: 1, vpn: 0, kscs: -1, kdu: 1, hsd_sms: 0, sns: 0, css: -1, sz: 0 }
       },
       {
+        id: 5,
+        title: 'Zákaz Komunistické strany',
+        category: 'Politický systém a demokracie',
+        statement: 'Komunistická strana by měla být postavena mimo zákon.',
+        historicalNote: 'Po skončení vlády jedné strany vyvstala otázka dalšího právního působení dosavadní vládnoucí strany. Jeden pohled požadoval její zákaz a vyloučení z politického života z důvodu odpovědnosti za předchozí čtyřicetileté období, druhý pohled prosazoval její ponechání v demokratické politické soutěži podle nových ústavních pravidel.',
+        context: 'Po skončení vlády jedné strany vyvstala otázka dalšího právního působení dosavadní vládnoucí strany. Jeden pohled požadoval její zákaz a vyloučení z politického života z důvodu odpovědnosti za předchozí čtyřicetileté období, druhý pohled prosazoval její ponechání v demokratické politické soutěži podle nových ústavních pravidel.',
+        partyStances: { of: 0, vpn: 0, kscs: -1, kdu: 1, hsd_sms: 0, sns: 0, css: 0, sz: 0 }
+      },
+      {
         id: 6,
-        category: 'Restituce majetku',
-        statement: 'Majetek zabavený po únoru 1948 (včetně polností a domů) by měl být v rámci restitucí vrácen původním vlastníkům či jejich dědicům.',
-        historicalNote: 'Při nápravě majetkových křivd minulého režimu se vedla debata o rozsahu a formě restitucí. Řešila se otázka, zda vrátit původní majetek v naturální podobě i s rizikem právních komplikací a znejistění současných uživatelů, anebo poskytnout pouze finanční odškodnění.',
+        title: 'Restituce soukromého majetku občanů',
+        category: 'Vlastnictví a restituce',
+        statement: 'Majetek zabavený občanům po únoru 1948 by měl být v rámci restitucí vrácen původním vlastníkům nebo jejich dědicům.',
+        historicalNote: 'Při nápravě majetkových křivd minulého režimu se vedla debata o rozsahu a formě restitucí domů, živností a polností. Řešila se otázka, zda vrátit původní majetek v naturální podobě i za cenu majetkoprávních sporů a nejistoty stávajících uživatelů, anebo poskytnout pouze finanční odškodnění či majetek nevracet.',
+        context: 'Při nápravě majetkových křivd minulého režimu se vedla debata o rozsahu a formě restitucí domů, živností a polností. Řešila se otázka, zda vrátit původní majetek v naturální podobě i za cenu majetkoprávních sporů a nejistoty stávajících uživatelů, anebo poskytnout pouze finanční odškodnění či majetek nevracet.',
         partyStances: { of: 1, vpn: 1, kscs: -1, kdu: 1, hsd_sms: 1, sns: 0, css: 0, sz: 1 }
       },
       {
         id: 7,
-        category: 'Společný stát',
-        statement: 'Československá federace by měla být zachována se silnými společnými pravomocemi v měně, zahraniční politice a obraně.',
-        historicalNote: 'Debata o uspořádání federace řešila rovnováhu mezi zachováním společných federálních pravomocí nezbytných pro soudržnost státu a požadavky na posílení pravomocí obou národních republik.',
+        title: 'Zachování silné federace',
+        category: 'Státoprávní uspořádání',
+        statement: 'Československá federace by měla mít silné společné pravomoci v hospodářské, měnové a zahraniční politice.',
+        historicalNote: 'Debata o státoprávním uspořádání řešila rozdělení kompetencí mezi federálními orgány v Praze a národními vládami v obou republikách. Jeden přístup kladl důraz na silné společné federální instituce pro zachování jednotného hospodářského prostoru a soudržnosti státu, druhý požadoval přesun většiny pravomocí na úroveň národních republik.',
+        context: 'Debata o státoprávním uspořádání řešila rozdělení kompetencí mezi federálními orgány v Praze a národními vládami v obou republikách. Jeden přístup kladl důraz na silné společné federální instituce pro zachování jednotného hospodářského prostoru a soudržnosti státu, druhý požadoval přesun většiny pravomocí na úroveň národních republik.',
         partyStances: { of: 1, vpn: 0, kscs: 1, kdu: 1, hsd_sms: 1, sns: -1, css: 1, sz: 1 }
       },
       {
         id: 8,
-        category: 'Slovenská suverenita',
-        statement: 'Slovensko by mělo získat plnou národní suverenitu a s Českou republikou vytvořit volnou konfederaci či samostatný stát.',
-        historicalNote: 'Po uvolnění poměrů se otevřela diskuse o míře samostatnosti obou republik. Zvažovalo se, zda má Slovensko získat plnou národní suverenitu a budovat vlastní mezinárodní subjektivitu, nebo zda zachovat společný federální stát.',
+        title: 'Státní suverenita Slovenska',
+        category: 'Státoprávní uspořádání',
+        statement: 'Slovensko by mělo získat plnou národní suverenitu a vytvořit s Českou republikou pouze volné soustátí nebo samostatný stát.',
+        historicalNote: 'Po uvolnění politických poměrů a sporu o nový název republiky se otevřela diskuse o postavení Slovenska. Zvažovalo se, zda má Slovensko usilovat o vlastní mezinárodní subjektivitu v podobě volné konfederace či plné státní samostatnosti, nebo zda pokračovat ve společném federálním státě.',
+        context: 'Po uvolnění politických poměrů a sporu o nový název republiky se otevřela diskuse o postavení Slovenska. Zvažovalo se, zda má Slovensko usilovat o vlastní mezinárodní subjektivitu v podobě volné konfederace či plné státní samostatnosti, nebo zda pokračovat ve společném federálním státě.',
         partyStances: { of: -1, vpn: -1, kscs: -1, kdu: -1, hsd_sms: -1, sns: 1, css: -1, sz: -1 }
       },
       {
         id: 9,
-        category: 'Moravská samospráva',
-        statement: 'V rámci nového státoprávního uspořádání by mělo být obnoveno historické zemské zřízení Moravy a Slezska s vlastním zemským sněmem a rozpočtem.',
-        historicalNote: 'Při hledání nové územněsprávní podoby státu vyvstala otázka postavení Moravy a Slezska. Diskutovalo se o tom, zda obnovit historické zemské zřízení a posílit regionální samosprávu, či zachovat dosavadní model členění státu.',
+        title: 'Zemská samospráva pro Moravu a Slezsko',
+        category: 'Státoprávní uspořádání',
+        statement: 'V rámci Československa by mělo být obnoveno historické zemské zřízení pro Moravu a Slezsko s vlastním sněmem a rozpočtem.',
+        historicalNote: 'Při hledání nové podoby vnitřního členění státu vyvstala otázka nápravy zrušení Moravskoslezské země z roku 1949. Diskutovalo se o tom, zda obnovit zemskou samosprávu Moravy a Slezska a přeměnit stát na trojspolkovou federaci, anebo zachovat dvojčlennou federaci České a Slovenské republiky.',
+        context: 'Při hledání nové podoby vnitřního členění státu vyvstala otázka nápravy zrušení Moravskoslezské země z roku 1949. Diskutovalo se o tom, zda obnovit zemskou samosprávu Moravy a Slezska a přeměnit stát na trojspolkovou federaci, anebo zachovat dvojčlennou federaci České a Slovenské republiky.',
         partyStances: { of: -1, vpn: 0, kscs: 0, kdu: 0, hsd_sms: 1, sns: 0, css: 1, sz: 0 }
       },
       {
         id: 10,
-        category: 'Vstup do NATO a na Západ',
-        statement: 'Československo by mělo usilovat o plné členství v Severoatlantické alianci (NATO) a Evropském společenství.',
-        historicalNote: 'V době rozpadu bipolárního světa hledalo Československo své nové zahraničněpolitické ukotvení. Zvažovalo se, zda usilovat o rychlou integraci do západních struktur a Severoatlantické aliance, nebo hledat jiné formy celoevropské bezpečnostní architektury.',
-        partyStances: { of: 1, vpn: 1, kscs: -1, kdu: 1, hsd_sms: 0, sns: 0, css: 0, sz: 0 }
+        title: 'Členství v Evropském společenství',
+        category: 'Zahraniční politika',
+        statement: 'Československo by mělo usilovat o plné členství v Evropském společenství.',
+        historicalNote: 'V době rozpadu východního bloku hledalo Československo své nové zahraničněpolitické a hospodářské ukotvení. Jeden směr považoval přičlenění k západoevropské integraci v podobě Evropského společenství za přirozený civilizační a ekonomický cíl, druhý směr varoval před jednostrannou ekonomickou závislostí na západní Evropě.',
+        context: 'V době rozpadu východního bloku hledalo Československo své nové zahraničněpolitické a hospodářské ukotvení. Jeden směr považoval přičlenění k západoevropské integraci v podobě Evropského společenství za přirozený civilizační a ekonomický cíl, druhý směr varoval před jednostrannou ekonomickou závislostí na západní Evropě.',
+        partyStances: { of: 1, vpn: 1, kscs: -1, kdu: 1, hsd_sms: 1, sns: 0, css: 0, sz: 0 }
       },
       {
         id: 11,
-        category: 'Vojenská neutralita',
-        statement: 'Československo by mělo vyhlásit trvalou vojenskou neutralitu po vzoru Rakouska a Švýcarska a nevstupovat do vojenských aliancí.',
-        historicalNote: 'Jako jedna z možností budoucího mezinárodního postavení byla zvažována trvalá vojenská neutralita. Diskutovalo se o tom, zda by neutralita zajistila zemi klid a nezávislost na velmocích, anebo zda bez zapojení do bezpečnostní aliance nelze suverenitu státu účinně garantovat.',
+        title: 'Vojenská neutralita Československa',
+        category: 'Zahraniční a bezpečnostní politika',
+        statement: 'Československo by mělo vyhlásit trvalou vojenskou neutralitu a nevstupovat do žádných vojenských aliancí.',
+        historicalNote: 'Jako jedna z možností budoucího mezinárodního postavení země byla v roce 1990 zvažována trvalá vojenská neutralita po vzoru Rakouska či Švýcarska. Diskutovalo se o tom, zda by neutralita zajistila státu nezávislost mezi velmocemi, anebo zda bezpečnost země vyžaduje zapojení do širší západní či celoevropské bezpečnostní struktury.',
+        context: 'Jako jedna z možností budoucího mezinárodního postavení země byla v roce 1990 zvažována trvalá vojenská neutralita po vzoru Rakouska či Švýcarska. Diskutovalo se o tom, zda by neutralita zajistila státu nezávislost mezi velmocemi, anebo zda bezpečnost země vyžaduje zapojení do širší západní či celoevropské bezpečnostní struktury.',
         partyStances: { of: -1, vpn: -1, kscs: 1, kdu: -1, hsd_sms: 0, sns: 1, css: 1, sz: 1 }
       },
       {
         id: 12,
-        category: 'Odchod sovětských vojsk',
-        statement: 'Odchod sovětských vojsk z našeho území by měl proběhnout v co nejkratším termínu a do posledního vojáka.',
-        historicalNote: 'Po roce 1968 pobývala na území státu sovětská armáda. Řešilo se, jak rychle a za jakých logistických i diplomatických podmínek má proběhnout jejich úplný odsun, a nakolik má být odchod podmíněn širšími mezinárodními dohodami.',
+        title: 'Rychlý odchod sovětských vojsk',
+        category: 'Zahraniční a bezpečnostní politika',
+        statement: 'Odchod sovětských vojsk z československého území by měl proběhnout v nejbližším možném termínu bez ohledu na další mezinárodní jednání.',
+        historicalNote: 'Od srpna 1968 pobývala na území státu početná sovětská vojenská posádka. Na jaře 1990 se řešilo, jak rychle a za jakých logistických i diplomatických podmínek má proběhnout její úplné stažení a zda lze akceptovat odklady zdůvodňované bytovými a přepravními obtížemi sovětské strany.',
+        context: 'Od srpna 1968 pobývala na území státu početná sovětská vojenská posádka. Na jaře 1990 se řešilo, jak rychle a za jakých logistických i diplomatických podmínek má proběhnout její úplné stažení a zda lze akceptovat odklady zdůvodňované bytovými a přepravními obtížemi sovětské strany.',
         partyStances: { of: 1, vpn: 1, kscs: 0, kdu: 1, hsd_sms: 1, sns: 1, css: 1, sz: 1 }
       },
       {
         id: 13,
+        title: 'Priorita ochrany životního prostředí',
         category: 'Ekologie a životní prostředí',
-        statement: 'Zlepšení stavu poškozeného životního prostředí a ovzduší by mělo mít v rozpočtu vysokou prioritu i s ohledem na tempo růstu ekonomiky.',
-        historicalNote: 'Dlouhodobé znečištění ovzduší a vody představovalo vážný problém pro zdraví obyvatel i přírodu. Diskuse se vedla o tom, nakolik má mít okamžitá ekologizace provozů přednost před ekonomickými náklady a tempem průmyslové výroby.',
+        statement: 'Zlepšení stavu životního prostředí a čistoty ovzduší by mělo mít přednost před tempem průmyslové výroby.',
+        historicalNote: 'Dlouhodobé znečištění ovzduší, vod a lesů z těžkého průmyslu a hnědouhelných elektráren představovalo v roce 1990 vážný zdravotní i ekologický problém. Diskuse se vedla o tom, zda okamžitě omezit nejekologičtější provozy a těžbu i za cenu hospodářských ztrát, nebo zda upřednostnit zachování výroby a řešit ekologii až postupně.',
+        context: 'Dlouhodobé znečištění ovzduší, vod a lesů z těžkého průmyslu a hnědouhelných elektráren představovalo v roce 1990 vážný zdravotní i ekologický problém. Diskuse se vedla o tom, zda okamžitě omezit nejekologičtější provozy a těžbu i za cenu hospodářských ztrát, nebo zda upřednostnit zachování výroby a řešit ekologii až postupně.',
         partyStances: { of: 1, vpn: 1, kscs: 0, kdu: 1, hsd_sms: 1, sns: 0, css: 1, sz: 1 }
       },
       {
         id: 14,
-        category: 'Křesťanské hodnoty a interrupce',
-        statement: 'Zákony nové republiky by měly zohledňovat křesťanskou etiku a stát by měl regulovat umělá přerušení těhotenství.',
-        historicalNote: 'V debatách o etických otázkách a hodnotovém směřování společnosti se střetávaly rozdílné pohledy na ochranu počatého života. Zvažovalo se, zda zpřísnit právní podmínky pro umělá přerušení těhotenství, anebo ponechat dosavadní liberálnější úpravu s právem ženy na vlastní rozhodnutí.',
+        title: 'Zpřísnění podmínek pro interrupce',
+        category: 'Etika a zdravotnictví',
+        statement: 'Zákonné podmínky pro umělá přerušení těhotenství by měly být zpřísněny.',
+        historicalNote: 'V debatách o hodnotovém směřování společnosti po roce 1989 se střetávaly rozdílné pohledy na potratovou legislativu přijatou v polovině 80. let. Jeden pohled požadoval právní ochranu počatého života a omezení interrupcí pouze na závažné zdravotní důvody, druhý pohled hájil zachování práva ženy na svobodné rozhodnutí.',
+        context: 'V debatách o hodnotovém směřování společnosti po roce 1989 se střetávaly rozdílné pohledy na potratovou legislativu přijatou v polovině 80. let. Jeden pohled požadoval právní ochranu počatého života a omezení interrupcí pouze na závažné zdravotní důvody, druhý pohled hájil zachování práva ženy na svobodné rozhodnutí.',
         partyStances: { of: -1, vpn: -1, kscs: -1, kdu: 1, hsd_sms: 0, sns: 0, css: -1, sz: -1 }
       },
       {
         id: 15,
-        category: 'Charakter politiky (OF vs. strany)',
-        statement: 'Politiku by neměly ovládat tradiční stranické aparáty; široká občanská hnutí jsou pro novou společnost vhodnější než klasické ideologické strany.',
-        historicalNote: 'Po pádu monopolu jedné strany se řešila budoucí podoba politického systému. Diskutovalo se o tom, zda je pro demokracii vhodnější široké nestranické hnutí sdružující různé proudy občanů, nebo zda je nezbytné zformovat standardní politické strany s jasně vymezeným ideologickým programem.',
+        title: 'Občanská hnutí oproti politickým stranám',
+        category: 'Politický systém a demokracie',
+        statement: 'Hlavní roli v politickém životě by měla hrát široká občanská hnutí namísto klasických ideologických stran.',
+        historicalNote: 'Po pádu monopolu jedné strany se v roce 1990 řešila podoba vznikajícího politického systému. Diskutovalo se o tom, zda jsou pro přechod k demokracii vhodnější široká nadstranická hnutí sdružující osobnosti různých názorů, nebo zda je pro parlamentní demokracii žádoucí soutěž standardních politických stran s vyhraněným programem.',
+        context: 'Po pádu monopolu jedné strany se v roce 1990 řešila podoba vznikajícího politického systému. Diskutovalo se o tom, zda jsou pro přechod k demokracii vhodnější široká nadstranická hnutí sdružující osobnosti různých názorů, nebo zda je pro parlamentní demokracii žádoucí soutěž standardních politických stran s vyhraněným programem.',
+        partyStances: { of: 1, vpn: 1, kscs: -1, kdu: -1, hsd_sms: 1, sns: -1, css: -1, sz: 0 }
+      }
+    ],
+    expandedQuestions: [
+      {
+        id: 1,
+        title: 'Tempo ekonomické transformace',
+        category: 'Ekonomická transformace',
+        statement: 'Přechod na tržní hospodářství by měl proběhnout rychle, i za cenu dočasného poklesu životní úrovně obyvatel.',
+        historicalNote: 'Při přechodu od centrálně plánované ekonomiky k tržnímu hospodářství se v roce 1990 řešila strategie a tempo reforem. Zvažovalo se, zda provést rychlé uvolnění cen a tržních vztahů za cenu krátkodobých sociálních otřesů, anebo zvolit postupnější přechod rozložený do delšího období.',
+        context: 'Při přechodu od centrálně plánované ekonomiky k tržnímu hospodářství se v roce 1990 řešila strategie a tempo reforem. Zvažovalo se, zda provést rychlé uvolnění cen a tržních vztahů za cenu krátkodobých sociálních otřesů, anebo zvolit postupnější přechod rozložený do delšího období.',
+        partyStances: { of: 1, vpn: 1, kscs: -1, kdu: 0, hsd_sms: 0, sns: -1, css: -1, sz: 0 }
+      },
+      {
+        id: 2,
+        title: 'Kuponová privatizace',
+        category: 'Ekonomika a privatizace',
+        statement: 'Akcie státních podniků by měly být občanům nabídnuty prostřednictvím investičních kuponů za symbolický poplatek.',
+        historicalNote: 'Kuponová privatizace byla navržena jako metoda rychlého převodu velkého množství státních podniků do soukromých rukou při nedostatku domácího kapitálu. Řešilo se, zda je toto masové zapojení občanů vhodnou cestou k nalezení nových vlastníků, nebo zda upřednostnit standardní prodeje podniků konkrétním kupcům.',
+        context: 'Kuponová privatizace byla navržena jako metoda rychlého převodu velkého množství státních podniků do soukromých rukou při nedostatku domácího kapitálu. Řešilo se, zda je toto masové zapojení občanů vhodnou cestou k nalezení nových vlastníků, nebo zda upřednostnit standardní prodeje podniků konkrétním kupcům.',
+        partyStances: { of: 1, vpn: 1, kscs: -1, kdu: 1, hsd_sms: 0, sns: 0, css: -1, sz: 0 }
+      },
+      {
+        id: 3,
+        title: 'Státní ochrana zaměstnanosti',
+        category: 'Sociální jistoty a práce',
+        statement: 'Stát by měl v době ekonomických změn bránit vzniku vyšší nezaměstnanosti dotováním ohrožených podniků.',
+        historicalNote: 'S přípravou hospodářských reforem panovaly obavy ze zavírání neefektivních provozů a ztráty pracovních míst. Diskutovalo se o tom, do jaké míry má stát aktivně tlumit dopady trhu a udržovat zaměstnanost v ohrožených odvětvích a regionech, či zda nechat plně působit tržní prostředí.',
+        context: 'S přípravou hospodářských reforem panovaly obavy ze zavírání neefektivních provozů a ztráty pracovních míst. Diskutovalo se o tom, do jaké míry má stát aktivně tlumit dopady trhu a udržovat zaměstnanost v ohrožených odvětvích a regionech, či zda nechat plně působit tržní prostředí.',
+        partyStances: { of: -1, vpn: 0, kscs: 1, kdu: 1, hsd_sms: 1, sns: 1, css: 1, sz: 1 }
+      },
+      {
+        id: 4,
+        title: 'Lustrace a očista veřejného života',
+        category: 'Vyrovnání s minulostí',
+        statement: 'Bývalí spolupracovníci StB a vysocí funkcionáři minulého režimu by měli být zákonem vyloučeni z veřejných funkcí.',
+        historicalNote: 'V otázce vyrovnání se s minulostí se zvažovalo zavedení lustračních pravidel pro státní správu, justici a veřejnoprávní média. Na jedné straně stála snaha očistit státní a bezpečnostní orgány od pracovníků represivního aparátu, na straně druhé obavy z uplatnění principu kolektivní viny a z nespolehlivosti dochovaných archivních záznamů.',
+        context: 'V otázce vyrovnání se s minulostí se zvažovalo zavedení lustračních pravidel pro státní správu, justici a veřejnoprávní média. Na jedné straně stála snaha očistit státní a bezpečnostní orgány od pracovníků represivního aparátu, na straně druhé obavy z uplatnění principu kolektivní viny a z nespolehlivosti dochovaných archivních záznamů.',
+        partyStances: { of: 1, vpn: 0, kscs: -1, kdu: 1, hsd_sms: 0, sns: 0, css: -1, sz: 0 }
+      },
+      {
+        id: 5,
+        title: 'Zákaz Komunistické strany',
+        category: 'Politický systém a demokracie',
+        statement: 'Komunistická strana by měla být postavena mimo zákon.',
+        historicalNote: 'Po skončení vlády jedné strany vyvstala otázka dalšího právního působení dosavadní vládnoucí strany. Jeden pohled požadoval její zákaz a vyloučení z politického života z důvodu odpovědnosti za předchozí čtyřicetileté období, druhý pohled prosazoval její ponechání v demokratické politické soutěži podle nových ústavních pravidel.',
+        context: 'Po skončení vlády jedné strany vyvstala otázka dalšího právního působení dosavadní vládnoucí strany. Jeden pohled požadoval její zákaz a vyloučení z politického života z důvodu odpovědnosti za předchozí čtyřicetileté období, druhý pohled prosazoval její ponechání v demokratické politické soutěži podle nových ústavních pravidel.',
+        partyStances: { of: 0, vpn: 0, kscs: -1, kdu: 1, hsd_sms: 0, sns: 0, css: 0, sz: 0 }
+      },
+      {
+        id: 6,
+        title: 'Restituce soukromého majetku občanů',
+        category: 'Vlastnictví a restituce',
+        statement: 'Majetek zabavený občanům po únoru 1948 by měl být v rámci restitucí vrácen původním vlastníkům nebo jejich dědicům.',
+        historicalNote: 'Při nápravě majetkových křivd minulého režimu se vedla debata o rozsahu a formě restitucí domů, živností a polností. Řešila se otázka, zda vrátit původní majetek v naturální podobě i za cenu majetkoprávních sporů a nejistoty stávajících uživatelů, anebo poskytnout pouze finanční odškodnění či majetek nevracet.',
+        context: 'Při nápravě majetkových křivd minulého režimu se vedla debata o rozsahu a formě restitucí domů, živností a polností. Řešila se otázka, zda vrátit původní majetek v naturální podobě i za cenu majetkoprávních sporů a nejistoty stávajících uživatelů, anebo poskytnout pouze finanční odškodnění či majetek nevracet.',
+        partyStances: { of: 1, vpn: 1, kscs: -1, kdu: 1, hsd_sms: 1, sns: 0, css: 0, sz: 1 }
+      },
+      {
+        id: 7,
+        title: 'Zachování silné federace',
+        category: 'Státoprávní uspořádání',
+        statement: 'Československá federace by měla mít silné společné pravomoci v hospodářské, měnové a zahraniční politice.',
+        historicalNote: 'Debata o státoprávním uspořádání řešila rozdělení kompetencí mezi federálními orgány v Praze a národními vládami v obou republikách. Jeden přístup kladl důraz na silné společné federální instituce pro zachování jednotného hospodářského prostoru a soudržnosti státu, druhý požadoval přesun většiny pravomocí na úroveň národních republik.',
+        context: 'Debata o státoprávním uspořádání řešila rozdělení kompetencí mezi federálními orgány v Praze a národními vládami v obou republikách. Jeden přístup kladl důraz na silné společné federální instituce pro zachování jednotného hospodářského prostoru a soudržnosti státu, druhý požadoval přesun většiny pravomocí na úroveň národních republik.',
+        partyStances: { of: 1, vpn: 0, kscs: 1, kdu: 1, hsd_sms: 1, sns: -1, css: 1, sz: 1 }
+      },
+      {
+        id: 8,
+        title: 'Státní suverenita Slovenska',
+        category: 'Státoprávní uspořádání',
+        statement: 'Slovensko by mělo získat plnou národní suverenitu a vytvořit s Českou republikou pouze volné soustátí nebo samostatný stát.',
+        historicalNote: 'Po uvolnění politických poměrů a sporu o nový název republiky se otevřela diskuse o postavení Slovenska. Zvažovalo se, zda má Slovensko usilovat o vlastní mezinárodní subjektivitu v podobě volné konfederace či plné státní samostatnosti, nebo zda pokračovat ve společném federálním státě.',
+        context: 'Po uvolnění politických poměrů a sporu o nový název republiky se otevřela diskuse o postavení Slovenska. Zvažovalo se, zda má Slovensko usilovat o vlastní mezinárodní subjektivitu v podobě volné konfederace či plné státní samostatnosti, nebo zda pokračovat ve společném federálním státě.',
+        partyStances: { of: -1, vpn: -1, kscs: -1, kdu: -1, hsd_sms: -1, sns: 1, css: -1, sz: -1 }
+      },
+      {
+        id: 9,
+        title: 'Zemská samospráva pro Moravu a Slezsko',
+        category: 'Státoprávní uspořádání',
+        statement: 'V rámci Československa by mělo být obnoveno historické zemské zřízení pro Moravu a Slezsko s vlastním sněmem a rozpočtem.',
+        historicalNote: 'Při hledání nové podoby vnitřního členění státu vyvstala otázka nápravy zrušení Moravskoslezské země z roku 1949. Diskutovalo se o tom, zda obnovit zemskou samosprávu Moravy a Slezska a přeměnit stát na trojspolkovou federaci, anebo zachovat dvojčlennou federaci České a Slovenské republiky.',
+        context: 'Při hledání nové podoby vnitřního členění státu vyvstala otázka nápravy zrušení Moravskoslezské země z roku 1949. Diskutovalo se o tom, zda obnovit zemskou samosprávu Moravy a Slezska a přeměnit stát na trojspolkovou federaci, anebo zachovat dvojčlennou federaci České a Slovenské republiky.',
+        partyStances: { of: -1, vpn: 0, kscs: 0, kdu: 0, hsd_sms: 1, sns: 0, css: 1, sz: 0 }
+      },
+      {
+        id: 10,
+        title: 'Členství v Evropském společenství',
+        category: 'Zahraniční politika',
+        statement: 'Československo by mělo usilovat o plné členství v Evropském společenství.',
+        historicalNote: 'V době rozpadu východního bloku hledalo Československo své nové zahraničněpolitické a hospodářské ukotvení. Jeden směr považoval přičlenění k západoevropské integraci v podobě Evropského společenství za přirozený civilizační a ekonomický cíl, druhý směr varoval před jednostrannou ekonomickou závislostí na západní Evropě.',
+        context: 'V době rozpadu východního bloku hledalo Československo své nové zahraničněpolitické a hospodářské ukotvení. Jeden směr považoval přičlenění k západoevropské integraci v podobě Evropského společenství za přirozený civilizační a ekonomický cíl, druhý směr varoval před jednostrannou ekonomickou závislostí na západní Evropě.',
+        partyStances: { of: 1, vpn: 1, kscs: -1, kdu: 1, hsd_sms: 1, sns: 0, css: 0, sz: 0 }
+      },
+      {
+        id: 11,
+        title: 'Vojenská neutralita Československa',
+        category: 'Zahraniční a bezpečnostní politika',
+        statement: 'Československo by mělo vyhlásit trvalou vojenskou neutralitu a nevstupovat do žádných vojenských aliancí.',
+        historicalNote: 'Jako jedna z možností budoucího mezinárodního postavení země byla v roce 1990 zvažována trvalá vojenská neutralita po vzoru Rakouska či Švýcarska. Diskutovalo se o tom, zda by neutralita zajistila státu nezávislost mezi velmocemi, anebo zda bezpečnost země vyžaduje zapojení do širší západní či celoevropské bezpečnostní struktury.',
+        context: 'Jako jedna z možností budoucího mezinárodního postavení země byla v roce 1990 zvažována trvalá vojenská neutralita po vzoru Rakouska či Švýcarska. Diskutovalo se o tom, zda by neutralita zajistila státu nezávislost mezi velmocemi, anebo zda bezpečnost země vyžaduje zapojení do širší západní či celoevropské bezpečnostní struktury.',
+        partyStances: { of: -1, vpn: -1, kscs: 1, kdu: -1, hsd_sms: 0, sns: 1, css: 1, sz: 1 }
+      },
+      {
+        id: 12,
+        title: 'Rychlý odchod sovětských vojsk',
+        category: 'Zahraniční a bezpečnostní politika',
+        statement: 'Odchod sovětských vojsk z československého území by měl proběhnout v nejbližším možném termínu bez ohledu na další mezinárodní jednání.',
+        historicalNote: 'Od srpna 1968 pobývala na území státu početná sovětská vojenská posádka. Na jaře 1990 se řešilo, jak rychle a za jakých logistických i diplomatických podmínek má proběhnout její úplné stažení a zda lze akceptovat odklady zdůvodňované bytovými a přepravními obtížemi sovětské strany.',
+        context: 'Od srpna 1968 pobývala na území státu početná sovětská vojenská posádka. Na jaře 1990 se řešilo, jak rychle a za jakých logistických i diplomatických podmínek má proběhnout její úplné stažení a zda lze akceptovat odklady zdůvodňované bytovými a přepravními obtížemi sovětské strany.',
+        partyStances: { of: 1, vpn: 1, kscs: 0, kdu: 1, hsd_sms: 1, sns: 1, css: 1, sz: 1 }
+      },
+      {
+        id: 13,
+        title: 'Priorita ochrany životního prostředí',
+        category: 'Ekologie a životní prostředí',
+        statement: 'Zlepšení stavu životního prostředí a čistoty ovzduší by mělo mít přednost před tempem průmyslové výroby.',
+        historicalNote: 'Dlouhodobé znečištění ovzduší, vod a lesů z těžkého průmyslu a hnědouhelných elektráren představovalo v roce 1990 vážný zdravotní i ekologický problém. Diskuse se vedla o tom, zda okamžitě omezit nejekologičtější provozy a těžbu i za cenu hospodářských ztrát, nebo zda upřednostnit zachování výroby a řešit ekologii až postupně.',
+        context: 'Dlouhodobé znečištění ovzduší, vod a lesů z těžkého průmyslu a hnědouhelných elektráren představovalo v roce 1990 vážný zdravotní i ekologický problém. Diskuse se vedla o tom, zda okamžitě omezit nejekologičtější provozy a těžbu i za cenu hospodářských ztrát, nebo zda upřednostnit zachování výroby a řešit ekologii až postupně.',
+        partyStances: { of: 1, vpn: 1, kscs: 0, kdu: 1, hsd_sms: 1, sns: 0, css: 1, sz: 1 }
+      },
+      {
+        id: 14,
+        title: 'Zpřísnění podmínek pro interrupce',
+        category: 'Etika a zdravotnictví',
+        statement: 'Zákonné podmínky pro umělá přerušení těhotenství by měly být zpřísněny.',
+        historicalNote: 'V debatách o hodnotovém směřování společnosti po roce 1989 se střetávaly rozdílné pohledy na potratovou legislativu přijatou v polovině 80. let. Jeden pohled požadoval právní ochranu počatého života a omezení interrupcí pouze na závažné zdravotní důvody, druhý pohled hájil zachování práva ženy na svobodné rozhodnutí.',
+        context: 'V debatách o hodnotovém směřování společnosti po roce 1989 se střetávaly rozdílné pohledy na potratovou legislativu přijatou v polovině 80. let. Jeden pohled požadoval právní ochranu počatého života a omezení interrupcí pouze na závažné zdravotní důvody, druhý pohled hájil zachování práva ženy na svobodné rozhodnutí.',
+        partyStances: { of: -1, vpn: -1, kscs: -1, kdu: 1, hsd_sms: 0, sns: 0, css: -1, sz: -1 }
+      },
+      {
+        id: 15,
+        title: 'Občanská hnutí oproti politickým stranám',
+        category: 'Politický systém a demokracie',
+        statement: 'Hlavní roli v politickém životě by měla hrát široká občanská hnutí namísto klasických ideologických stran.',
+        historicalNote: 'Po pádu monopolu jedné strany se v roce 1990 řešila podoba vznikajícího politického systému. Diskutovalo se o tom, zda jsou pro přechod k demokracii vhodnější široká nadstranická hnutí sdružující osobnosti různých názorů, nebo zda je pro parlamentní demokracii žádoucí soutěž standardních politických stran s vyhraněným programem.',
+        context: 'Po pádu monopolu jedné strany se v roce 1990 řešila podoba vznikajícího politického systému. Diskutovalo se o tom, zda jsou pro přechod k demokracii vhodnější široká nadstranická hnutí sdružující osobnosti různých názorů, nebo zda je pro parlamentní demokracii žádoucí soutěž standardních politických stran s vyhraněným programem.',
         partyStances: { of: 1, vpn: 1, kscs: -1, kdu: -1, hsd_sms: 1, sns: -1, css: -1, sz: 0 }
       },
       {
         id: 16,
+        title: 'Plošná finanční podpora rodin s dětmi',
         category: 'Rodinná a sociální politika',
-        statement: 'Stát by měl i v době ekonomických reforem finančně podporovat rodiny s dětmi prostřednictvím rodinných přídavků a zvýhodněných půjček.',
-        historicalNote: 'V souvislosti s přechodem k tržnímu hospodářství a liberalizací cen panovaly obavy z dopadů na životní úroveň rodin s dětmi. Řešilo se, zda zachovat plošnou státní finanční podporu a zvýhodněné půjčky pro rodiny, anebo sociální pomoc zúžit pouze na nejvíce ohrožené skupiny.',
+        statement: 'Stát by měl i v době ekonomických reforem zachovat plošnou finanční podporu rodin s dětmi.',
+        historicalNote: 'V souvislosti s přechodem k tržnímu hospodářství a rušením cenových dotací panovaly obavy z poklesu životní úrovně rodin s dětmi. Řešilo se, zda zachovat dosavadní systém plošných přídavků na děti a zvýhodněných novomanželských půjček ze státního rozpočtu, anebo sociální dávky zúžit jen na příjmově nejslabší domácnosti.',
+        context: 'V souvislosti s přechodem k tržnímu hospodářství a rušením cenových dotací panovaly obavy z poklesu životní úrovně rodin s dětmi. Řešilo se, zda zachovat dosavadní systém plošných přídavků na děti a zvýhodněných novomanželských půjček ze státního rozpočtu, anebo sociální dávky zúžit jen na příjmově nejslabší domácnosti.',
         partyStances: { of: 0, vpn: 0, kscs: 1, kdu: 1, hsd_sms: 1, sns: 1, css: 1, sz: 1 }
+      },
+      {
+        id: 17,
+        title: 'Zabavení majetku Komunistické strany',
+        category: 'Vyrovnání s minulostí',
+        statement: 'Majetek Komunistické strany získaný v době jejího monopolu na moc by měl být bez náhrady převeden do vlastnictví státu.',
+        historicalNote: 'Během čtyřiceti let vlády jedné strany získal stranický aparát do svého vlastnictví či trvalého užívání rozsáhlý nemovitý majetek, nakladatelství, tiskárny a rekreační objekty. Na jaře 1990 se vedl spor o to, zda tento majetek zákonem vyvlastnit ve prospěch státu pro účely školství a zdravotnictví, nebo zda jde o zásah do majetkových práv politické strany.',
+        context: 'Během čtyřiceti let vlády jedné strany získal stranický aparát do svého vlastnictví či trvalého užívání rozsáhlý nemovitý majetek, nakladatelství, tiskárny a rekreační objekty. Na jaře 1990 se vedl spor o to, zda tento majetek zákonem vyvlastnit ve prospěch státu pro účely školství a zdravotnictví, nebo zda jde o zásah do majetkových práv politické strany.',
+        partyStances: { of: 1, vpn: 1, kscs: -1, kdu: 1, hsd_sms: 1, sns: 1, css: 1, sz: 1 }
+      },
+      {
+        id: 18,
+        title: 'Zrušení trestu smrti',
+        category: 'Justice a lidská práva',
+        statement: 'Trest smrti by měl být v našem právním řádu zrušen.',
+        historicalNote: 'Na jaře 1990 probíhala v parlamentu i ve společnosti diskuse o návrhu na zrušení trestu smrti. Jeden pohled zdůrazňoval nedotknutelnost lidského života, riziko neodčinitelného justičního omylu a mezinárodní závazky v oblasti lidských práv. Druhý pohled poukazoval na obavy veřejnosti z rostoucí násilné kriminality a požadoval zachování nejvyššího trestu pro pachatele nejzávažnějších vražd.',
+        context: 'Na jaře 1990 probíhala v parlamentu i ve společnosti diskuse o návrhu na zrušení trestu smrti. Jeden pohled zdůrazňoval nedotknutelnost lidského života, riziko neodčinitelného justičního omylu a mezinárodní závazky v oblasti lidských práv. Druhý pohled poukazoval na obavy veřejnosti z rostoucí násilné kriminality a požadoval zachování nejvyššího trestu pro pachatele nejzávažnějších vražd.',
+        partyStances: { of: 1, vpn: 1, kscs: 0, kdu: 1, hsd_sms: 0, sns: -1, css: 0, sz: 1 }
+      },
+      {
+        id: 19,
+        title: 'Útlum a konverze zbrojního průmyslu',
+        category: 'Průmysl a zahraniční obchod',
+        statement: 'Výroba těžkých zbraní v československých podnicích by měla být utlumena a nahrazena civilní produkcí.',
+        historicalNote: 'Československo patřilo před rokem 1989 k významným světovým vývozcům tanků a vojenské techniky, přičemž velká část zbrojovek sídlila na středním Slovensku. V roce 1990 se řešilo, zda zbrojní výrobu z etických a zahraničněpolitických důvodů utlumit a továrny přeorientovat na civilní programy, anebo výrobu zbraní zachovat v zájmu udržení zaměstnanosti a příjmů ze zahraničního obchodu.',
+        context: 'Československo patřilo před rokem 1989 k významným světovým vývozcům tanků a vojenské techniky, přičemž velká část zbrojovek sídlila na středním Slovensku. V roce 1990 se řešilo, zda zbrojní výrobu z etických a zahraničněpolitických důvodů utlumit a továrny přeorientovat na civilní programy, anebo výrobu zbraní zachovat v zájmu udržení zaměstnanosti a příjmů ze zahraničního obchodu.',
+        partyStances: { of: 1, vpn: 0, kscs: -1, kdu: 0, hsd_sms: 0, sns: -1, css: 0, sz: 1 }
+      },
+      {
+        id: 20,
+        title: 'Dostavba jaderné elektrárny Temelín',
+        category: 'Energetika a ekologie',
+        statement: 'Výstavba jaderné elektrárny Temelín by měla být zastavena.',
+        historicalNote: 'Po zkušenostech s černobylskou havárií a pod vlivem znečištěného ovzduší z uhelných elektráren se v roce 1990 vedl spor o budoucnost rozestavěné jaderné elektrárny Temelín. Jeden přístup požadoval zastavení stavby kvůli bezpečnostním rizikům a nevyřešenému ukládání jaderného odpadu. Druhý přístup prosazoval dokončení elektrárny jako výkonného zdroje energie, který umožní odstavit dožívající hnědouhelné elektrárny.',
+        context: 'Po zkušenostech s černobylskou havárií a pod vlivem znečištěného ovzduší z uhelných elektráren se v roce 1990 vedl spor o budoucnost rozestavěné jaderné elektrárny Temelín. Jeden přístup požadoval zastavení stavby kvůli bezpečnostním rizikům a nevyřešenému ukládání jaderného odpadu. Druhý přístup prosazoval dokončení elektrárny jako výkonného zdroje energie, který umožní odstavit dožívající hnědouhelné elektrárny.',
+        partyStances: { of: 0, vpn: 0, kscs: -1, kdu: 0, hsd_sms: 0, sns: -1, css: -1, sz: 1 }
+      },
+      {
+        id: 21,
+        title: 'Prodej státních podniků zahraničnímu kapitálu',
+        category: 'Ekonomika a privatizace',
+        statement: 'Stát by měl umožnit prodej velkých československých průmyslových podniků zahraničním investorům.',
+        historicalNote: 'Při hledání cest, jak modernizovat zastaralý průmysl, se diskutovalo o roli cizího kapitálu. Jeden ekonomický směr prosazoval přímý vstup zahraničních firem do československých továren jako zdroj moderních technologií, investic a přístupu na světové trhy. Druhý směr varoval před levným výprodejem národního bohatství a ztrátou domácí kontroly nad důležitými podniky.',
+        context: 'Při hledání cest, jak modernizovat zastaralý průmysl, se diskutovalo o roli cizího kapitálu. Jeden ekonomický směr prosazoval přímý vstup zahraničních firem do československých továren jako zdroj moderních technologií, investic a přístupu na světové trhy. Druhý směr varoval před levným výprodejem národního bohatství a ztrátou domácí kontroly nad důležitými podniky.',
+        partyStances: { of: 1, vpn: 1, kscs: -1, kdu: 0, hsd_sms: 0, sns: -1, css: -1, sz: -1 }
+      },
+      {
+        id: 22,
+        title: 'Daňové úlevy pro začínající živnostníky',
+        category: 'Daně a podnikání',
+        statement: 'Začínající drobní živnostníci a řemeslníci by měli být v prvních letech podnikání zvýhodněni daňovými úlevami.',
+        historicalNote: 'Na jaře 1990 byl přijat zákon, který občanům po čtyřiceti letech znovu umožnil soukromě podnikat. V diskusi o nastavení daňových podmínek jeden přístup prosazoval dočasné daňové úlevy a dostupné úvěry, aby v zemi rychle vyrostla vrstva drobných živnostníků a služeb. Druhý přístup požadoval plné a progresivní zdanění soukromého podnikání, aby stát nepřišel o rozpočtové příjmy a nevznikaly velké majetkové rozdíly.',
+        context: 'Na jaře 1990 byl přijat zákon, který občanům po čtyřiceti letech znovu umožnil soukromě podnikat. V diskusi o nastavení daňových podmínek jeden přístup prosazoval dočasné daňové úlevy a dostupné úvěry, aby v zemi rychle vyrostla vrstva drobných živnostníků a služeb. Druhý přístup požadoval plné a progresivní zdanění soukromého podnikání, aby stát nepřišel o rozpočtové příjmy a nevznikaly velké majetkové rozdíly.',
+        partyStances: { of: 1, vpn: 1, kscs: -1, kdu: 1, hsd_sms: 1, sns: 0, css: 1, sz: 0 }
+      },
+      {
+        id: 23,
+        title: 'Navrácení pozemkového majetku církvím',
+        category: 'Církev a restituce',
+        statement: 'Církvím a řeholním řádům by měla být vrácena zemědělská půda a lesy zabavené po roce 1948.',
+        historicalNote: 'Zatímco na navrácení některých klášterních a charitativních budov panovala na jaře 1990 širší shoda, spor se vedl o církevní lesy a zemědělskou půdu. Jeden pohled požadoval navrácení veškerého církevního hospodářského majetku, aby se církve staly ekonomicky soběstačnými a nezávislými na státu. Druhý pohled doporučoval ponechat půdu a lesy v rukou státu a obcí a financovat činnost církví nadále ze státního rozpočtu.',
+        context: 'Zatímco na navrácení některých klášterních a charitativních budov panovala na jaře 1990 širší shoda, spor se vedl o církevní lesy a zemědělskou půdu. Jeden pohled požadoval navrácení veškerého církevního hospodářského majetku, aby se církve staly ekonomicky soběstačnými a nezávislými na státu. Druhý pohled doporučoval ponechat půdu a lesy v rukou státu a obcí a financovat činnost církví nadále ze státního rozpočtu.',
+        partyStances: { of: 0, vpn: 0, kscs: -1, kdu: 1, hsd_sms: 1, sns: 0, css: -1, sz: 0 }
+      },
+      {
+        id: 24,
+        title: 'Státní financování soukromých a církevních škol',
+        category: 'Školství a vzdělávání',
+        statement: 'Nově zakládané církevní a soukromé školy by měly mít nárok na dotace ze státního rozpočtu za stejných podmínek jako školy státní.',
+        historicalNote: 'Při novelizaci školského zákona na jaře 1990 byl ukončen dosavadní státní monopol na vzdělávání a povolen vznik nestátních škol. Diskutovalo se o tom, zda má stát soukromé a církevní školy finančně podporovat podle počtu žáků stejně jako školy veřejné, aby byly dostupné všem rodinám, nebo zda by veřejné peníze měly směřovat výhradně do státního školství.',
+        context: 'Při novelizaci školského zákona na jaře 1990 byl ukončen dosavadní státní monopol na vzdělávání a povolen vznik nestátních škol. Diskutovalo se o tom, zda má stát soukromé a církevní školy finančně podporovat podle počtu žáků stejně jako školy veřejné, aby byly dostupné všem rodinám, nebo zda by veřejné peníze měly směřovat výhradně do státního školství.',
+        partyStances: { of: 1, vpn: 1, kscs: -1, kdu: 1, hsd_sms: 1, sns: 0, css: 0, sz: 0 }
+      },
+      {
+        id: 25,
+        title: 'Zrušení povinné vojenské služby',
+        category: 'Obrana a armáda',
+        statement: 'Povinná základní vojenská služba by měla být postupně zrušena a nahrazena plně profesionální armádou.',
+        historicalNote: 'Na jaře 1990 byla uzákoněna možnost náhradní civilní služby a základní vojenská služba se zkrátila z 24 na 18 měsíců. V předvolební debatě se řešilo, zda by mělo Československo v dalších letech směřovat k úplnému zrušení branné povinnosti a vybudování menší profesionální armády, nebo zda je pro obranu státu potřeba zachovat všeobecný odvodní systém.',
+        context: 'Na jaře 1990 byla uzákoněna možnost náhradní civilní služby a základní vojenská služba se zkrátila z 24 na 18 měsíců. V předvolební debatě se řešilo, zda by mělo Československo v dalších letech směřovat k úplnému zrušení branné povinnosti a vybudování menší profesionální armády, nebo zda je pro obranu státu potřeba zachovat všeobecný odvodní systém.',
+        partyStances: { of: 1, vpn: 1, kscs: -1, kdu: 0, hsd_sms: 1, sns: -1, css: 1, sz: 1 }
+      },
+      {
+        id: 26,
+        title: 'Jazyková práva národnostních menšin na úřadech',
+        category: 'Národnostní menšiny',
+        statement: 'Národnostním menšinám by mělo být v obcích s jejich početným zastoupením zaručeno právo používat v úředním styku mateřský jazyk.',
+        historicalNote: 'Otázka jazykového zákona patřila v roce 1990 k výrazným tématům, zejména na národnostně smíšeném jižním Slovensku. Jeden přístup prosazoval právo početné maďarské a dalších menšin komunikovat s místními úřady ve svém jazyce a mít dvojjazyčné nápisy. Druhý přístup požadoval uzákonění slovenštiny jako jediného úředního jazyka na celém území Slovenska bez výjimek.',
+        context: 'Otázka jazykového zákona patřila v roce 1990 k výrazným tématům, zejména na národnostně smíšeném jižním Slovensku. Jeden přístup prosazoval právo početné maďarské a dalších menšin komunikovat s místními úřady ve svém jazyce a mít dvojjazyčné nápisy. Druhý přístup požadoval uzákonění slovenštiny jako jediného úředního jazyka na celém území Slovenska bez výjimek.',
+        partyStances: { of: 1, vpn: 1, kscs: 1, kdu: 0, hsd_sms: 1, sns: -1, css: 0, sz: 1 }
+      },
+      {
+        id: 27,
+        title: 'Zrušení finančního přerozdělování mezi republikami',
+        category: 'Federace a rozpočet',
+        statement: 'Každá republika ve federaci by měla hospodařit s daněmi vybranými na svém území bez finančního přerozdělování mezi českými zeměmi a Slovenskem.',
+        historicalNote: 'Při sestavování rozpočtů v roce 1990 vyvstal spor o přerozdělování daňových výnosů prostřednictvím federálního rozpočtu. Jeden pohled prosazoval zásadu, aby si každá část státu financovala své výdaje pouze z prostředků, které na svém území vybere. Druhý pohled upozorňoval, že struktura průmyslu vznikala centrálními rozhodnutími celé federace, a vyžadoval zachování finanční solidarity mezi republikami.',
+        context: 'Při sestavování rozpočtů v roce 1990 vyvstal spor o přerozdělování daňových výnosů prostřednictvím federálního rozpočtu. Jeden pohled prosazoval zásadu, aby si každá část státu financovala své výdaje pouze z prostředků, které na svém území vybere. Druhý pohled upozorňoval, že struktura průmyslu vznikala centrálními rozhodnutími celé federace, a vyžadoval zachování finanční solidarity mezi republikami.',
+        partyStances: { of: 1, vpn: -1, kscs: -1, kdu: 0, hsd_sms: 1, sns: 1, css: 0, sz: 0 }
+      },
+      {
+        id: 28,
+        title: 'Podpora rodinných farem oproti velkým družstvům',
+        category: 'Zemědělství a venkov',
+        statement: 'Stát by měl v zemědělství finančně upřednostnit vznik soukromých rodinných farem před zachováním velkých zemědělských družstev.',
+        historicalNote: 'V roce 1990 obhospodařovala většinu půdy velká jednotná zemědělská družstva a státní statky. Vedla se debata o budoucí podobě venkova: zda má stát dotačně a úvěrově podpořit návrat k menším soukromým selským hospodářstvím, která obnoví osobní vztah k půdě a krajině, nebo zda je hospodářsky účelnější zachovat velkovýrobní družstevní celky.',
+        context: 'V roce 1990 obhospodařovala většinu půdy velká jednotná zemědělská družstva a státní statky. Vedla se debata o budoucí podobě venkova: zda má stát dotačně a úvěrově podpořit návrat k menším soukromým selským hospodářstvím, která obnoví osobní vztah k půdě a krajině, nebo zda je hospodářsky účelnější zachovat velkovýrobní družstevní celky.',
+        partyStances: { of: 1, vpn: 0, kscs: -1, kdu: 1, hsd_sms: 0, sns: -1, css: -1, sz: 1 }
+      },
+      {
+        id: 29,
+        title: 'Deregulace nájemného v bytech',
+        category: 'Bydlení a sociální politika',
+        statement: 'Státem regulované nájemné v bytech by mělo být postupně uvolněno na tržní úroveň.',
+        historicalNote: 'Výše nájemného ve státních a podnikových bytech zůstávala po desetiletí administrativně zmrazena a nepokrývala náklady na opravy zchátralého bytového fondu. V roce 1990 se řešilo, zda nájemné postupně uvolnit k tržním cenám a zajistit tak prostředky na údržbu domů, nebo zda zachovat státní regulaci nájmů na nízké úrovni jako součást sociální ochrany domácností.',
+        context: 'Výše nájemného ve státních a podnikových bytech zůstávala po desetiletí administrativně zmrazena a nepokrývala náklady na opravy zchátralého bytového fondu. V roce 1990 se řešilo, zda nájemné postupně uvolnit k tržním cenám a zajistit tak prostředky na údržbu domů, nebo zda zachovat státní regulaci nájmů na nízké úrovni jako součást sociální ochrany domácností.',
+        partyStances: { of: 1, vpn: 0, kscs: -1, kdu: -1, hsd_sms: -1, sns: -1, css: -1, sz: -1 }
+      },
+      {
+        id: 30,
+        title: 'Malá privatizace – přednost zaměstnanců před dražbami',
+        category: 'Ekonomika a privatizace',
+        statement: 'Při privatizaci obchodů a provozoven služeb by měli mít dosavadní zaměstnanci přednostní právo na jejich odkup před veřejnými dražbami.',
+        historicalNote: 'Při přípravě takzvané malé privatizace se střetly dvě představy o převodu prodejen, restaurací a provozoven služeb do soukromých rukou. První představa prosazovala přednostní prodej nebo pronájem stávajícím pracovním kolektivům za odhadní cenu. Druhá představa trvala na otevřených veřejných dražbách přístupných všem zájemcům bez zvýhodnění dosavadního personálu.',
+        context: 'Při přípravě takzvané malé privatizace se střetly dvě představy o převodu prodejen, restaurací a provozoven služeb do soukromých rukou. První představa prosazovala přednostní prodej nebo pronájem stávajícím pracovním kolektivům za odhadní cenu. Druhá představa trvala na otevřených veřejných dražbách přístupných všem zájemcům bez zvýhodnění dosavadního personálu.',
+        partyStances: { of: -1, vpn: -1, kscs: 1, kdu: 0, hsd_sms: 0, sns: 0, css: 1, sz: 0 }
+      },
+      {
+        id: 31,
+        title: 'Přímá volba prezidenta republiky občany',
+        category: 'Ústava a hlava státu',
+        statement: 'Prezident republiky by měl být v budoucí ústavě volen přímo občany namísto volby parlamentem.',
+        historicalNote: 'V souvislosti s přípravou nové demokratické ústavy se diskutovalo o způsobu výběru hlavy státu. Jeden ústavní pohled prosazoval zavedení přímé volby prezidenta všemi oprávněnými voliči, což mělo hlavě státu zajistit silný a na politických stranách nezávislý mandát. Druhý pohled hájil prvorepublikovou tradici nepřímé volby prezidenta poslanci parlamentu jako součást parlamentní demokracie.',
+        context: 'V souvislosti s přípravou nové demokratické ústavy se diskutovalo o způsobu výběru hlavy státu. Jeden ústavní pohled prosazoval zavedení přímé volby prezidenta všemi oprávněnými voliči, což mělo hlavě státu zajistit silný a na politických stranách nezávislý mandát. Druhý pohled hájil prvorepublikovou tradici nepřímé volby prezidenta poslanci parlamentu jako součást parlamentní demokracie.',
+        partyStances: { of: -1, vpn: 0, kscs: 1, kdu: -1, hsd_sms: 1, sns: 1, css: 1, sz: 1 }
+      },
+      {
+        id: 32,
+        title: 'Povolení soukromých televizních a rozhlasových stanic',
+        category: 'Média a kultura',
+        statement: 'Vysílací frekvence pro televizi a rozhlas by měly být zpřístupněny soukromým komerčním stanicím.',
+        historicalNote: 'Po zrušení cenzury začaly v roce 1990 vycházet četné nezávislé noviny a časopisy, avšak televizní a rozhlasové vysílání zůstávalo v rukou státu. Diskutovalo se o tom, zda vysílací frekvence otevřít soukromým provozovatelům pro posílení mediální konkurence, nebo zda ponechat elektronická média výhradně jako veřejnoprávní službu v zájmu ochrany kulturní úrovně vysílání.',
+        context: 'Po zrušení cenzury začaly v roce 1990 vycházet četné nezávislé noviny a časopisy, avšak televizní a rozhlasové vysílání zůstávalo v rukou státu. Diskutovalo se o tom, zda vysílací frekvence otevřít soukromým provozovatelům pro posílení mediální konkurence, nebo zda ponechat elektronická média výhradně jako veřejnoprávní službu v zájmu ochrany kulturní úrovně vysílání.',
+        partyStances: { of: 1, vpn: 1, kscs: -1, kdu: 0, hsd_sms: 1, sns: -1, css: 0, sz: 0 }
+      },
+      {
+        id: 33,
+        title: 'Ukončení členství v Radě vzájemné hospodářské pomoci (RVHP)',
+        category: 'Zahraniční obchod',
+        statement: 'Československo by mělo ukončit své členství v Radě vzájemné hospodářské pomoci (RVHP).',
+        historicalNote: 'V roce 1990 byla většina československého zahraničního obchodu a dodávek surovin stále vázána na východní blok v rámci RVHP a účtována v převoditelných rublech. Řešila se otázka, zda tuto organizaci opustit a přejít na obchodování ve volně směnitelných měnách za světové ceny, anebo v transformované RVHP setrvat kvůli zachování východních odbytišť pro domácí průmysl a levnějších dodávek surovin.',
+        context: 'V roce 1990 byla většina československého zahraničního obchodu a dodávek surovin stále vázána na východní blok v rámci RVHP a účtována v převoditelných rublech. Řešila se otázka, zda tuto organizaci opustit a přejít na obchodování ve volně směnitelných měnách za světové ceny, anebo v transformované RVHP setrvat kvůli zachování východních odbytišť pro domácí průmysl a levnějších dodávek surovin.',
+        partyStances: { of: 1, vpn: 1, kscs: -1, kdu: 1, hsd_sms: 0, sns: -1, css: -1, sz: 0 }
+      },
+      {
+        id: 34,
+        title: 'Většinový volební systém oproti poměrnému',
+        category: 'Ústava a volební systém',
+        statement: 'Poslanci parlamentu by měli být voleni většinovým systémem v jednomandátových obvodech namísto volby stranických kandidátních listin.',
+        historicalNote: 'Při tvorbě volebních pravidel v roce 1990 se vedl spor o to, jakým způsobem se mají volit poslanci. Jeden návrh prosazoval většinový systém, v němž občané v každém obvodu volí přímo konkrétní osobnost a kandidát s nejvyšším počtem hlasů získává mandát. Druhý návrh hájil poměrné zastoupení stranických kandidátních listin, které zajišťuje, že složení parlamentu odpovídá celkovému podílu hlasů pro jednotlivé politické proudy.',
+        context: 'Při tvorbě volebních pravidel v roce 1990 se vedl spor o to, jakým způsobem se mají volit poslanci. Jeden návrh prosazoval většinový systém, v němž občané v každém obvodu volí přímo konkrétní osobnost a kandidát s nejvyšším počtem hlasů získává mandát. Druhý návrh hájil poměrné zastoupení stranických kandidátních listin, které zajišťuje, že složení parlamentu odpovídá celkovému podílu hlasů pro jednotlivé politické proudy.',
+        partyStances: { of: 1, vpn: 1, kscs: -1, kdu: -1, hsd_sms: -1, sns: -1, css: -1, sz: -1 }
+      },
+      {
+        id: 35,
+        title: 'Posílení pravomocí policie při potírání kriminality',
+        category: 'Bezpečnost a právo',
+        statement: 'Pravomoci policie při kontrole a zadržování podezřelých osob by měly být posíleny.',
+        historicalNote: 'Po rozsáhlé prezidentské amnestii z ledna 1990, při níž byla propuštěna velká část vězňů, vzrostly ve společnosti obavy z pouliční a majetkové trestné činnosti. V předvolební kampani se diskutovalo o tom, zda posílit pravomoci bezpečnostních složek k rychlému obnovení veřejného pořádku, nebo zda by rozšíření policejních pravomocí ohrozilo nabyté občanské svobody.',
+        context: 'Po rozsáhlé prezidentské amnestii z ledna 1990, při níž byla propuštěna velká část vězňů, vzrostly ve společnosti obavy z pouliční a majetkové trestné činnosti. V předvolební kampani se diskutovalo o tom, zda posílit pravomoci bezpečnostních složek k rychlému obnovení veřejného pořádku, nebo zda by rozšíření policejních pravomocí ohrozilo nabyté občanské svobody.',
+        partyStances: { of: -1, vpn: -1, kscs: 1, kdu: 0, hsd_sms: 0, sns: 1, css: 1, sz: -1 }
+      },
+      {
+        id: 36,
+        title: 'Devalvace koruny před zavedením směnitelnosti',
+        category: 'Měnová politika a finance',
+        statement: 'Kurz československé koruny vůči západním měnám by měl být před zavedením vnitřní směnitelnosti devalvován.',
+        historicalNote: 'Příprava na zavedení vnitřní směnitelnosti koruny a zrušení devizových příslibů vyvolala v roce 1990 spor o nastavení měnového kurzu. Jeden ekonomický pohled prosazoval devalvaci koruny, která by zvýhodnila československé vývozce na světových trzích a vyrovnala nabídku s poptávkou po cizích měnách. Druhý pohled varoval, že oslabení koruny občanům prodraží dovážené zboží i cestování a umožní levný skup domácího majetku zahraničními zájemci.',
+        context: 'Příprava na zavedení vnitřní směnitelnosti koruny a zrušení devizových příslibů vyvolala v roce 1990 spor o nastavení měnového kurzu. Jeden ekonomický pohled prosazoval devalvaci koruny, která by zvýhodnila československé vývozce na světových trzích a vyrovnala nabídku s poptávkou po cizích měnách. Druhý pohled varoval, že oslabení koruny občanům prodraží dovážené zboží i cestování a umožní levný skup domácího majetku zahraničními zájemci.',
+        partyStances: { of: 1, vpn: 0, kscs: -1, kdu: 0, hsd_sms: 0, sns: -1, css: -1, sz: 0 }
+      },
+      {
+        id: 37,
+        title: 'Omluva za poválečný odsun sudetských Němců',
+        category: 'Historie a zahraniční vztahy',
+        statement: 'Československo by se mělo oficiálně omluvit za poválečný odsun sudetských Němců.',
+        historicalNote: 'Na přelomu let 1989 a 1990 vyvolalo ve společnosti rozporuplné reakce prohlášení vyjadřující morální lítost nad poválečným vysídlením německého obyvatelstva. Jeden postoj považoval omluvu za uplatnění principu kolektivní viny za důležité gesto k vyrovnání se s vlastní historií a k dobrým sousedským vztahům s Německem. Druhý postoj omluvu odmítal s poukazem na předchozí nacistické zločiny a obavu z otevření majetkových požadavků vysídlenců.',
+        context: 'Na přelomu let 1989 a 1990 vyvolalo ve společnosti rozporuplné reakce prohlášení vyjadřující morální lítost nad poválečným vysídlením německého obyvatelstva. Jeden postoj považoval omluvu za uplatnění principu kolektivní viny za důležité gesto k vyrovnání se s vlastní historií a k dobrým sousedským vztahům s Německem. Druhý postoj omluvu odmítal s poukazem na předchozí nacistické zločiny a obavu z otevření majetkových požadavků vysídlenců.',
+        partyStances: { of: 1, vpn: 1, kscs: -1, kdu: 0, hsd_sms: 0, sns: -1, css: -1, sz: 0 }
+      },
+      {
+        id: 38,
+        title: 'Soukromé lékařské ordinace a zdravotní pojišťovny',
+        category: 'Zdravotnictví',
+        statement: 'Lékařům by mělo být umožněno otevírat si soukromé ordinace hrazené z veřejného zdravotního pojištění.',
+        historicalNote: 'Československé zdravotnictví fungovalo do roku 1990 v podobě státních ústavů národního zdraví financovaných přímo ze státního rozpočtu, přičemž pacienti neměli svobodnou volbu lékaře. V debatě o reformě péče o zdraví stála na jedné straně snaha oddělit financování zdravotnictví od státu zavedením zdravotních pojišťoven a soukromých lékařských praxí, na druhé straně obava ze zhoršení dostupnosti bezplatné lékařské péče.',
+        context: 'Československé zdravotnictví fungovalo do roku 1990 v podobě státních ústavů národního zdraví financovaných přímo ze státního rozpočtu, přičemž pacienti neměli svobodnou volbu lékaře. V debatě o reformě péče o zdraví stála na jedné straně snaha oddělit financování zdravotnictví od státu zavedením zdravotních pojišťoven a soukromých lékařských praxí, na druhé straně obava ze zhoršení dostupnosti bezplatné lékařské péče.',
+        partyStances: { of: 1, vpn: 1, kscs: -1, kdu: 1, hsd_sms: 1, sns: 0, css: 0, sz: 0 }
+      },
+      {
+        id: 39,
+        title: 'Snížení 5% hranice pro vstup do parlamentu',
+        category: 'Volební systém a demokracie',
+        statement: 'Pětiprocentní hranice hlasů potřebná pro vstup politických stran do Federálního shromáždění by měla být snížena.',
+        historicalNote: 'Volební zákon pro červen 1990 poprvé zavedl uzavírací klauzuli, podle níž musela politická strana pro zisk mandátů ve Federálním shromáždění překročit hranici 5 % hlasů v jedné z republik. Jeden pohled tuto hranici hájil jako pojistku proti roztříštěnosti parlamentu a nestabilitě vlád, druhý pohled ji kritizoval jako překážku, která vyřazuje menší politické strany a způsobuje propadnutí statisíců hlasů voličů.',
+        context: 'Volební zákon pro červen 1990 poprvé zavedl uzavírací klauzuli, podle níž musela politická strana pro zisk mandátů ve Federálním shromáždění překročit hranici 5 % hlasů v jedné z republik. Jeden pohled tuto hranici hájil jako pojistku proti roztříštěnosti parlamentu a nestabilitě vlád, druhý pohled ji kritizoval jako překážku, která vyřazuje menší politické strany a způsobuje propadnutí statisíců hlasů voličů.',
+        partyStances: { of: -1, vpn: -1, kscs: -1, kdu: -1, hsd_sms: 1, sns: 1, css: 1, sz: 1 }
+      },
+      {
+        id: 40,
+        title: 'Celní ochrana domácího zemědělství',
+        category: 'Zemědělství a obchod',
+        statement: 'Domácí zemědělci by měli být před levnějším dovozem potravin ze zahraničí chráněni dovozními cly.',
+        historicalNote: 'S otevíráním hranic a přechodem na tržní hospodářství se řešila otázka ochrany československého zemědělství. Jeden přístup požadoval zachování celní ochrany pro domácí zemědělce, aby republika zůstala potravinově soběstačná a nebyla ohrožena dotovanými přebytky ze západní Evropy. Druhý přístup upřednostňoval otevření trhu zahraniční konkurenci, která by snížila ceny potravin pro spotřebitele.',
+        context: 'S otevíráním hranic a přechodem na tržní hospodářství se řešila otázka ochrany československého zemědělství. Jeden přístup požadoval zachování celní ochrany pro domácí zemědělce, aby republika zůstala potravinově soběstačná a nebyla ohrožena dotovanými přebytky ze západní Evropy. Druhý přístup upřednostňoval otevření trhu zahraniční konkurenci, která by snížila ceny potravin pro spotřebitele.',
+        partyStances: { of: -1, vpn: -1, kscs: 1, kdu: 1, hsd_sms: 1, sns: 1, css: 1, sz: 1 }
       }
     ],
     electionSystem: {
