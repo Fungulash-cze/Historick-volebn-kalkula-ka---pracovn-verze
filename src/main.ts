@@ -17,6 +17,12 @@ import {
 } from './services/adminAuthService.ts';
 import { renderSurveyView, SurveyState } from './components/DemographicSurveyModal.ts';
 import { renderAnalyticsDashboardView, DashboardState } from './components/AnalyticsDashboardView.ts';
+import { renderBallotShareSection, BallotShareState } from './components/BallotShareSection.ts';
+import {
+  generateBallotCardDataUrl,
+  downloadBallotCard,
+  shareBallotCard
+} from './services/ballotCardGenerator.ts';
 
 interface AppState {
   view: 'home' | 'quiz' | 'results' | 'survey' | 'admin';
@@ -37,6 +43,7 @@ interface AppState {
   activeModalSystemYear: ElectionYear | null;
   surveyState: SurveyState;
   dashboardState: DashboardState;
+  ballotShareState: BallotShareState;
 }
 
 const state: AppState = {
@@ -73,8 +80,33 @@ const state: AppState = {
     isAuthenticated: isAdminSessionActive(),
     authError: null,
     isVerifying: false
+  },
+  ballotShareState: {
+    previewDataUrl: null,
+    isGenerating: false,
+    isModalOpen: false
   }
 };
+
+function initBallotShareCard() {
+  if (state.partyScores.length === 0) return;
+  state.ballotShareState.isGenerating = true;
+  generateBallotCardDataUrl({
+    year: state.year,
+    quizMode: state.quizMode,
+    scores: state.partyScores
+  })
+    .then((url) => {
+      state.ballotShareState.previewDataUrl = url;
+      state.ballotShareState.isGenerating = false;
+      renderApp();
+    })
+    .catch((err) => {
+      console.error('Chyba při generování volebního lístku:', err);
+      state.ballotShareState.isGenerating = false;
+      renderApp();
+    });
+}
 
 function getCurrentQuestions(year: ElectionYear, mode: 'standard' | 'expanded') {
   const currentElection = ELECTIONS_DATA[year];
@@ -95,6 +127,9 @@ function showToast(msg: string) {
 
 function setView(view: AppState['view']) {
   state.view = view;
+  if (view === 'results' && !state.ballotShareState.previewDataUrl && state.partyScores.length > 0) {
+    initBallotShareCard();
+  }
   if (view === 'admin') {
     state.dashboardState.isAuthenticated = isAdminSessionActive();
     if (state.dashboardState.isAuthenticated) {
@@ -212,6 +247,11 @@ function finishQuiz() {
     customVoteText: '',
     isSubmitting: false
   };
+  state.ballotShareState = {
+    previewDataUrl: null,
+    isGenerating: false,
+    isModalOpen: false
+  };
   state.view = 'survey';
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -254,6 +294,7 @@ async function handleSurveySubmit() {
 
   state.surveyState.isSubmitting = false;
   state.view = 'results';
+  initBallotShareCard();
 
   try {
     confetti({
@@ -289,6 +330,7 @@ function handleSurveySkip() {
   }).catch(() => {});
 
   state.view = 'results';
+  initBallotShareCard();
 
   try {
     confetti({
@@ -749,52 +791,85 @@ function renderResultsView(): string {
             </span>
           `}
         </div>
-        <h1 class="text-2xl sm:text-3xl font-extrabold text-zinc-900 tracking-tight">
-          Vaše názorová shoda s kandidujícími stranami
-        </h1>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-zinc-900 tracking-tight">
+            Vaše názorová shoda s kandidujícími stranami
+          </h1>
+          <button 
+            onclick="window.calcOpenBallotModal()"
+            class="inline-flex items-center gap-2 self-start sm:self-auto px-4 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs tracking-tight shadow-sm transition-all cursor-pointer active:scale-95 shrink-0"
+            title="Otevřít shrnutí a sdílet výsledek"
+          >
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+            </svg>
+            <span>Sdílet výsledek</span>
+          </button>
+        </div>
       </div>
 
-      <!-- Hlavní vítězná strana -->
+      <!-- Hlavní vítězná strana (jemný pastelový podklad v barvě strany) -->
       ${topMatch ? `
-        <div class="bg-zinc-900 text-white rounded-xl p-6 sm:p-8 mb-8 shadow-sm border border-zinc-800">
-          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <div 
+          class="rounded-2xl p-6 sm:p-8 mb-8 shadow-xs border relative overflow-hidden transition-all"
+          style="background-color: ${topMatch.party.color}0D; border-color: ${topMatch.party.color}35;"
+        >
+          <!-- Barevná linka vítězné strany nahoře -->
+          <div 
+            class="absolute top-0 left-0 right-0 h-1.5"
+            style="background-color: ${topMatch.party.color};"
+          ></div>
+
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pt-1">
             <div class="max-w-xl">
-              <div class="flex items-center gap-3.5 mb-3">
-                <div class="w-2 h-12 rounded-full shrink-0 shadow-xs" style="background-color: ${topMatch.party.color};"></div>
-                <div>
-                  <span class="text-xs uppercase tracking-wider font-semibold text-zinc-400 block">
-                    Nejvyšší programová shoda
-                  </span>
-                  <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight text-white">
-                    ${topMatch.party.fullName} (${topMatch.party.shortName})
-                  </h2>
+              <div class="mb-3">
+                <div 
+                  class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-bold tracking-wider uppercase mb-1.5"
+                  style="background-color: ${topMatch.party.color}1E; color: ${topMatch.party.color};"
+                >
+                  <span class="w-1.5 h-1.5 rounded-full" style="background-color: ${topMatch.party.color};"></span>
+                  <span>Nejvyšší programová shoda</span>
                 </div>
+                <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight text-stone-900">
+                  ${topMatch.party.fullName} (${topMatch.party.shortName})
+                </h2>
               </div>
 
-              <div class="text-xs text-zinc-400 mb-3 font-medium">
-                ${topMatch.party.ideology} · Osobnosti: <strong class="text-zinc-200">${topMatch.party.leaders.join(', ')}</strong>
+              <div class="text-xs text-stone-600 mb-3 font-medium">
+                ${topMatch.party.ideology} · Osobnosti: <strong class="text-stone-800">${topMatch.party.leaders.join(', ')}</strong>
               </div>
-              <p class="text-xs sm:text-sm text-zinc-300 leading-relaxed font-normal mb-4 text-justify [hyphens:auto]">
+              <p class="text-xs sm:text-sm text-stone-700 leading-relaxed font-normal mb-4 text-justify [hyphens:auto]">
                 ${topMatch.party.description}
               </p>
-              <div class="p-3 rounded-lg bg-zinc-800 text-xs text-zinc-200 border border-zinc-700 text-justify [hyphens:auto]">
-                <strong>Programové pilíře:</strong> ${topMatch.party.programHighlight}
+              <div class="p-3.5 rounded-xl bg-white/90 border border-stone-200/80 text-xs text-stone-800 text-justify [hyphens:auto] shadow-2xs">
+                <strong class="text-stone-900">Programové pilíře:</strong> ${topMatch.party.programHighlight}
               </div>
             </div>
 
-            <div class="flex flex-col items-center justify-center p-5 rounded-xl bg-zinc-800 border border-zinc-700 min-w-[130px] shrink-0 self-center sm:self-auto text-center">
-              <span class="text-4xl sm:text-5xl font-extrabold tracking-tight text-white font-mono">
+            <div class="flex flex-col items-center justify-center p-5 rounded-2xl bg-white border border-stone-200/90 shadow-sm min-w-[145px] shrink-0 self-center sm:self-auto text-center">
+              <span class="text-4xl sm:text-5xl font-extrabold tracking-tight text-stone-900 font-mono">
                 ${topMatch.matchPercentage}%
               </span>
-              <span class="text-[11px] uppercase tracking-wider text-zinc-400 mt-1 font-semibold">
+              <span class="text-[11px] uppercase tracking-wider text-stone-500 mt-1 font-bold">
                 Shoda
               </span>
-              <button 
-                onclick="window.calcOpenPartyModal('${topMatch.party.id}', ${state.year})"
-                class="mt-3 text-[11px] text-zinc-300 hover:text-white underline font-medium cursor-pointer"
-              >
-                Detail strany ↗
-              </button>
+              <div class="mt-3 flex flex-col gap-2 w-full">
+                <button 
+                  onclick="window.calcOpenPartyModal('${topMatch.party.id}', ${state.year})"
+                  class="text-[11px] text-stone-600 hover:text-stone-900 underline font-medium cursor-pointer"
+                >
+                  Detail strany ↗
+                </button>
+                <button 
+                  onclick="window.calcOpenBallotModal()"
+                  class="px-2.5 py-1.5 rounded-lg bg-stone-900 hover:bg-stone-800 text-white text-[11px] font-semibold transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                  </svg>
+                  <span>Sdílet</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -999,14 +1074,23 @@ function renderResultsView(): string {
       <!-- Akční tlačítka -->
       <div class="flex flex-wrap items-center justify-center gap-3">
         <button 
-          onclick="window.calcShareResult()"
-          class="px-5 py-2.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white font-semibold text-xs tracking-tight transition-colors cursor-pointer shadow-xs border border-zinc-800"
+          onclick="window.calcOpenBallotModal()"
+          class="px-5 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs tracking-tight transition-all cursor-pointer shadow-sm border border-stone-800 flex items-center gap-2 active:scale-95"
         >
-          Kopírovat výsledek
+          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+          </svg>
+          <span>Sdílet výsledek</span>
+        </button>
+        <button 
+          onclick="window.calcShareResult()"
+          class="px-5 py-2.5 rounded-xl bg-white hover:bg-stone-50 text-stone-800 border border-stone-300 font-semibold text-xs tracking-tight transition-colors cursor-pointer"
+        >
+          Kopírovat text
         </button>
         <button 
           onclick="window.calcSetView('home')"
-          class="px-5 py-2.5 rounded-lg bg-white hover:bg-zinc-100 text-zinc-800 border border-zinc-300 font-semibold text-xs tracking-tight transition-colors cursor-pointer"
+          class="px-5 py-2.5 rounded-xl bg-white hover:bg-stone-50 text-stone-800 border border-stone-300 font-semibold text-xs tracking-tight transition-colors cursor-pointer"
         >
           Vyzkoušet jiný volební rok
         </button>
@@ -1485,6 +1569,7 @@ function renderApp() {
       ${renderFooter()}
       ${renderPartyModal()}
       ${renderSystemModal()}
+      ${renderBallotShareSection(state.year, state.quizMode, state.partyScores, state.ballotShareState)}
       ${renderToast()}
     `;
 
@@ -1507,6 +1592,12 @@ function attachEventListeners() {
 // Klávesa Escape zavírá modální okna
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
+    if (state.ballotShareState?.isModalOpen) {
+      state.ballotShareState.isModalOpen = false;
+      document.body.classList.remove('overflow-hidden');
+      renderApp();
+      return;
+    }
     if (state.activeModalParty) {
       closePartyModal();
     }
@@ -1528,6 +1619,12 @@ declare global {
     calcSetComparisonFilter: (filter: 'all' | 'agree' | 'disagree') => void;
     calcToggleParties: (year: ElectionYear) => void;
     calcShareResult: () => void;
+    calcShareBallot: () => void;
+    calcDownloadBallot: () => void;
+    calcOpenBallotModal: () => void;
+    calcCloseBallotModal: () => void;
+    calcOpenShareModal: () => void;
+    calcCloseShareModal: () => void;
     calcSetSliderFilter: (filter: 'all' | ElectionYear) => void;
     calcScrollSlider: (direction: 'left' | 'right') => void;
     calcOpenPartyModal: (partyId: string, year: ElectionYear) => void;
@@ -1647,6 +1744,60 @@ window.calcVerifyPassword = () => {
 window.calcAdminLogout = () => {
   handleAdminLogout();
 };
+
+window.calcShareBallot = async () => {
+  showToast('Připravuji výsledek ke sdílení...');
+  try {
+    const res = await shareBallotCard({
+      year: state.year,
+      quizMode: state.quizMode,
+      scores: state.partyScores
+    });
+    if (res.method === 'share' && res.success) {
+      showToast('Výsledek byl úspěšně sdílen!');
+    } else if (res.method === 'download') {
+      showToast('Výsledek byl stažen (PNG)');
+    }
+  } catch (err) {
+    console.error('Chyba při sdílení výsledku:', err);
+    showToast('Stahuji výsledek...');
+    await downloadBallotCard({
+      year: state.year,
+      quizMode: state.quizMode,
+      scores: state.partyScores
+    });
+  }
+};
+
+window.calcDownloadBallot = async () => {
+  showToast('Stahuji výsledek v HD rozlišení...');
+  try {
+    await downloadBallotCard({
+      year: state.year,
+      quizMode: state.quizMode,
+      scores: state.partyScores
+    });
+    showToast('Výsledek byl stažen (PNG)');
+  } catch (err) {
+    console.error('Chyba při stahování:', err);
+    showToast('Nepodařilo se stáhnout výsledek');
+  }
+};
+
+window.calcOpenBallotModal = () => {
+  state.ballotShareState.isModalOpen = true;
+  document.body.classList.add('overflow-hidden');
+  renderApp();
+};
+
+window.calcCloseBallotModal = () => {
+  state.ballotShareState.isModalOpen = false;
+  document.body.classList.remove('overflow-hidden');
+  renderApp();
+};
+
+window.calcOpenShareModal = window.calcOpenBallotModal;
+window.calcCloseShareModal = window.calcCloseBallotModal;
 
 window.calcShareResult = () => {
   const top = state.partyScores[0];

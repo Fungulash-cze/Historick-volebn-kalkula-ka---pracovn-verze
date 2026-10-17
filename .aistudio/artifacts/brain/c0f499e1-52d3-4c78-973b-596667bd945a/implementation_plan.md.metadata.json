@@ -1,6 +1,6 @@
 {
-  "summary": "Plán zabezpečení statistik a anonymních dat na úrovni databáze: Firestore Security Rules s ověřením Google účtu LPfungi@gmail.com, odstranění odkazu z patičky a skrytý přístup přes tajnou URL adresu.",
-  "updatedAt": "2026-10-17T16:49:01.474554098Z",
+  "summary": "Implementační plán pro přepracování designu výsledků:\n1. Návrh pastelového vizuálního stylu hlavního bloku vítězné strany ve webovém rozhraní (nahrazení stávajícího tmavého boxu jemným pastelovým tónem v barvě strany s elegantním lemováním a světlými kartami).\n2. Přepracování grafické karty výsledku ke sdílení do stylu minimalistické plakátové typografie s čistými linkami a geometrickými kartami bez rušivých prvků.\n3. Sjednocení typografie, kontrastu a vizuálního dialogu pro okamžité a atraktivní sdílení na sociální sítě.",
+  "updatedAt": "2026-10-17T21:18:37.965247746Z",
   "requestFeedback": true,
   "userFacing": true
 }

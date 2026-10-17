@@ -1,93 +1,68 @@
-# Implementační plán: Neprolomitelné zabezpečení statistik a administrace (Admin-Only)
+# Redesign výsledků a grafické karty: Pastelový styl a minimalistická plakátová typografie
 
-Tento plán detailně popisuje implementaci striktního zabezpečení statistik a surových dat z kalkulačky na úrovni serverových pravidel databáze Firebase Firestore a klientské vrstvy. Tím bude zaručeno, že k datům **nemá přístup nikdo jiný kromě správce projektu (`LPfungi@gmail.com`)**, a to ani v případě, že by se kdokoli pokusil zkoumat zdrojový kód, síťový provoz nebo posílat přímé požadavky do databáze.
-
----
-
-## 1. Architektura zabezpečení (Server-Side Database Rules)
-
-Zabezpečení nesmí spoléhat na pouhé skrytí tlačítek v prohlížeči. Ochrana bude vynucena přímo servery Google Cloud / Firestore:
-
-1. **Striktní bezpečnostní pravidlo (`firestore.rules`):**
-   - Vytvoříme helper funkci ověřující kryptograficky podepsaný identifikační token od Googlu:
-     ```javascript
-     function isAdmin() {
-       return request.auth != null &&
-              request.auth.token.email == "LPfungi@gmail.com" &&
-              request.auth.token.email_verified == true;
-     }
-     ```
-   - **Kolekce `calculator_submissions` (anonymní odpovědi a výsledky):**
-     - `allow create`: povoleno anonymně s přísnou validací schématu (veřejný zápis výsledků kalkulačky).
-     - `allow read`: **POUZE `if isAdmin();`** – jakýkoli jiný pokus o stažení vrátí `PERMISSION_DENIED`.
-     - `allow update, delete`: zakázáno pro všechny.
-   - **Kolekce `site_metrics` (denní návštěvnost a agregáty):**
-     - `allow create, update`: povoleno anonymně pouze pro atomické inkrementy návštěv.
-     - `allow read`: **POUZE `if isAdmin();`** – nikdo jiný nevidí počty návštěvníků.
-     - `allow delete`: zakázáno pro všechny.
+Tento implementační plán reaguje na zpětnou vazbu k vizuálnímu zpracování výsledků volební kalkulačky a definuje konkrétní kroky k odstranění tmavých elementů a nasazení čistého, pastelového a typograficky precizního designu.
 
 ---
 
-## 2. Uživatelské rozhraní a skrytý přístup (Zero-Trace UI)
+## 1. Analýza současného stavu & požadavky uživatele
 
-1. **Odstranění odkazu z patičky webu:**
-   - Z patičky (`renderFooter`) bude zcela odstraněn odkaz *„Statistiky projektu“*.
-   - Pro běžného návštěvníka i jakéhokoli robota web vypadá jako čistě prezentační aplikace bez jakékoli stopy po administraci.
-2. **Přístup přes skrytou URL adresu:**
-   - Vstup do administrace bude možný pouze zadáním tajného parametru v URL adrese:
-     - např. `https://.../?admin=1` nebo `https://.../#admin`.
-   - Aplikace při startu i při změně URL zkontroluje tento parametr.
-3. **Autentizační brána (Admin Login Screen):**
-   - Pokud admin přijde na skrytou URL a není přihlášen:
-     - Zobrazí se čistá přihlašovací obrazovka: *„Administrátorský přístup – Historická volební kalkulačka“*.
-     - Tlačítko: **„Přihlásit se účtem Google (LPfungi@gmail.com)“** přes bezpečné okno `signInWithPopup`.
-   - Pokud se uživatel přihlásí správným účtem (`LPfungi@gmail.com`):
-     - Zobrazí se kompletní statistický dashboard (KPI návštěvnosti, vyplněné kalkulačky, věkové rozložení, korelace 2021 vs. historie a CSV exportér).
-     - V hlavičce dashboardu přibude tlačítko pro **odhlášení**.
-   - Pokud by se někdo přihlásil jiným Google účtem:
-     - Zobrazí se hlášení: *„Přístup odepřen: Účet [email] nemá administrátorská oprávnění.“* s tlačítkem pro odhlášení.
+1. **Hlavní blok vítězné strany ve webovém zobrazení výsledků (`renderResultsView`)**:
+   - V současnosti má tmavé černé pozadí (`bg-zinc-900`, `bg-zinc-800`, bílý text na černém), což působí tvrdě v kontrastu se zbytkem světlé aplikace a krémovým motivem.
+   - **Cíl**: Změnit na příjemný, světlý pastelový podklad odvozený z barvy vítězné strany (jemné tónování ~6–10 % krytí syté barvy strany, ohraničení s 20–25 % krytím), čisté bílé vnitřní bloky a tmavě uhlovou čitelnou typografii.
+
+2. **Grafická karta ke sdílení (Canvas PNG & sdílecí okno)**:
+   - Dle preferencí uživatele aplikovat styl **minimalistické plakátové typografie s čistými linkami**:
+     - Čistá geometrická kompozice s precizním písmem a vyváženými mezerami.
+     - Výrazná barevná linka vítězné strany tvořící architektonický prvek karty.
+     - Odstranění jakéhokoliv vizuálního balastu – pouze čisté linie, geometrické karty a 100% čitelné názvy stran.
+     - Příjemné pastelové podbarvení indikátorů shody.
 
 ---
 
-## 3. Změny v kódu aplikace
+## 2. Architektura a technický návrh
 
-1. **`firestore.rules`:**
-   - Změna oprávnění `allow read: if isAdmin();` pro obě kolekce.
-2. **`src/firebase.ts`:**
-   - Inicializace a export `auth = getAuth(app)` a nastavení Google Auth Providera (`GoogleAuthProvider`).
-3. **`src/services/adminAuthService.ts`:**
-   - Pomocné metody pro:
-     - `loginWithGoogle()`
-     - `logoutAdmin()`
-     - `getCurrentAdminUser()`
-     - `onAdminAuthStateChanged()`
-4. **`src/main.ts`:**
-   - Odstranění odkazu z patičky.
-   - Posluchač na hash `#admin` a URL parametr `?admin=1`.
-   - Přidání stavu `adminUser` a přihlašovacího dialogu při požadavku na administrátorský pohled.
+### A. Webové rozhraní: Pastelový blok vítězné strany (`src/main.ts`)
+- **Dynamická pastelová paleta**:
+  - Na základě `topMatch.party.color` vygenerujeme jemné pastelové pozadí:
+    - Podklad hlavního panelu: `background: ${partyColor}12;` (cca 7% průhlednost) nebo jemný pastelový přechod.
+    - Lemování panelu: `border-color: ${partyColor}35;`.
+    - Levý akcentní pilíř v plné barvě strany.
+  - **Vnitřní karty**:
+    - Pilíře programu a detailní popis: bílé poloprůhledné karty (`bg-white/85 backdrop-blur-xs border border-stone-200/60`).
+    - Skóre a procento shody: elegantní bílá karta s jemným stínem a akcentem barvy strany, tmavé číslice v písmu `font-mono font-extrabold text-stone-900`.
+    - Tlačítka "Sdílet" a "Detail strany": stylová tlačítka v odstínech kamenné šedi s hover efekty ladícími s pastelovým vyzněním.
+
+### B. Canvas generátor: Minimalistická plakátová typografie (`src/services/ballotCardGenerator.ts`)
+- **Proporce a rozvržení**:
+  - Standardizovaný formát 1080 × 1260 px vhodný pro Instagram Stories, WhatsApp i feed sociálních sítí.
+  - Krémový teplý papírový základ `#FAF7F2` s jemným orámováním `#E8E1D5`.
+  - Architektonická horní linka v barvě vítězné strany o tloušťce 10 px.
+- **Typografická hierarchie (Poster style)**:
+  - Hlavička: Kicker `HISTORICKÁ VOLEBNÍ KALKULAČKA` + `VÝSLEDEK · VOLBY {year}` v silném moderním řezu s jemnou linkou.
+  - 1. Místo:
+    - Geometrická karta v čistě bílé barvě s pastelovým akcentním štítkem.
+    - Zvýrazněné velké procento shody (`76 px font-mono/sans`).
+    - Výrazná zkratka strany (např. *ČSDSD*, *OF*, *KSČ*, *ČSL*) a pod ní kompletní celý název bez krácení.
+  - TOP 3 pořadí:
+    - Dvě symetrické geometrické karty s tenkou linkou a pastelovým pruhem shody.
+  - QR blok:
+    - Čistý čtvercový QR kód s minimálním marginem a elegantní dvojicí řádků bez zbytečných adres.
+
+### C. Modální okno ke sdílení (`src/components/BallotShareSection.ts`)
+- Zajištění dokonale vystředěného okna v zorném poli (viewportu) bez jakéhokoliv scrollování.
+- Pastelové prvky rámu odkazující na vítěznou stranu.
+- Okamžitá odezva tlačítek pro nativní sdílení (mobil) a stažení PNG (desktop).
 
 ---
 
-## 4. Verifikace zabezpečení
+## 3. Plán implementace a ověření
 
-1. **Test neoprávněného přístupu (simulace útočníka):**
-   - Volání Firestore čtení bez přihlášení -> okamžitá chyba `PERMISSION_DENIED` z databáze.
-   - Přihlášení nepovoleným Google účtem -> zamítnutí na úrovni UI i bezpečnostních pravidel Firestore.
-2. **Test administrátorského přístupu:**
-   - Zadání `?admin=1` nebo `#admin` do URL -> zobrazení přihlášení -> po přihlášení `LPfungi@gmail.com` se dashboard načte a CSV export funguje.
-3. **Test běžného uživatele:**
-   - Vyplnění kalkulačky a uložení anonymních odpovědí funguje bez jakéhokoli přihlašování a bez zobrazení jakýchkoli admin prvků.
-
----
-
-## 5. Stav realizace (Zabezpečení heslem bez odhalení e-mailu)
-
-- [x] **Hotovo v plném rozsahu:**
-  - **Ochrana soukromí správce:** Váš osobní e-mail byl kompletně odstraněn ze všech částí zdrojového kódu i z produkčního buildu (`docs/`, `dist/`, `src/`). Nikdo tak při zkoumání kódu webu váš e-mail neuvidí.
-  - **Zabezpečení silným heslem:** Nastaveno vámi zadané administrátorské heslo `tGrqZj45747063`.
-  - **Kryptografický SHA-256 otisk:** V kódu není uloženo ani samotné heslo v čitelné podobě, ale pouze jeho jednocestný kryptografický hash (`5614a6d6e50da470324efe250a5559292743deb688d68009251f83cce5cf4a49`). Hash nelze zpětně převést na heslo.
-  - **Skrytý vstup (Zero-Trace):** Běžný návštěvník webu nevidí v patičce ani v menu žádný odkaz na administraci.
-  - **Přístup přes tajnou URL:** Přístup na přihlašovací obrazovku je možný pouze zadáním parametru `?admin=1`, `?view=admin` nebo `#admin` do URL adresy.
-  - **Relace správce:** Po úspěšném zadání hesla se aktivuje administrátorská relace v prohlížeči (`sessionStorage`), načtou se statistiky a je k dispozici tlačítko pro export do CSV i odhlášení/zamknutí.
-  - **Verifikace:** Kód úspěšně zkompilován a ověřen linterem i produkčním buildem bez chyb.
-
+1. **Úprava `renderResultsView` v `src/main.ts`**:
+   - Nahrazení tříd `bg-zinc-900`, `bg-zinc-800`, `text-white` pastelovou variantou přizpůsobenou barvě vítězné strany.
+   - Vyladění čitelnosti a kontrastu textů (`text-stone-900`, `text-stone-700`, `text-stone-500`).
+2. **Doladění plakátové typografie v `src/services/ballotCardGenerator.ts`**:
+   - Vyladění mezer, velikostí písem a čistých geometrických linií.
+3. **Verifikace a testování**:
+   - Kontrola sestavení aplikace přes `compile_applet`.
+   - Kontrola čistoty kódu a typů přes `lint_applet`.
+   - Vizuální kontrola zobrazení všech volebních let (1920, 1946, 1990) pro různé vítězné strany.
