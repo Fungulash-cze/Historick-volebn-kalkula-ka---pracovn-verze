@@ -9,22 +9,22 @@ export const AGE_OPTIONS = [
 ];
 
 export const VOTE_2021_OPTIONS = [
-  'SPOLU (ODS, KDU-ČSL, TOP 09)',
   'ANO 2011',
-  'Piráti a Starostové',
-  'SPD (Svoboda a přímá demokracie)',
-  'ČSSD (Sociální demokracie)',
-  'KSČM',
-  'Přísaha (Robert Šlachta)',
-  'Trikolora / Svobodní / Soukromníci',
-  'Jiná kandidující strana',
-  'Nešel / nemohl jsem volit',
-  'Nechci uvést'
+  'SPOLU',
+  'Starostové a nezávislí',
+  'Česká pirátská strana',
+  'Svoboda a přímá demokracie',
+  'Motoristé sobě',
+  'Stačilo!',
+  'Jiný subjekt',
+  'Nechci uvést',
+  'Nešel / nemohl jsem volit'
 ];
 
 export interface SurveyState {
   selectedAge: string | null;
   selectedVote2021: string | null;
+  customVoteText?: string;
   isSubmitting: boolean;
 }
 
@@ -51,7 +51,7 @@ export function renderSurveyView(
             Pomozte nám s anonymním výzkumem
           </h1>
           <p class="text-xs sm:text-sm text-zinc-600 mt-2 max-w-lg mx-auto leading-relaxed">
-            Než vám zobrazíme podrobné výsledky shody s historickými stranami, budeme rádi za zodpovězení <strong>2 krátkých otázek</strong>. Zjišťujeme, jak spolu souvisí historické a současné volební preference.
+            Než vám zobrazíme podrobné výsledky shody s historickými stranami, budeme rádi za zodpovězení <strong>2 krátkých otázek</strong>.
           </p>
         </div>
 
@@ -80,35 +80,55 @@ export function renderSurveyView(
           </div>
         </div>
 
-        <!-- 2. Volba do Poslanecké sněmovny 2021 -->
+        <!-- 2. Současná voličská preference -->
         <div class="mb-8">
           <label class="block text-xs font-bold text-zinc-900 uppercase tracking-wider mb-3">
-            2. Koho jste volil/a ve volbách do Poslanecké sněmovny v roce 2021?
+            2. Vaše voličská preference:
           </label>
-          <div class="space-y-1.5">
+          <div class="space-y-2">
             ${VOTE_2021_OPTIONS.map((vote) => {
               const isSelected = surveyState.selectedVote2021 === vote;
+              const isOther = vote === 'Jiný subjekt';
               return `
-                <button
-                  type="button"
-                  onclick="window.calcSelectSurveyVote('${vote.replace(/'/g, "\\'")}')"
-                  class="w-full text-left px-3.5 py-2.5 rounded-lg text-xs font-medium border transition-all flex items-center justify-between cursor-pointer ${
-                    isSelected
-                      ? 'bg-zinc-900 text-white border-zinc-900 shadow-xs'
-                      : 'bg-zinc-50 hover:bg-zinc-100 text-zinc-700 border-zinc-200'
-                  }"
-                >
-                  <span>${vote}</span>
-                  <span class="w-4 h-4 rounded-full border flex items-center justify-center shrink-0 ml-2 ${
-                    isSelected ? 'border-white bg-white' : 'border-zinc-300 bg-white'
-                  }">
-                    ${
+                <div>
+                  <button
+                    type="button"
+                    onclick="window.calcSelectSurveyVote('${vote.replace(/'/g, "\\'")}')"
+                    class="w-full text-left px-3.5 py-2.5 rounded-lg text-xs font-medium border transition-all flex items-center justify-between cursor-pointer ${
                       isSelected
-                        ? '<span class="w-2 h-2 rounded-full bg-zinc-900"></span>'
-                        : ''
-                    }
-                  </span>
-                </button>
+                        ? 'bg-zinc-900 text-white border-zinc-900 shadow-xs'
+                        : 'bg-zinc-50 hover:bg-zinc-100 text-zinc-700 border-zinc-200'
+                    }"
+                  >
+                    <span>${vote}</span>
+                    <span class="w-4 h-4 rounded-full border flex items-center justify-center shrink-0 ml-2 ${
+                      isSelected ? 'border-white bg-white' : 'border-zinc-300 bg-white'
+                    }">
+                      ${
+                        isSelected
+                          ? '<span class="w-2 h-2 rounded-full bg-zinc-900"></span>'
+                          : ''
+                      }
+                    </span>
+                  </button>
+                  ${
+                    isOther && isSelected
+                      ? `
+                    <div class="mt-2 px-1">
+                      <input
+                        type="text"
+                        id="custom-vote-input"
+                        value="${(surveyState.customVoteText || '').replace(/"/g, '&quot;')}"
+                        oninput="window.calcUpdateCustomVote(this.value)"
+                        placeholder="Napište název jiného subjektu..."
+                        class="w-full px-3.5 py-2.5 text-xs rounded-lg border border-zinc-300 bg-white text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-zinc-900 shadow-inner"
+                        autofocus
+                      />
+                    </div>
+                  `
+                      : ''
+                  }
+                </div>
               `;
             }).join('')}
           </div>

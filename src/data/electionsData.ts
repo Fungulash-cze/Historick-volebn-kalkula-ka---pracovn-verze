@@ -12,13 +12,13 @@ export const ELECTIONS_DATA: Record<1920 | 1946 | 1990, ElectionMeta> = {
     historicalContext: `V dubnu 1920 se konaly vůbec první parlamentní volby samostatného Československa podle nové demokratické ústavy z února 1920, které nahradily dosavadní nevolené Revoluční národní shromáždění. Po rozpadu habsburské monarchie a kruté světové válce čelila republika obrovským výzvám: hyperinflaci, nedostatku potravin a uhlí, radikalizaci dělnictva ovlivněného bolševickou revolucí v Rusku a napětí s početnou německou a maďarskou menšinou, které se ocitly v novém státě nedobrovolně.
 
 Mezi hlavní témata patřila pozemková reforma (rozdělení šlechtických velkostatků), odluka církve od státu, 8hodinová pracovní doba a postavení Slovenska v novém unitárním státě. Zároveň to byly první celostátní volby v naší historii, v nichž měly ženy plné a rovné volební právo.`,
-    outcomeSummary: `Volby přinesly triumf levice. Sociální demokraté (ČSSD) vedení Vlastimilem Tusarem získali přes 25,7 % hlasů a stali se nejsilnější stranou. Společně s německou sociální demokracií (DSAP) měla levice v parlamentu téměř většinu. Tusar sestavil koaliční vládu „rudozelené koalice“ (sociální demokraté a agrárníci).
+    outcomeSummary: `Volby přinesly triumf levice. Sociální demokraté (ČSDSD) vedení Vlastimilem Tusarem získali přes 25,7 % hlasů a stali se nejsilnější stranou. Společně s německou sociální demokracií (DSAP) měla levice v parlamentu téměř většinu. Tusar sestavil koaliční vládu „rudozelené koalice“ (sociální demokraté a agrárníci).
 
-Již na podzim 1920 však v ČSSD propukl hluboký rozkol mezi demokratickým křídlem a radikální leninskou levicí, což vedlo k pádu vlády, generální stávce a v květnu 1921 k založení Komunistické strany Československa (KSČ). Moc následně převzala úřednická vláda Jana Černého a posléze tzv. Pětka v čele s agrárníkem Antonínem Švehlou.`,
+Již na podzim 1920 však v ČSDSD propukl hluboký rozkol mezi demokratickým křídlem a radikální leninskou levicí, což vedlo k pádu vlády, generální stávce a v květnu 1921 k založení Komunistické strany Československa (KSČ). Moc následně převzala úřednická vláda Jana Černého a posléze tzv. Pětka v čele s agrárníkem Antonínem Švehlou.`,
     parties: [
       {
         id: 'cssd',
-        shortName: 'ČSSD',
+        shortName: 'ČSDSD (Soc. dem.)',
         fullName: 'Československá sociálně demokratická strana dělnická',
         ideology: 'Demokratický socialismus, odborové hnutí',
         leaders: ['Vlastimil Tusar', 'Rudolf Bechyně', 'Bohumír Šmeral'],
@@ -1416,8 +1416,8 @@ Byla vytvořena koaliční federální vláda v čele s Marianem Čalfou (OF/VPN
         title: 'Členství v Evropském společenství',
         category: 'Zahraniční politika',
         statement: 'Československo by mělo usilovat o plné členství v Evropském společenství.',
-        historicalNote: 'V době rozpadu východního bloku hledalo Československo své nové zahraničněpolitické a hospodářské ukotvení. Jeden směr považoval přičlenění k západoevropské integraci v podobě Evropského společenství za přirozený civilizační a ekonomický cíl, druhý směr varoval před jednostrannou ekonomickou závislostí na západní Evropě.',
-        context: 'V době rozpadu východního bloku hledalo Československo své nové zahraničněpolitické a hospodářské ukotvení. Jeden směr považoval přičlenění k západoevropské integraci v podobě Evropského společenství za přirozený civilizační a ekonomický cíl, druhý směr varoval před jednostrannou ekonomickou závislostí na západní Evropě.',
+        historicalNote: 'Evropské společenství (ES) bylo přímým institucionálním předchůdcem dnešní Evropské unie (ta vznikla až Maastrichtskou smlouvou v roce 1992). V době rozpadu východního bloku hledalo Československo nové mezinárodní a hospodářské ukotvení pod heslem „Zpátky do Evropy“. Část politického spektra spatřovala v členství v ES přirozený civilizační cíl a záruku stability, zatímco kritičtější hlasy nabádaly k opatrnosti před jednostrannou hospodářskou závislostí.',
+        context: 'Evropské společenství (ES) bylo přímým institucionálním předchůdcem dnešní Evropské unie (ta vznikla až Maastrichtskou smlouvou v roce 1992). V době rozpadu východního bloku hledalo Československo své nové zahraničněpolitické a hospodářské ukotvení v rámci hesla „Zpátky do Evropy“. Jeden proud považoval plné zapojení do západoevropské integrace za klíčový civilizační a ekonomický cíl, druhý varoval před jednostrannou závislostí na západoevropských strukturách.',
         partyStances: { of: 1, vpn: 1, kscs: -1, kdu: 1, hsd_sms: 1, sns: 0, css: 0, sz: 0 }
       },
       {
@@ -1553,8 +1553,8 @@ Byla vytvořena koaliční federální vláda v čele s Marianem Čalfou (OF/VPN
         title: 'Členství v Evropském společenství',
         category: 'Zahraniční politika',
         statement: 'Československo by mělo usilovat o plné členství v Evropském společenství.',
-        historicalNote: 'V době rozpadu východního bloku hledalo Československo své nové zahraničněpolitické a hospodářské ukotvení. Jeden směr považoval přičlenění k západoevropské integraci v podobě Evropského společenství za přirozený civilizační a ekonomický cíl, druhý směr varoval před jednostrannou ekonomickou závislostí na západní Evropě.',
-        context: 'V době rozpadu východního bloku hledalo Československo své nové zahraničněpolitické a hospodářské ukotvení. Jeden směr považoval přičlenění k západoevropské integraci v podobě Evropského společenství za přirozený civilizační a ekonomický cíl, druhý směr varoval před jednostrannou ekonomickou závislostí na západní Evropě.',
+        historicalNote: 'Evropské společenství (ES) bylo přímým institucionálním předchůdcem dnešní Evropské unie (ta vznikla až Maastrichtskou smlouvou v roce 1992). V době rozpadu východního bloku hledalo Československo nové mezinárodní a hospodářské ukotvení pod heslem „Zpátky do Evropy“. Část politického spektra spatřovala v členství v ES přirozený civilizační cíl a záruku stability, zatímco kritičtější hlasy nabádaly k opatrnosti před jednostrannou hospodářskou závislostí.',
+        context: 'Evropské společenství (ES) bylo přímým institucionálním předchůdcem dnešní Evropské unie (ta vznikla až Maastrichtskou smlouvou v roce 1992). V době rozpadu východního bloku hledalo Československo své nové zahraničněpolitické a hospodářské ukotvení v rámci hesla „Zpátky do Evropy“. Jeden proud považoval plné zapojení do západoevropské integrace za klíčový civilizační a ekonomický cíl, druhý varoval před jednostrannou závislostí na západoevropských strukturách.',
         partyStances: { of: 1, vpn: 1, kscs: -1, kdu: 1, hsd_sms: 1, sns: 0, css: 0, sz: 0 }
       },
       {

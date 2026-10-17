@@ -262,12 +262,12 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
 
       </div>
 
-      <!-- Karta 4: Volby 2021 a historické korelace -->
+      <!-- Karta 4: Volební preference a historické korelace -->
       <div class="bg-white p-6 rounded-xl border border-zinc-200 shadow-xs mb-8">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
           <div>
             <h2 class="text-base font-bold text-zinc-900">
-              Korelace: Voliči 2021 vs. Vítězné historické strany
+              Korelace: Volební preference vs. Vítězné historické strany
             </h2>
             <p class="text-xs text-zinc-500 mt-0.5">
               Zjistěte, které historické strany vycházely voličům dnešních politických stran.
@@ -355,7 +355,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
                 <th class="px-4 py-2.5">Vítězná strana</th>
                 <th class="px-4 py-2.5">Shoda</th>
                 <th class="px-4 py-2.5">Věk</th>
-                <th class="px-4 py-2.5">Volba 2021</th>
+                <th class="px-4 py-2.5">Preference</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-zinc-200">

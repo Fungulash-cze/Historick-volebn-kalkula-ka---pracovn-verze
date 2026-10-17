@@ -63,6 +63,7 @@ const state: AppState = {
   surveyState: {
     selectedAge: null,
     selectedVote2021: null,
+    customVoteText: '',
     isSubmitting: false
   },
   dashboardState: {
@@ -208,6 +209,7 @@ function finishQuiz() {
   state.surveyState = {
     selectedAge: null,
     selectedVote2021: null,
+    customVoteText: '',
     isSubmitting: false
   };
   state.view = 'survey';
@@ -227,6 +229,14 @@ async function handleSurveySubmit() {
 
   const topParty = state.partyScores[0];
 
+  let votedPreference = state.surveyState.selectedVote2021 || 'Neuvedeno';
+  if (votedPreference === 'Jiný subjekt') {
+    const custom = state.surveyState.customVoteText?.trim();
+    if (custom) {
+      votedPreference = `Jiný: ${custom}`.slice(0, 60);
+    }
+  }
+
   try {
     await submitQuizResult({
       year: state.year,
@@ -235,7 +245,7 @@ async function handleSurveySubmit() {
       topPartyMatch: topParty?.matchPercentage || 0,
       partyMatches,
       ageGroup: state.surveyState.selectedAge || 'Neuvedeno',
-      votedParty2021: state.surveyState.selectedVote2021 || 'Neuvedeno',
+      votedParty2021: votedPreference,
       answersCount: Object.keys(state.answers).length
     });
   } catch (err) {
@@ -1529,6 +1539,7 @@ declare global {
     calcCloseContextTooltip: () => void;
     calcSelectSurveyAge: (age: string) => void;
     calcSelectSurveyVote: (vote: string) => void;
+    calcUpdateCustomVote: (text: string) => void;
     calcSubmitSurvey: () => void;
     calcSkipSurvey: () => void;
     calcRefreshStats: () => void;
@@ -1598,6 +1609,10 @@ window.calcSelectSurveyAge = (age) => {
 window.calcSelectSurveyVote = (vote) => {
   state.surveyState.selectedVote2021 = vote;
   renderApp();
+};
+
+window.calcUpdateCustomVote = (text) => {
+  state.surveyState.customVoteText = text;
 };
 
 window.calcSubmitSurvey = () => {
