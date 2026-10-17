@@ -1,0 +1,73 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidDate(dateStr) {
+      return dateStr is string && dateStr.size() == 10 && dateStr.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$');
+    }
+
+    // Admin authentication check - only LPfungi@gmail.com with verified email
+    function isAdmin() {
+      return request.auth != null &&
+             request.auth.token.email == "LPfungi@gmail.com" &&
+             request.auth.token.email_verified == true;
+    }
+
+    function isValidDailyMetric(data) {
+      return data.keys().hasAll(['date', 'pageViews']) &&
+             data.keys().hasOnly(['date', 'pageViews', 'quizStarts', 'quizCompletions', 'updatedAt']) &&
+             isValidDate(data.date) &&
+             data.pageViews is number && data.pageViews >= 0 &&
+             (!('quizStarts' in data) || (data.quizStarts is number && data.quizStarts >= 0)) &&
+             (!('quizCompletions' in data) || (data.quizCompletions is number && data.quizCompletions >= 0));
+    }
+
+    function isValidCalculatorSubmission(data) {
+      return data.keys().hasAll(['year', 'mode', 'topPartyId', 'topPartyMatch', 'ageGroup', 'votedParty2021', 'answersCount']) &&
+             data.keys().hasOnly(['year', 'mode', 'topPartyId', 'topPartyMatch', 'partyMatches', 'ageGroup', 'votedParty2021', 'answersCount', 'createdAt']) &&
+             (data.year == 1920 || data.year == 1946 || data.year == 1990) &&
+             (data.mode == 'standard' || data.mode == 'expanded') &&
+             data.topPartyId is string && data.topPartyId.size() > 0 && data.topPartyId.size() <= 32 &&
+             data.topPartyMatch is number && data.topPartyMatch >= 0 && data.topPartyMatch <= 100 &&
+             data.ageGroup is string && data.ageGroup.size() > 0 && data.ageGroup.size() <= 32 &&
+             data.votedParty2021 is string && data.votedParty2021.size() > 0 && data.votedParty2021.size() <= 64 &&
+             data.answersCount is number && data.answersCount >= 1 && data.answersCount <= 50;
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Daily metrics for anonymous web traffic and quiz starts/completions (Read-restricted to Admin)
+    match /site_metrics/{date} {
+      allow read: if isAdmin();
+      allow create: if isValidId(date) && isValidDate(date) && date == incoming().date && isValidDailyMetric(incoming());
+      allow update: if isValidId(date) && isValidDailyMetric(incoming()) &&
+                       incoming().date == existing().date &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['pageViews', 'quizStarts', 'quizCompletions', 'updatedAt']);
+      allow delete: if false;
+    }
+
+    // Anonymous calculator result submissions (write once, only readable by verified admin LPfungi@gmail.com)
+    match /calculator_submissions/{submissionId} {
+      allow read: if isAdmin();
+      allow create: if isValidId(submissionId) && isValidCalculatorSubmission(incoming());
+      allow update: if false;
+      allow delete: if false;
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
-  "summary": "Plán aktualizace a rozšíření volební kalkulačky pro rok 1990 (nahrazení základních 15 otázek novou verzí a vytvoření plné rozšířené sady 40 otázek).",
-  "updatedAt": "2026-10-17T14:41:08.229697814Z",
+  "summary": "Plán zabezpečení statistik a anonymních dat na úrovni databáze: Firestore Security Rules s ověřením Google účtu LPfungi@gmail.com, odstranění odkazu z patičky a skrytý přístup přes tajnou URL adresu.",
+  "updatedAt": "2026-10-17T16:49:01.474554098Z",
   "requestFeedback": true,
   "userFacing": true
 }

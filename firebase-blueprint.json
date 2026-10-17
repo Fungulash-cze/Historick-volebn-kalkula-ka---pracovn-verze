@@ -1,0 +1,84 @@
+{
+  "entities": {
+    "DailyMetric": {
+      "title": "DailyMetric",
+      "description": "Aggregated daily metrics for anonymous traffic and quiz completions",
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "description": "Date formatted as YYYY-MM-DD"
+        },
+        "pageViews": {
+          "type": "number",
+          "description": "Total page views for this day"
+        },
+        "quizStarts": {
+          "type": "number",
+          "description": "Total quizzes started"
+        },
+        "quizCompletions": {
+          "type": "number",
+          "description": "Total quizzes completed"
+        }
+      },
+      "required": ["date", "pageViews"]
+    },
+    "CalculatorSubmission": {
+      "title": "CalculatorSubmission",
+      "description": "Anonymous submission of completed election calculator with demographics and results",
+      "type": "object",
+      "properties": {
+        "year": {
+          "type": "number",
+          "description": "Election year: 1920, 1946, or 1990"
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["standard", "expanded"],
+          "description": "Calculator mode"
+        },
+        "topPartyId": {
+          "type": "string",
+          "description": "ID of the highest matching party"
+        },
+        "topPartyMatch": {
+          "type": "number",
+          "description": "Match percentage of the top party"
+        },
+        "partyMatches": {
+          "type": "object",
+          "description": "Map of party IDs to match percentages"
+        },
+        "ageGroup": {
+          "type": "string",
+          "description": "Self-reported age group or skipped"
+        },
+        "votedParty2021": {
+          "type": "string",
+          "description": "Self-reported 2021 parliamentary vote or skipped"
+        },
+        "answersCount": {
+          "type": "number",
+          "description": "Count of answered questions"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when submitted"
+        }
+      },
+      "required": ["year", "mode", "topPartyId", "topPartyMatch", "ageGroup", "votedParty2021", "answersCount"]
+    }
+  },
+  "firestore": {
+    "/site_metrics/{date}": {
+      "schema": "DailyMetric",
+      "description": "Daily visit and completion counters"
+    },
+    "/calculator_submissions/{submissionId}": {
+      "schema": "CalculatorSubmission",
+      "description": "Individual anonymous submissions of calculator results and demographics"
+    }
+  }
+}

@@ -58,16 +58,44 @@ export interface PartyScore {
   neutralCount: number;
 }
 
-export interface FirebaseStats {
-  totalVisitors: number;
-  resultsByYear: {
-    1920: Record<string, number>;
-    1946: Record<string, number>;
-    1990: Record<string, number>;
-  };
-  totalSubmissionsByYear: {
-    1920: number;
-    1946: number;
-    1990: number;
-  };
+export interface DemographicSurveyData {
+  ageGroup: string;
+  votedParty2021: string;
 }
+
+export interface CalculatorSubmission {
+  id?: string;
+  year: ElectionYear;
+  mode: 'standard' | 'expanded';
+  topPartyId: string;
+  topPartyMatch: number;
+  partyMatches: Record<string, number>;
+  ageGroup: string;
+  votedParty2021: string;
+  answersCount: number;
+  createdAt?: string;
+}
+
+export interface DailyMetricDoc {
+  date: string;
+  pageViews: number;
+  quizStarts?: number;
+  quizCompletions?: number;
+  updatedAt?: string;
+}
+
+export interface AnalyticsSummary {
+  totalPageViews: number;
+  totalSubmissions: number;
+  submissionsByYear: Record<ElectionYear, number>;
+  submissionsByMode: { standard: number; expanded: number };
+  ageDistribution: Record<string, number>;
+  voted2021Distribution: Record<string, number>;
+  topMatchesByYear: Record<ElectionYear, Record<string, number>>;
+  correlations: {
+    // 2021 voted party -> top historic party count
+    [voted2021: string]: Record<string, number>;
+  };
+  recentSubmissions: CalculatorSubmission[];
+}
+

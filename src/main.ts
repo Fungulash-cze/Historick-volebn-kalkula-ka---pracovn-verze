@@ -3,9 +3,25 @@ import confetti from 'canvas-confetti';
 import { ELECTIONS_DATA } from './data/electionsData.ts';
 import { calculatePartyScores } from './calculator.ts';
 import { ElectionYear, UserAnswerValue, PartyScore, Party } from './types.ts';
+import {
+  recordPageView,
+  recordQuizStart,
+  submitQuizResult,
+  fetchAnalyticsSummary,
+  downloadSubmissionsCSV
+} from './services/analyticsService.ts';
+import {
+  loginAdminWithGoogle,
+  logoutAdmin,
+  onAdminAuthState,
+  isCurrentUserAdmin,
+  ADMIN_EMAIL
+} from './services/adminAuthService.ts';
+import { renderSurveyView, SurveyState } from './components/DemographicSurveyModal.ts';
+import { renderAnalyticsDashboardView, DashboardState } from './components/AnalyticsDashboardView.ts';
 
 interface AppState {
-  view: 'home' | 'quiz' | 'results';
+  view: 'home' | 'quiz' | 'results' | 'survey' | 'admin';
   year: ElectionYear;
   quizMode: 'standard' | 'expanded';
   selectedYearMode: Record<ElectionYear, 'standard' | 'expanded'>;
@@ -21,6 +37,8 @@ interface AppState {
   sliderYearFilter: 'all' | ElectionYear;
   activeModalParty: { party: Party; year: ElectionYear } | null;
   activeModalSystemYear: ElectionYear | null;
+  surveyState: SurveyState;
+  dashboardState: DashboardState;
 }
 
 const state: AppState = {
@@ -43,8 +61,31 @@ const state: AppState = {
   expandedPartiesYear: null,
   sliderYearFilter: 'all',
   activeModalParty: null,
-  activeModalSystemYear: null
+  activeModalSystemYear: null,
+  surveyState: {
+    selectedAge: null,
+    selectedVote2021: null,
+    isSubmitting: false
+  },
+  dashboardState: {
+    summary: null,
+    isLoading: false,
+    selectedCorrelationParty: null,
+    authEmail: null,
+    authError: null,
+    isLoggingIn: false
+  }
 };
+
+// Sledování změn stavu přihlášení administrátora
+onAdminAuthState((user, isAdmin) => {
+  state.dashboardState.authEmail = user?.email || null;
+  if (isAdmin && state.view === 'admin' && !state.dashboardState.summary) {
+    loadDashboardStats();
+  } else {
+    renderApp();
+  }
+});
 
 function getCurrentQuestions(year: ElectionYear, mode: 'standard' | 'expanded') {
   const currentElection = ELECTIONS_DATA[year];
@@ -65,9 +106,71 @@ function showToast(msg: string) {
 
 function setView(view: AppState['view']) {
   state.view = view;
+  if (view === 'admin') {
+    if (isCurrentUserAdmin()) {
+      loadDashboardStats();
+    } else {
+      state.dashboardState.isLoading = false;
+      renderApp();
+    }
+  }
   window.scrollTo({ top: 0, behavior: 'smooth' });
   renderApp();
 }
+
+function loadDashboardStats() {
+  if (!isCurrentUserAdmin()) {
+    state.dashboardState.isLoading = false;
+    renderApp();
+    return;
+  }
+
+  state.dashboardState.isLoading = true;
+  renderApp();
+  fetchAnalyticsSummary()
+    .then((summary) => {
+      state.dashboardState.summary = summary;
+      state.dashboardState.isLoading = false;
+      state.dashboardState.authError = null;
+      renderApp();
+    })
+    .catch((err) => {
+      console.warn('Dashboard fetch warning:', err);
+      state.dashboardState.isLoading = false;
+      state.dashboardState.authError =
+        'Přístup k datům byl zamítnut databází. Zkontrolujte prosím přihlášení správce.';
+      renderApp();
+    });
+}
+
+async function handleAdminLogin() {
+  state.dashboardState.isLoggingIn = true;
+  state.dashboardState.authError = null;
+  renderApp();
+
+  const res = await loginAdminWithGoogle();
+  state.dashboardState.isLoggingIn = false;
+
+  if (res.isAdmin) {
+    state.dashboardState.authEmail = res.user?.email || null;
+    state.dashboardState.authError = null;
+    loadDashboardStats();
+  } else {
+    state.dashboardState.authEmail = res.user?.email || null;
+    state.dashboardState.authError =
+      res.error || `Přístup povolen pouze pro ${ADMIN_EMAIL}.`;
+    renderApp();
+  }
+}
+
+async function handleAdminLogout() {
+  await logoutAdmin();
+  state.dashboardState.authEmail = null;
+  state.dashboardState.summary = null;
+  state.dashboardState.authError = null;
+  renderApp();
+}
+
 
 function startQuiz(year: ElectionYear, mode?: 'standard' | 'expanded') {
   state.year = year;
@@ -78,6 +181,7 @@ function startQuiz(year: ElectionYear, mode?: 'standard' | 'expanded') {
   state.showHistoricalNote = false;
   state.activeContextTooltipId = null;
   state.view = 'quiz';
+  recordQuizStart();
   window.scrollTo({ top: 0, behavior: 'smooth' });
   renderApp();
 }
@@ -103,6 +207,44 @@ function finishQuiz() {
   const scores = calculatePartyScores(currentElection, state.answers, currentQuestions);
   state.partyScores = scores;
   state.selectedPartyForDetails = scores[0]?.party.id || null;
+  state.surveyState = {
+    selectedAge: null,
+    selectedVote2021: null,
+    isSubmitting: false
+  };
+  state.view = 'survey';
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  renderApp();
+}
+
+async function handleSurveySubmit() {
+  state.surveyState.isSubmitting = true;
+  renderApp();
+
+  const partyMatches: Record<string, number> = {};
+  state.partyScores.forEach((ps) => {
+    partyMatches[ps.party.id] = ps.matchPercentage;
+  });
+
+  const topParty = state.partyScores[0];
+
+  try {
+    await submitQuizResult({
+      year: state.year,
+      mode: state.quizMode,
+      topPartyId: topParty?.party.id || 'unknown',
+      topPartyMatch: topParty?.matchPercentage || 0,
+      partyMatches,
+      ageGroup: state.surveyState.selectedAge || 'Neuvedeno',
+      votedParty2021: state.surveyState.selectedVote2021 || 'Neuvedeno',
+      answersCount: Object.keys(state.answers).length
+    });
+  } catch (err) {
+    console.warn('Survey submission warning:', err);
+  }
+
+  state.surveyState.isSubmitting = false;
   state.view = 'results';
 
   try {
@@ -118,6 +260,42 @@ function finishQuiz() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
   renderApp();
 }
+
+function handleSurveySkip() {
+  const partyMatches: Record<string, number> = {};
+  state.partyScores.forEach((ps) => {
+    partyMatches[ps.party.id] = ps.matchPercentage;
+  });
+
+  const topParty = state.partyScores[0];
+
+  submitQuizResult({
+    year: state.year,
+    mode: state.quizMode,
+    topPartyId: topParty?.party.id || 'unknown',
+    topPartyMatch: topParty?.matchPercentage || 0,
+    partyMatches,
+    ageGroup: 'Přeskočeno',
+    votedParty2021: 'Přeskočeno',
+    answersCount: Object.keys(state.answers).length
+  }).catch(() => {});
+
+  state.view = 'results';
+
+  try {
+    confetti({
+      particleCount: 50,
+      spread: 60,
+      origin: { y: 0.6 }
+    });
+  } catch (e) {
+    console.error(e);
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  renderApp();
+}
+
 
 function openPartyModal(partyId: string, year: ElectionYear) {
   const election = ELECTIONS_DATA[year];
@@ -1279,15 +1457,23 @@ function renderApp() {
       case 'quiz':
         viewContent = renderQuizView();
         break;
+      case 'survey':
+        viewContent = renderSurveyView(state.surveyState, state.year, state.quizMode);
+        break;
       case 'results':
         viewContent = renderResultsView();
         break;
+      case 'admin':
+        viewContent = renderAnalyticsDashboardView(state.dashboardState);
+        break;
     }
+
+    const showSlider = state.view !== 'survey' && state.view !== 'admin';
 
     root.innerHTML = `
       ${renderHeader()}
       ${viewContent}
-      ${renderPartySlider()}
+      ${showSlider ? renderPartySlider() : ''}
       ${renderFooter()}
       ${renderPartyModal()}
       ${renderSystemModal()}
@@ -1343,6 +1529,15 @@ declare global {
     calcSetYearMode: (year: ElectionYear, mode: 'standard' | 'expanded') => void;
     calcToggleContextTooltip: (qId: number) => void;
     calcCloseContextTooltip: () => void;
+    calcSelectSurveyAge: (age: string) => void;
+    calcSelectSurveyVote: (vote: string) => void;
+    calcSubmitSurvey: () => void;
+    calcSkipSurvey: () => void;
+    calcRefreshStats: () => void;
+    calcExportCSV: () => void;
+    calcSelectCorrelationParty: (partyName: string) => void;
+    calcAdminLogin: () => void;
+    calcAdminLogout: () => void;
   }
 }
 
@@ -1397,6 +1592,49 @@ window.calcCloseContextTooltip = () => {
   renderApp();
 };
 
+window.calcSelectSurveyAge = (age) => {
+  state.surveyState.selectedAge = age;
+  renderApp();
+};
+
+window.calcSelectSurveyVote = (vote) => {
+  state.surveyState.selectedVote2021 = vote;
+  renderApp();
+};
+
+window.calcSubmitSurvey = () => {
+  handleSurveySubmit();
+};
+
+window.calcSkipSurvey = () => {
+  handleSurveySkip();
+};
+
+window.calcRefreshStats = () => {
+  loadDashboardStats();
+};
+
+window.calcExportCSV = () => {
+  if (state.dashboardState.summary?.recentSubmissions) {
+    downloadSubmissionsCSV(state.dashboardState.summary.recentSubmissions);
+  } else {
+    showToast('Zatím nejsou načtena data pro export');
+  }
+};
+
+window.calcSelectCorrelationParty = (partyName) => {
+  state.dashboardState.selectedCorrelationParty = partyName;
+  renderApp();
+};
+
+window.calcAdminLogin = () => {
+  handleAdminLogin();
+};
+
+window.calcAdminLogout = () => {
+  handleAdminLogout();
+};
+
 window.calcShareResult = () => {
   const top = state.partyScores[0];
   const shareText = top 
@@ -1414,8 +1652,30 @@ window.calcShareResult = () => {
   }
 };
 
+// Detekce skryté administrátorské adresy (?admin=1, ?view=admin, #admin)
+function checkAdminRoute() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const isAdminParam = urlParams.get('admin') === '1' || urlParams.get('view') === 'admin';
+  const isAdminHash = window.location.hash === '#admin';
+  if (isAdminParam || isAdminHash) {
+    setView('admin');
+  }
+}
+
+window.addEventListener('hashchange', checkAdminRoute);
+window.addEventListener('popstate', checkAdminRoute);
+
+// Záznam anonymního zobrazení stránky
+recordPageView();
+
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => renderApp());
+  document.addEventListener('DOMContentLoaded', () => {
+    checkAdminRoute();
+    renderApp();
+  });
 } else {
+  checkAdminRoute();
   renderApp();
 }
+
+
