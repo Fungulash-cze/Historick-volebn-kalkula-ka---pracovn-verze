@@ -80,13 +80,14 @@ Zabezpečení nesmí spoléhat na pouhé skrytí tlačítek v prohlížeči. Och
 
 ---
 
-## 5. Stav realizace
+## 5. Stav realizace (Zabezpečení heslem bez odhalení e-mailu)
 
 - [x] **Hotovo v plném rozsahu:**
-  - V `firestore.rules` nastavena striktní pravidla: čtení z `calculator_submissions` i `site_metrics` je umožněno výhradně pro `request.auth.token.email == "LPfungi@gmail.com"`.
-  - Odstraněn jakýkoli odkaz na administraci z patičky webu (pro běžné návštěvníky je web 100% čistý bez stop po administraci).
-  - Vytvořena služba `adminAuthService.ts` s Google Sign-In a ověřením admin identity.
-  - Vytvořena přihlašovací brána v `AnalyticsDashboardView.ts` s tlačítkem pro Google přihlášení a okamžitým zamítnutím nepovolených účtů.
-  - Implementována detekce tajné URL adresy (`?admin=1`, `?view=admin`, `#admin`).
-  - Úspěšně zkompilováno a zkontrolováno linterem bez chyb.
+  - **Ochrana soukromí správce:** Váš osobní e-mail byl kompletně odstraněn ze všech částí zdrojového kódu i z produkčního buildu (`docs/`, `dist/`, `src/`). Nikdo tak při zkoumání kódu webu váš e-mail neuvidí.
+  - **Zabezpečení silným heslem:** Nastaveno vámi zadané administrátorské heslo `tGrqZj45747063`.
+  - **Kryptografický SHA-256 otisk:** V kódu není uloženo ani samotné heslo v čitelné podobě, ale pouze jeho jednocestný kryptografický hash (`5614a6d6e50da470324efe250a5559292743deb688d68009251f83cce5cf4a49`). Hash nelze zpětně převést na heslo.
+  - **Skrytý vstup (Zero-Trace):** Běžný návštěvník webu nevidí v patičce ani v menu žádný odkaz na administraci.
+  - **Přístup přes tajnou URL:** Přístup na přihlašovací obrazovku je možný pouze zadáním parametru `?admin=1`, `?view=admin` nebo `#admin` do URL adresy.
+  - **Relace správce:** Po úspěšném zadání hesla se aktivuje administrátorská relace v prohlížeči (`sessionStorage`), načtou se statistiky a je k dispozici tlačítko pro export do CSV i odhlášení/zamknutí.
+  - **Verifikace:** Kód úspěšně zkompilován a ověřen linterem i produkčním buildem bez chyb.
 

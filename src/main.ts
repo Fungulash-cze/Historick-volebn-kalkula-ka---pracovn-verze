@@ -11,11 +11,9 @@ import {
   downloadSubmissionsCSV
 } from './services/analyticsService.ts';
 import {
-  loginAdminWithGoogle,
-  logoutAdmin,
-  onAdminAuthState,
-  isCurrentUserAdmin,
-  ADMIN_EMAIL
+  verifyAdminPassword,
+  isAdminSessionActive,
+  logoutAdminSession
 } from './services/adminAuthService.ts';
 import { renderSurveyView, SurveyState } from './components/DemographicSurveyModal.ts';
 import { renderAnalyticsDashboardView, DashboardState } from './components/AnalyticsDashboardView.ts';
@@ -71,21 +69,11 @@ const state: AppState = {
     summary: null,
     isLoading: false,
     selectedCorrelationParty: null,
-    authEmail: null,
+    isAuthenticated: isAdminSessionActive(),
     authError: null,
-    isLoggingIn: false
+    isVerifying: false
   }
 };
-
-// Sledování změn stavu přihlášení administrátora
-onAdminAuthState((user, isAdmin) => {
-  state.dashboardState.authEmail = user?.email || null;
-  if (isAdmin && state.view === 'admin' && !state.dashboardState.summary) {
-    loadDashboardStats();
-  } else {
-    renderApp();
-  }
-});
 
 function getCurrentQuestions(year: ElectionYear, mode: 'standard' | 'expanded') {
   const currentElection = ELECTIONS_DATA[year];
@@ -107,8 +95,11 @@ function showToast(msg: string) {
 function setView(view: AppState['view']) {
   state.view = view;
   if (view === 'admin') {
-    if (isCurrentUserAdmin()) {
-      loadDashboardStats();
+    state.dashboardState.isAuthenticated = isAdminSessionActive();
+    if (state.dashboardState.isAuthenticated) {
+      if (!state.dashboardState.summary) {
+        loadDashboardStats();
+      }
     } else {
       state.dashboardState.isLoading = false;
       renderApp();
@@ -119,7 +110,7 @@ function setView(view: AppState['view']) {
 }
 
 function loadDashboardStats() {
-  if (!isCurrentUserAdmin()) {
+  if (!state.dashboardState.isAuthenticated) {
     state.dashboardState.isLoading = false;
     renderApp();
     return;
@@ -138,34 +129,41 @@ function loadDashboardStats() {
       console.warn('Dashboard fetch warning:', err);
       state.dashboardState.isLoading = false;
       state.dashboardState.authError =
-        'Přístup k datům byl zamítnut databází. Zkontrolujte prosím přihlášení správce.';
+        'Nepodařilo se načíst statistiky z databáze. Zkontrolujte připojení k internetu.';
       renderApp();
     });
 }
 
-async function handleAdminLogin() {
-  state.dashboardState.isLoggingIn = true;
+async function handleVerifyAdminPassword() {
+  const inputEl = document.getElementById('admin-pass-input') as HTMLInputElement | null;
+  const password = inputEl ? inputEl.value : '';
+
+  if (!password.trim()) {
+    state.dashboardState.authError = 'Zadejte prosím administrátorské heslo.';
+    renderApp();
+    return;
+  }
+
+  state.dashboardState.isVerifying = true;
   state.dashboardState.authError = null;
   renderApp();
 
-  const res = await loginAdminWithGoogle();
-  state.dashboardState.isLoggingIn = false;
+  const isValid = await verifyAdminPassword(password);
+  state.dashboardState.isVerifying = false;
 
-  if (res.isAdmin) {
-    state.dashboardState.authEmail = res.user?.email || null;
+  if (isValid) {
+    state.dashboardState.isAuthenticated = true;
     state.dashboardState.authError = null;
     loadDashboardStats();
   } else {
-    state.dashboardState.authEmail = res.user?.email || null;
-    state.dashboardState.authError =
-      res.error || `Přístup povolen pouze pro ${ADMIN_EMAIL}.`;
+    state.dashboardState.authError = 'Nesprávné heslo. Zkuste to prosím znovu.';
     renderApp();
   }
 }
 
-async function handleAdminLogout() {
-  await logoutAdmin();
-  state.dashboardState.authEmail = null;
+function handleAdminLogout() {
+  logoutAdminSession();
+  state.dashboardState.isAuthenticated = false;
   state.dashboardState.summary = null;
   state.dashboardState.authError = null;
   renderApp();
@@ -1536,7 +1534,7 @@ declare global {
     calcRefreshStats: () => void;
     calcExportCSV: () => void;
     calcSelectCorrelationParty: (partyName: string) => void;
-    calcAdminLogin: () => void;
+    calcVerifyPassword: () => void;
     calcAdminLogout: () => void;
   }
 }
@@ -1627,8 +1625,8 @@ window.calcSelectCorrelationParty = (partyName) => {
   renderApp();
 };
 
-window.calcAdminLogin = () => {
-  handleAdminLogin();
+window.calcVerifyPassword = () => {
+  handleVerifyAdminPassword();
 };
 
 window.calcAdminLogout = () => {

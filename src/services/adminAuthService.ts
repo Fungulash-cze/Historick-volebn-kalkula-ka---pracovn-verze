@@ -1,72 +1,56 @@
-import {
-  signInWithPopup,
-  signOut,
-  onAuthStateChanged,
-  User
-} from 'firebase/auth';
-import { auth, googleProvider } from '../firebase.ts';
+// Kryptografický hash administrátorského hesla (SHA-256)
+// Původní heslo není v kódu uloženo, je bezpečně ověřováno jednocestným hashem
+const ADMIN_PASSWORD_HASH =
+  '5614a6d6e50da470324efe250a5559292743deb688d68009251f83cce5cf4a49';
 
-export const ADMIN_EMAIL = 'LPfungi@gmail.com';
+const ADMIN_SESSION_KEY = 'hvk_admin_session_auth';
 
-export interface AdminAuthResult {
-  user: User | null;
-  isAdmin: boolean;
-  error?: string;
+/**
+ * Spočítá SHA-256 hash zadaného textu pomocí nativního Web Crypto API v prohlížeči.
+ */
+async function sha256(text: string): Promise<string> {
+  const msgUint8 = new TextEncoder().encode(text.trim());
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
 /**
- * Initiates Google Sign-In popup for admin access.
+ * Ověří zadané administrátorské heslo porovnáním jeho kryptografického otisku.
  */
-export async function loginAdminWithGoogle(): Promise<AdminAuthResult> {
+export async function verifyAdminPassword(inputPassword: string): Promise<boolean> {
+  if (!inputPassword || typeof inputPassword !== 'string') {
+    return false;
+  }
+  const computedHash = await sha256(inputPassword);
+  const isValid = computedHash === ADMIN_PASSWORD_HASH;
+
+  if (isValid) {
+    sessionStorage.setItem(ADMIN_SESSION_KEY, 'active_' + Date.now());
+  }
+
+  return isValid;
+}
+
+/**
+ * Zkontroluje, zda je v aktuální relaci prohlížeče administrátor již přihlášen.
+ */
+export function isAdminSessionActive(): boolean {
   try {
-    const cred = await signInWithPopup(auth, googleProvider);
-    const user = cred.user;
-    const email = user.email?.toLowerCase();
-    const isAdmin = email === ADMIN_EMAIL.toLowerCase();
-
-    if (!isAdmin) {
-      return {
-        user,
-        isAdmin: false,
-        error: `Účet ${user.email} nemá oprávnění správce. Přístup je povolen pouze pro ${ADMIN_EMAIL}.`
-      };
-    }
-
-    return { user, isAdmin: true };
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : String(err);
-    return {
-      user: null,
-      isAdmin: false,
-      error: `Chyba při přihlašování přes Google: ${message}`
-    };
+    const session = sessionStorage.getItem(ADMIN_SESSION_KEY);
+    return Boolean(session && session.startsWith('active_'));
+  } catch {
+    return false;
   }
 }
 
 /**
- * Signs out the current user.
+ * Odhlásí administrátora a smaže relaci z paměti prohlížeče.
  */
-export async function logoutAdmin(): Promise<void> {
-  await signOut(auth);
-}
-
-/**
- * Subscribes to auth state changes and validates admin rights.
- */
-export function onAdminAuthState(
-  callback: (user: User | null, isAdmin: boolean) => void
-): () => void {
-  return onAuthStateChanged(auth, (user) => {
-    const email = user?.email?.toLowerCase();
-    const isAdmin = email === ADMIN_EMAIL.toLowerCase();
-    callback(user, isAdmin);
-  });
-}
-
-/**
- * Synchronous check whether current logged in user is admin.
- */
-export function isCurrentUserAdmin(): boolean {
-  const email = auth.currentUser?.email?.toLowerCase();
-  return email === ADMIN_EMAIL.toLowerCase();
+export function logoutAdminSession(): void {
+  try {
+    sessionStorage.removeItem(ADMIN_SESSION_KEY);
+  } catch {
+    // Ignore error
+  }
 }

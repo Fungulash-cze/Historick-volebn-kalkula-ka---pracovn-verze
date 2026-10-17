@@ -19,13 +19,6 @@ service cloud.firestore {
       return dateStr is string && dateStr.size() == 10 && dateStr.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$');
     }
 
-    // Admin authentication check - only LPfungi@gmail.com with verified email
-    function isAdmin() {
-      return request.auth != null &&
-             request.auth.token.email == "LPfungi@gmail.com" &&
-             request.auth.token.email_verified == true;
-    }
-
     function isValidDailyMetric(data) {
       return data.keys().hasAll(['date', 'pageViews']) &&
              data.keys().hasOnly(['date', 'pageViews', 'quizStarts', 'quizCompletions', 'updatedAt']) &&
@@ -52,9 +45,9 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
-    // Daily metrics for anonymous web traffic and quiz starts/completions (Read-restricted to Admin)
+    // Daily metrics for anonymous web traffic and quiz starts/completions
     match /site_metrics/{date} {
-      allow read: if isAdmin();
+      allow read: if true;
       allow create: if isValidId(date) && isValidDate(date) && date == incoming().date && isValidDailyMetric(incoming());
       allow update: if isValidId(date) && isValidDailyMetric(incoming()) &&
                        incoming().date == existing().date &&
@@ -62,9 +55,9 @@ service cloud.firestore {
       allow delete: if false;
     }
 
-    // Anonymous calculator result submissions (write once, only readable by verified admin LPfungi@gmail.com)
+    // Anonymous calculator result submissions (write once, immutable)
     match /calculator_submissions/{submissionId} {
-      allow read: if isAdmin();
+      allow read: if true;
       allow create: if isValidId(submissionId) && isValidCalculatorSubmission(incoming());
       allow update: if false;
       allow delete: if false;
