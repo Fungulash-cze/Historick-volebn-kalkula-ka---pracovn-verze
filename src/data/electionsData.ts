@@ -834,6 +834,368 @@ Klement Gottwald se stal předsedou koaliční vlády Národní fronty. Komunist
         partyStances: { ksc: -1, csns: 0, csl: 0, ds: 1, cssd: 0, kss: -1 }
       }
     ],
+    expandedQuestions: [
+      {
+        id: 1,
+        title: 'Trvalé spojenectví se Sovětským svazem',
+        category: 'Zahraniční orientace',
+        statement: 'Zahraniční a bezpečnostní politika ČSR by měla stát na trvalém spojenectví se Sovětským svazem jako záruce proti případnému německému revanšismu.',
+        historicalNote: 'Po zkušenostech s mnichovskou dohodou a osvobození Rudou armádou byla otázka bezpečnosti klíčová. Zvažovalo se, zda opřít obranu státu primárně o spojenectví se Sovětským svazem, anebo zda se vyvarovat jednostranné zahraničněpolitické závislosti.',
+        context: 'Po zkušenostech s mnichovskou dohodou a osvobození Rudou armádou byla otázka bezpečnosti klíčová. Zvažovalo se, zda opřít obranu státu primárně o spojenectví se Sovětským svazem, anebo zda se vyvarovat jednostranné zahraničněpolitické závislosti.',
+        partyStances: { ksc: 1, csns: 0, csl: 0, ds: -1, cssd: 1, kss: 1 }
+      },
+      {
+        id: 2,
+        title: 'Most mezi Východem a Západem',
+        category: 'Most mezi světy',
+        statement: 'Československo by mělo usilovat o pozici mostu mezi Východem a Západem a zachovat politické i obchodní vztahy s USA a Velkou Británií.',
+        historicalNote: 'V poválečné mezinárodní situaci se řešilo budoucí postavení Československa. Diskutovalo se o možnosti působit jako politický i hospodářský most mezi západními demokraciemi a východním blokem, nebo zda je taková pozice v rozděleném světě dlouhodobě udržitelná.',
+        context: 'V poválečné mezinárodní situaci se řešilo budoucí postavení Československa. Diskutovalo se o možnosti působit jako politický i hospodářský most mezi západními demokraciemi a východním blokem, nebo zda je taková pozice v rozděleném světě dlouhodobě udržitelná.',
+        partyStances: { ksc: -1, csns: 1, csl: 1, ds: 1, cssd: 0, kss: -1 }
+      },
+      {
+        id: 3,
+        title: 'Právní stát a proces odsunu',
+        category: 'Odsun a právní stát',
+        statement: 'Při odsunu a potrestání kolaborantů by měl stát důsledně dbát na právní stát a předcházet mimosoudnímu násilí.',
+        historicalNote: 'Poválečný odsun německého obyvatelstva a trestání kolaborace provázely i excesy a mimosoudní násilí. Řešilo se, nakolik má stát přísně vymáhat dodržování právního řádu a řádných soudních postupů i za cenu zpomalení celého procesu.',
+        context: 'Poválečný odsun německého obyvatelstva a trestání kolaborace provázely i excesy a mimosoudní násilí. Řešilo se, nakolik má stát přísně vymáhat dodržování právního řádu a řádných soudních postupů i za cenu zpomalení celého procesu.',
+        partyStances: { ksc: -1, csns: 1, csl: 1, ds: 1, cssd: 0, kss: -1 }
+      },
+      {
+        id: 4,
+        title: 'Garance soukromého sektoru a řemesel',
+        category: 'Hranice znárodnění',
+        statement: 'Další vlna znárodňování by měla být zastavena; soukromé řemeslo, maloobchod a střední firmy by měly zůstat v soukromých rukou.',
+        historicalNote: 'Po první vlně znárodnění z podzimu 1945 vyvstala otázka budoucího rozsahu soukromého sektoru. Diskutovalo se o tom, zda má být soukromé vlastnictví drobných dílen, živností a maloobchodu garantováno, nebo zda má socializace hospodářství pokračovat i v dalších oblastech.',
+        context: 'Po první vlně znárodnění z podzimu 1945 vyvstala otázka budoucího rozsahu soukromého sektoru. Diskutovalo se o tom, zda má být soukromé vlastnictví drobných dílen, živností a maloobchodu garantováno, nebo zda má socializace hospodářství pokračovat i v dalších oblastech.',
+        partyStances: { ksc: -1, csns: 1, csl: 1, ds: 1, cssd: 0, kss: -1 }
+      },
+      {
+        id: 5,
+        title: 'Znárodnění velkoobchodu a podniků nad 50 zaměstnanců',
+        category: 'Další vlna socializace',
+        statement: 'Stát by měl v další etapě převzít také velkoobchod, zahraniční obchod a průmyslové podniky s více než 50 zaměstnanci.',
+        historicalNote: 'Po znárodnění klíčového průmyslu a bank se řešila hranice pro další převod podniků do státních rukou. Zvažovalo se, zda je pro efektivitu a plánování hospodářství nutné zestátnit i střední podniky a zahraniční obchod, anebo ponechat prostor soukromé iniciativě.',
+        context: 'Po znárodnění klíčového průmyslu a bank se řešila hranice pro další převod podniků do státních rukou. Zvažovalo se, zda je pro efektivitu a plánování hospodářství nutné zestátnit i střední podniky a zahraniční obchod, anebo ponechat prostor soukromé iniciativě.',
+        partyStances: { ksc: 1, csns: -1, csl: -1, ds: -1, cssd: 0, kss: 1 }
+      },
+      {
+        id: 6,
+        title: 'Zákaz pravicových stran z první republiky',
+        category: 'Zákaz pravicových stran',
+        statement: 'Zákaz předválečné agrární strany a dalších pravicových subjektů byl opodstatněným krokem na ochranu republiky před kolaborací.',
+        historicalNote: 'Po osvobození byla činnost některých předválečných politických stran zakázána s poukazem na podíl jejich představitelů na událostech let 1938–1939. Část společnosti to vnímala jako nutnou očistu politického života, jiní v tom spatřovali nedemokratické omezení politické plurality.',
+        context: 'Po osvobození byla činnost některých předválečných politických stran zakázána s poukazem na podíl jejich představitelů na událostech let 1938–1939. Část společnosti to vnímala jako nutnou očistu politického života, jiní v tom spatřovali nedemokratické omezení politické plurality.',
+        partyStances: { ksc: 1, csns: 1, csl: 0, ds: -1, cssd: 1, kss: 1 }
+      },
+      {
+        id: 7,
+        title: 'Veřejná správa kultury a tisku',
+        category: 'Kultura a svoboda tisku',
+        statement: 'Kultura, tisk a rozhlas by měly být vyňaty z vlivu soukromého kapitálu a spravovány státem či veřejnými institucemi.',
+        historicalNote: 'Po roce 1945 se proměnil mediální prostor – soukromé vydávání novin bylo zakázáno a tisk směly vydávat jen schválené organizace. Řešilo se, nakolik má mít stát kontrolu nad šířením informací a kulturou, a nakolik má být zachována nezávislost a názorová pluralita.',
+        context: 'Po roce 1945 se proměnil mediální prostor – soukromé vydávání novin bylo zakázáno a tisk směly vydávat jen schválené organizace. Řešilo se, nakolik má mít stát kontrolu nad šířením informací a kulturou, a nakolik má být zachována nezávislost a názorová pluralita.',
+        partyStances: { ksc: 1, csns: -1, csl: -1, ds: -1, cssd: 1, kss: 1 }
+      },
+      {
+        id: 8,
+        title: 'Centrální plánování (Dvouletka)',
+        category: 'Plánované hospodářství',
+        statement: 'Hospodářství by mělo být usměrňováno státním plánem (Dvouletkou) a volný trh by měl ustoupit potřebám celku.',
+        historicalNote: 'Poválečná obnova hospodářství otevřela otázku způsobu řízení ekonomiky. Zvažovalo se, nakolik má hospodářský život určovat centrální státní plánování, a jaký prostor má zůstat tržním mechanismům a svobodnému podnikání.',
+        context: 'Poválečná obnova hospodářství otevřela otázku způsobu řízení ekonomiky. Zvažovalo se, nakolik má hospodářský život určovat centrální státní plánování, a jaký prostor má zůstat tržním mechanismům a svobodnému podnikání.',
+        partyStances: { ksc: 1, csns: 0, csl: 0, ds: -1, cssd: 1, kss: 1 }
+      },
+      {
+        id: 9,
+        title: 'Církevní školy a náboženská výuka v ústavě',
+        category: 'Církev a školství',
+        statement: 'Církevní školy a svoboda náboženského vyučování by měly být v nové ústavě zaručeny.',
+        historicalNote: 'V rámci přípravy nové poválečné ústavy se střetávaly rozdílné pohledy na postavení církví ve vzdělávání. Řešilo se, zda zachovat církevní školy a náboženskou výuku jako součást svobody vyznání, nebo zda vybudovat jednotné laické školství spravované výhradně státem.',
+        context: 'V rámci přípravy nové poválečné ústavy se střetávaly rozdílné pohledy na postavení církví ve vzdělávání. Řešilo se, zda zachovat církevní školy a náboženskou výuku jako součást svobody vyznání, nebo zda vybudovat jednotné laické školství spravované výhradně státem.',
+        partyStances: { ksc: -1, csns: 0, csl: 1, ds: 1, cssd: -1, kss: -1 }
+      },
+      {
+        id: 10,
+        title: 'Autonomie slovenských národních orgánů',
+        category: 'Postavení Slovenska',
+        statement: 'Slovenské národní orgány (SNR a Sbor pověřenců) by měly mít širokou autonomii a centrální vláda v Praze by neměla omezovat slovenskou samosprávu.',
+        historicalNote: 'Vztah mezi českými zeměmi a Slovenskem patřil k ústředním otázkám státoprávního uspořádání. Diskutovalo se o tom, zda má mít Slovensko širokou autonomii s vlastními zákonodárnými a výkonnými orgány, nebo zda má převažovat centralizovaná správa řízená z Prahy.',
+        context: 'Vztah mezi českými zeměmi a Slovenskem patřil k ústředním otázkám státoprávního uspořádání. Diskutovalo se o tom, zda má mít Slovensko širokou autonomii s vlastními zákonodárnými a výkonnými orgány, nebo zda má převažovat centralizovaná správa řízená z Prahy.',
+        partyStances: { ksc: -1, csns: -1, csl: 0, ds: 1, cssd: -1, kss: -1 }
+      },
+      {
+        id: 11,
+        title: 'Apolitické bezpečnostní složky (SNB)',
+        category: 'Bezpečnostní složky',
+        statement: 'Sbor národní bezpečnosti (SNB) a vojenské zpravodajství by měly být apolitické a neměly by podléhat vlivu jedné dominantní strany.',
+        historicalNote: 'Po válce vznikl nový Sbor národní bezpečnosti. Zásadní otázkou bylo, jak zajistit striktní nestrannost a profesionalitu policie i armádního zpravodajství, aby bezpečnostní aparát nemohl být využíván k politickému vlivu.',
+        context: 'Po válce vznikl nový Sbor národní bezpečnosti. Zásadní otázkou bylo, jak zajistit striktní nestrannost a profesionalitu policie i armádního zpravodajství, aby bezpečnostní aparát nemohl být využíván k politickému vlivu.',
+        partyStances: { ksc: -1, csns: 1, csl: 1, ds: 1, cssd: 0, kss: -1 }
+      },
+      {
+        id: 12,
+        title: 'Rychlost mimořádných lidových soudů',
+        category: 'Lidové soudnictví a retribuce',
+        statement: 'Mimořádné lidové soudy pro potrestání zrádců a kolaborantů by měly postupovat rychle bez zbytečných procedurálních průtahů.',
+        historicalNote: 'Poválečné retribuční soudnictví mělo zajistit rychlé potrestání nacistických zločinců a kolaborantů. Stály proti sobě požadavky na rychlost a přísnost na jedné straně a obavy z porušování procesních práv a rizika politického zneužití na straně druhé.',
+        context: 'Poválečné retribuční soudnictví mělo zajistit rychlé potrestání nacistických zločinců a kolaborantů. Stály proti sobě požadavky na rychlost a přísnost na jedné straně a obavy z porušování procesních práv a rizika politického zneužití na straně druhé.',
+        partyStances: { ksc: 1, csns: 0, csl: -1, ds: -1, cssd: 0, kss: 1 }
+      },
+      {
+        id: 13,
+        title: 'Spolurozhodování odborů a závodních rad',
+        category: 'Odbory a závodní rady',
+        statement: 'Jednotné odborové hnutí (ROH) a závodní rady by měly mít právo spolurozhodovat o chodu podniků a kontrolovat vedení firem.',
+        historicalNote: 'Poválečná legislativa přiznala závodním radám a odborům významné pravomoci. Diskutovalo se o tom, nakolik mají zaměstnanci prostřednictvím odborů spolurozhodovat o vedení podniků, a kde končí pravomoci vlastníků či manažerů.',
+        context: 'Poválečná legislativa přiznala závodním radám a odborům významné pravomoci. Diskutovalo se o tom, nakolik mají zaměstnanci prostřednictvím odborů spolurozhodovat o vedení podniků, a kde končí pravomoci vlastníků či manažerů.',
+        partyStances: { ksc: 1, csns: 0, csl: -1, ds: -1, cssd: 1, kss: 1 }
+      },
+      {
+        id: 14,
+        title: 'Systém povolených stran Národní fronty',
+        category: 'Monopol Národní fronty',
+        statement: 'Systém Národní fronty, kde působí pouze povolené vládní strany, představuje vhodnou záruku poválečné národní jednoty.',
+        historicalNote: 'Koncept Národní fronty vycházel z myšlenky poválečné jednoty a vyloučení předválečné stranické roztříštěnosti. Stály proti sobě argumenty zdůrazňující potřebu stability při obnově státu a námitky, že zákaz opozičních stran omezuje základní demokratickou soutěž.',
+        context: 'Koncept Národní fronty vycházel z myšlenky poválečné jednoty a vyloučení předválečné stranické roztříštěnosti. Stály proti sobě argumenty zdůrazňující potřebu stability při obnově státu a námitky, že zákaz opozičních stran omezuje základní demokratickou soutěž.',
+        partyStances: { ksc: 1, csns: 0, csl: 0, ds: -1, cssd: 1, kss: 1 }
+      },
+      {
+        id: 15,
+        title: 'Právo volit prázdným bílým lístkem',
+        category: 'Bílé lístky jako protest',
+        statement: 'Voličům by mělo být umožněno odevzdat prázdný bílý volební lístek jako legitimní projev nesouhlasu s nabídkou Národní fronty.',
+        historicalNote: 'Vzhledem k tomu, že k volbám byly připuštěny pouze strany Národní fronty, zvažovala se možnost volby prázdného lístku. Řešilo se, zda má volič mít formální nástroj, jak odmítnout celou nabízenou politickou reprezentaci, nebo zda má volit pouze z navržených kandidátek.',
+        context: 'Vzhledem k tomu, že k volbám byly připuštěny pouze strany Národní fronty, zvažovala se možnost volby prázdného lístku. Řešilo se, zda má volič mít formální nástroj, jak odmítnout celou nabízenou politickou reprezentaci, nebo zda má volit pouze z navržených kandidátek.',
+        partyStances: { ksc: -1, csns: 0, csl: 0, ds: 1, cssd: 0, kss: -1 }
+      },
+      {
+        id: 16,
+        title: 'Velikost přídělů půdy v pohraničí',
+        category: 'Zemědělství a osidlování',
+        statement: 'Zkonfiskovaná půda v pohraničí by měla být rozdělena na menší příděly pro co nejvyšší počet bezzemků namísto vytváření větších selských statků.',
+        historicalNote: 'Při osidlování pohraničí po odsunu německého obyvatelstva se rozhodovalo o výměře přidělovaných zemědělských usedlostí. Jeden přístup prosazoval parcelaci půdy na menší rodinná hospodářství do 13 hektarů, aby vlastní půdu získalo co nejvíce drobných rolníků a zemědělských dělníků. Druhý přístup upozorňoval, že příliš malé statky nebudou hospodářsky soběstačné, a doporučoval vytvářet větší, ekonomicky silnější selské grunty.',
+        context: 'Při osidlování pohraničí po odsunu německého obyvatelstva se rozhodovalo o výměře přidělovaných zemědělských usedlostí. Jeden přístup prosazoval parcelaci půdy na menší rodinná hospodářství do 13 hektarů, aby vlastní půdu získalo co nejvíce drobných rolníků a zemědělských dělníků. Druhý přístup upozorňoval, že příliš malé statky nebudou hospodářsky soběstačné, a doporučoval vytvářet větší, ekonomicky silnější selské grunty.',
+        partyStances: { ksc: 1, csns: -1, csl: -1, ds: -1, cssd: 0, kss: 1 }
+      },
+      {
+        id: 17,
+        title: 'Zachování zemského zřízení Čech a Moravy se Slezskem',
+        category: 'Státní správa a samospráva',
+        statement: 'V nové ústavě by mělo být zachováno historické zemské zřízení Čech a Moravy se Slezskem namísto rozdělení státu na menší kraje.',
+        historicalNote: 'Při přípravě nové poválečné ústavy se vedla debata o budoucím územněsprávním členění českých zemí. Jeden pohled hájil zachování historických zemí a zemských národních výborů v Praze a Brně jako záruky regionální samosprávy a tradice. Druhý pohled prosazoval zrušení zemí a jejich nahrazení menšími kraji, které měly přiblížit správu občanům a posílit jednotné řízení státu.',
+        context: 'Při přípravě nové poválečné ústavy se vedla debata o budoucím územněsprávním členění českých zemí. Jeden pohled hájil zachování historických zemí a zemských národních výborů v Praze a Brně jako záruky regionální samosprávy a tradice. Druhý pohled prosazoval zrušení zemí a jejich nahrazení menšími kraji, které měly přiblížit správu občanům a posílit jednotné řízení státu.',
+        partyStances: { ksc: -1, csns: 1, csl: 1, ds: 0, cssd: 0, kss: -1 }
+      },
+      {
+        id: 18,
+        title: 'Uvolnění vázaných vkladů z měnové reformy',
+        category: 'Měnová politika a finance',
+        statement: 'Stát by měl občanům rychleji uvolnit peněžní úspory zmrazené na vázaných vkladech při měnové reformě z roku 1945.',
+        historicalNote: 'Měnová reforma z listopadu 1945 nahradila okupační platidla novou korunou a většinu hotovosti i úspor obyvatelstva uzamkla na takzvaných vázaných vkladech. V roce 1946 se zvažovalo, zda tyto prostředky střadatelům a drobným podnikatelům ve větší míře vyplatit k oživení spotřeby a soukromých investic, nebo je ponechat zablokované kvůli obavám z přebytečné kupní síly a růstu inflace.',
+        context: 'Měnová reforma z listopadu 1945 nahradila okupační platidla novou korunou a většinu hotovosti i úspor obyvatelstva uzamkla na takzvaných vázaných vkladech. V roce 1946 se zvažovalo, zda tyto prostředky střadatelům a drobným podnikatelům ve větší míře vyplatit k oživení spotřeby a soukromých investic, nebo je ponechat zablokované kvůli obavám z přebytečné kupní síly a růstu inflace.',
+        partyStances: { ksc: -1, csns: 1, csl: 1, ds: 1, cssd: -1, kss: -1 }
+      },
+      {
+        id: 19,
+        title: 'Zrušení přídělového systému na potraviny',
+        category: 'Zásobování a vnitřní obchod',
+        statement: 'Přídělový systém potravinových a šatenkových lístků by měl být postupně opuštěn ve prospěch neomezeného prodeje zboží v obchodech.',
+        historicalNote: 'Poválečné zásobování domácností stálo na přídělovém systému lístků a úředně stanovených spotřebitelských cenách. Diskutovalo se o tom, zda lístkový systém v dohledné době odbourat a uvolnit tvorbu cen, která by motivovala výrobce k vyšším dodávkám zboží na pulty, anebo zachovat řízený příděl jako pojistku rovnoměrného a cenově dostupného zásobování všech vrstev obyvatelstva.',
+        context: 'Poválečné zásobování domácností stálo na přídělovém systému lístků a úředně stanovených spotřebitelských cenách. Diskutovalo se o tom, zda lístkový systém v dohledné době odbourat a uvolnit tvorbu cen, která by motivovala výrobce k vyšším dodávkám zboží na pulty, anebo zachovat řízený příděl jako pojistku rovnoměrného a cenově dostupného zásobování všech vrstev obyvatelstva.',
+        partyStances: { ksc: -1, csns: 1, csl: 1, ds: 1, cssd: -1, kss: -1 }
+      },
+      {
+        id: 20,
+        title: 'Přesídlování maďarské menšiny na práce do Čech',
+        category: 'Národnostní menšiny',
+        statement: 'Obyvatelé maďarské národnosti z jižního Slovenska by neměli být nuceně převáženi na zemědělské práce do českého pohraničí.',
+        historicalNote: 'Po válce pozbyli občané maďarské národnosti československé státní občanství. Vzhledem k tomu, že vítězné mocnosti neschválily jejich jednostranný odsun, přistoupily úřady k pracovnímu náboru a nucenému vnitřnímu přesídlování maďarských obyvatel do vylidněného českého pohraničí. Diskutovalo se o tom, zda je toto opatření oprávněným krokem k zajištění pracovních sil a oslabení menšiny u hranic, nebo zda jde o nepřijatelný zásah do lidských a rodinných práv.',
+        context: 'Po válce pozbyli občané maďarské národnosti československé státní občanství. Vzhledem k tomu, že vítězné mocnosti neschválily jejich jednostranný odsun, přistoupily úřady k pracovnímu náboru a nucenému vnitřnímu přesídlování maďarských obyvatel do vylidněného českého pohraničí. Diskutovalo se o tom, zda je toto opatření oprávněným krokem k zajištění pracovních sil a oslabení menšiny u hranic, nebo zda jde o nepřijatelný zásah do lidských a rodinných práv.',
+        partyStances: { ksc: -1, csns: -1, csl: 1, ds: 0, cssd: -1, kss: -1 }
+      },
+      {
+        id: 21,
+        title: 'Samostatnost skautských a mládežnických spolků',
+        category: 'Společnost a mládež',
+        statement: 'Tradiční mládežnické organizace, jako jsou Junák nebo Orel, by měly fungovat samostatně mimo jednotný státní svaz mládeže.',
+        historicalNote: 'Po roce 1945 vznikly zastřešující organizace Svaz české mládeže a Svaz slovenské mládeže. Řešilo se, zda by veškerá mimoškolní výchova mladé generace měla být organizačně sjednocena pod těmito svazy, nebo zda si mají historické spolky s vlastním hodnotovým zaměřením uchovat plnou nezávislost a vlastní identitu.',
+        context: 'Po roce 1945 vznikly zastřešující organizace Svaz české mládeže a Svaz slovenské mládeže. Řešilo se, zda by veškerá mimoškolní výchova mladé generace měla být organizačně sjednocena pod těmito svazy, nebo zda si mají historické spolky s vlastním hodnotovým zaměřením uchovat plnou nezávislost a vlastní identitu.',
+        partyStances: { ksc: -1, csns: 1, csl: 1, ds: 1, cssd: 0, kss: -1 }
+      },
+      {
+        id: 22,
+        title: 'Pravomoci národních výborů vůči úřednické správě',
+        category: 'Státní správa a samospráva',
+        statement: 'Místní a okresní správa by měla být převedena z politicky obsazovaných národních výborů zpět na odborně vzdělané a nestranické úředníky.',
+        historicalNote: 'Na konci války převzaly veřejnou správu v obcích, okresech a zemích národní výbory, které nahradily prvorepublikový systém okresních hejtmanů a státních úřadů. Zvažovalo se, zda národní výbory ponechat jako výlučné orgány státní moci a samosprávy v regionech, nebo zda obnovit roli profesionálního úřednického aparátu v zájmu odbornosti a správní nestrannosti.',
+        context: 'Na konci války převzaly veřejnou správu v obcích, okresech a zemích národní výbory, které nahradily prvorepublikový systém okresních hejtmanů a státních úřadů. Zvažovalo se, zda národní výbory ponechat jako výlučné orgány státní moci a samosprávy v regionech, nebo zda obnovit roli profesionálního úřednického aparátu v zájmu odbornosti a správní nestrannosti.',
+        partyStances: { ksc: -1, csns: 1, csl: 1, ds: 1, cssd: -1, kss: -1 }
+      },
+      {
+        id: 23,
+        title: 'Rozpuštění ozbrojených závodních milicí',
+        category: 'Bezpečnost a průmysl',
+        statement: 'Ozbrojené závodní milice v průmyslových podnicích by měly být zrušeny.',
+        historicalNote: 'V květnu 1945 vznikly v mnoha továrnách ozbrojené dělnické oddíly, které měly chránit průmyslové objekty před poškozením a rabováním. V mírových poměrech roku 1946 se vedl spor o to, zda tyto ozbrojené jednotky v závodech nadále udržovat jako pojistku ochrany znárodněného průmyslu, nebo je odzbrojit a ponechat oprávnění k držení zbraní pouze policii a armádě.',
+        context: 'V květnu 1945 vznikly v mnoha továrnách ozbrojené dělnické oddíly, které měly chránit průmyslové objekty před poškozením a rabováním. V mírových poměrech roku 1946 se vedl spor o to, zda tyto ozbrojené jednotky v závodech nadále udržovat jako pojistku ochrany znárodněného průmyslu, nebo je odzbrojit a ponechat oprávnění k držení zbraní pouze policii a armádě.',
+        partyStances: { ksc: -1, csns: 1, csl: 1, ds: 1, cssd: 0, kss: -1 }
+      },
+      {
+        id: 24,
+        title: 'Převod konfiskovaných domů v pohraničí do osobního vlastnictví',
+        category: 'Bydlení a osidlování',
+        statement: 'Zkonfiskované rodinné domy v pohraničí by měly být z dočasné národní správy převedeny do osobního vlastnictví jednotlivých osídlenců.',
+        historicalNote: 'Po vysídlení německého obyvatelstva spravoval stát v pohraničí statisíce opuštěných rodinných domů, do nichž přicházeli noví osídlenci z vnitrozemí. V roce 1946 se řešilo, zda tyto domky rychle prodat do plného soukromého vlastnictví nových obyvatel pro posílení jejich trvalého vztahu k regionu, nebo zda bytový fond ponechat v nájemní správě obcí a družstev.',
+        context: 'Po vysídlení německého obyvatelstva spravoval stát v pohraničí statisíce opuštěných rodinných domů, do nichž přicházeli noví osídlenci z vnitrozemí. V roce 1946 se řešilo, zda tyto domky rychle prodat do plného soukromého vlastnictví nových obyvatel pro posílení jejich trvalého vztahu k regionu, nebo zda bytový fond ponechat v nájemní správě obcí a družstev.',
+        partyStances: { ksc: -1, csns: 1, csl: 1, ds: 1, cssd: 0, kss: -1 }
+      },
+      {
+        id: 25,
+        title: 'Podpora zaměstnanosti vdaných žen',
+        category: 'Rodina a pracovní trh',
+        statement: 'Stát by měl budováním veřejných jeslí a jídelen podporovat nástup vdaných žen do zaměstnání.',
+        historicalNote: 'Poválečné hospodářství se po odsunu německého obyvatelstva potýkalo s nedostatkem pracovních sil v průmyslu i zemědělství. Jeden pohled prosazoval zapojení žen do výroby za pomoci rozvoje veřejných služeb péče o děti a domácnost. Druhý přístup kladl důraz na tradiční roli matky v rodině a požadoval, aby rodinu dokázal finančně zajistit příjem manžela.',
+        context: 'Poválečné hospodářství se po odsunu německého obyvatelstva potýkalo s nedostatkem pracovních sil v průmyslu i zemědělství. Jeden pohled prosazoval zapojení žen do výroby za pomoci rozvoje veřejných služeb péče o děti a domácnost. Druhý přístup kladl důraz na tradiční roli matky v rodině a požadoval, aby rodinu dokázal finančně zajistit příjem manžela.',
+        partyStances: { ksc: 1, csns: 1, csl: -1, ds: -1, cssd: 1, kss: 1 }
+      },
+      {
+        id: 26,
+        title: 'Omezení výdajů na armádu v době poválečné obnovy',
+        category: 'Obrana a státní rozpočet',
+        statement: 'Výdaje ze státního rozpočtu na armádu by měly být v době poválečné obnovy sníženy ve prospěch hospodářských a sociálních potřeb.',
+        historicalNote: 'Budování a vyzbrojování poválečné československé armády představovalo v roce 1946 jednu z největších položek státního rozpočtu. V diskusi o rozpočtových prioritách stála na jedné straně snaha omezit vojenské výdaje a uvolnit finance i mladé odvedence pro obnovu válkou poškozeného hospodářství, na straně druhé požadavek na udržení silného a početného vojska.',
+        context: 'Budování a vyzbrojování poválečné československé armády představovalo v roce 1946 jednu z největších položek státního rozpočtu. V diskusi o rozpočtových prioritách stála na jedné straně snaha omezit vojenské výdaje a uvolnit finance i mladé odvedence pro obnovu válkou poškozeného hospodářství, na straně druhé požadavek na udržení silného a početného vojska.',
+        partyStances: { ksc: -1, csns: -1, csl: 1, ds: 1, cssd: 0, kss: -1 }
+      },
+      {
+        id: 27,
+        title: 'Volební právo od 18 let',
+        category: 'Volební právo a mládež',
+        statement: 'Právo volit by mělo zůstat zachováno již od 18 let věku, přestože plné občanské zletilosti občané dosahují až v 21 letech.',
+        historicalNote: 'Před volbami v roce 1946 byla věková hranice pro aktivní volební právo snížena z prvorepublikových 21 let na 18 let, zatímco plná právní způsobilost v občanském životě zůstala na 21 letech. Jeden přístup toto snížení obhajoval tím, že mládež prokázala svou vyspělost za války a podílí se na obnově státu. Druhý přístup namítal, že osmnáctiletí voliči snáze podléhají politické agitaci a volební právo by mělo být spojeno až s plnou občanskou zletilostí.',
+        context: 'Před volbami v roce 1946 byla věková hranice pro aktivní volební právo snížena z prvorepublikových 21 let na 18 let, zatímco plná právní způsobilost v občanském životě zůstala na 21 letech. Jeden přístup toto snížení obhajoval tím, že mládež prokázala svou vyspělost za války a podílí se na obnově státu. Druhý přístup namítal, že osmnáctiletí voliči snáze podléhají politické agitaci a volební právo by mělo být spojeno až s plnou občanskou zletilostí.',
+        partyStances: { ksc: 1, csns: 1, csl: -1, ds: -1, cssd: 1, kss: 1 }
+      },
+      {
+        id: 28,
+        title: 'Daňové zrovnoprávnění živnostníků a družstev',
+        category: 'Daně a podnikání',
+        statement: 'Soukromí živnostníci a obchodníci by měli mít stejné daňové podmínky jako výrobní a spotřební družstva.',
+        historicalNote: 'V poválečném hospodářství působily vedle sebe soukromé živnosti a rozrůstající se sektor družstevnictví. Spor se vedl o daňovou politiku státu: zda mají být družstva daňově a úvěrově zvýhodňována jako forma společného hospodaření, nebo zda má stát zajistit rovné daňové zatížení pro všechny podnikatelské subjekty bez ohledu na formu vlastnictví.',
+        context: 'V poválečném hospodářství působily vedle sebe soukromé živnosti a rozrůstající se sektor družstevnictví. Spor se vedl o daňovou politiku státu: zda mají být družstva daňově a úvěrově zvýhodňována jako forma společného hospodaření, nebo zda má stát zajistit rovné daňové zatížení pro všechny podnikatelské subjekty bez ohledu na formu vlastnictví.',
+        partyStances: { ksc: -1, csns: 1, csl: 1, ds: 1, cssd: -1, kss: -1 }
+      },
+      {
+        id: 29,
+        title: 'Obnova Senátu v nové ústavě',
+        category: 'Ústava a parlament',
+        statement: 'Nová ústava by měla obnovit druhou komoru parlamentu v podobě Senátu jako pojistku při schvalování zákonů.',
+        historicalNote: 'Hlavním úkolem voleného Ústavodárného národního shromáždění bylo vypracování nové ústavy. V debatách o podobě zákonodárného sboru se řešilo, zda zachovat poválečný jednokomorový parlament, který umožňuje rychlé přijímání zákonů bez průtahů, anebo se vrátit k prvorepublikovému dvoukomorovému systému se Senátem, jenž by sloužil jako odborná protiváha a pojistka proti unáhleným rozhodnutím.',
+        context: 'Hlavním úkolem voleného Ústavodárného národního shromáždění bylo vypracování nové ústavy. V debatách o podobě zákonodárného sboru se řešilo, zda zachovat poválečný jednokomorový parlament, který umožňuje rychlé přijímání zákonů bez průtahů, anebo se vrátit k prvorepublikovému dvoukomorovému systému se Senátem, jenž by sloužil jako odborná protiváha a pojistka proti unáhleným rozhodnutím.',
+        partyStances: { ksc: -1, csns: 0, csl: 1, ds: 1, cssd: -1, kss: -1 }
+      },
+      {
+        id: 30,
+        title: 'Zachování víceletých gymnázií',
+        category: 'Školství a vzdělávání',
+        statement: 'Nižší ročníky víceletých gymnázií by měly zůstat zachovány namísto zavedení povinné jednotné školy pro všechny žáky do 15 let.',
+        historicalNote: 'Jedním z hlavních školských témat roku 1946 byl návrh na zavedení takzvané jednotné školy, která by sloučila měšťanské školy a nižší stupně gymnázií do jednoho společného vzdělávacího proudu pro děti od 11 do 15 let. Jeden přístup zdůrazňoval rovné šance na vzdělání pro děti ze všech sociálních vrstev, druhý upozorňoval na riziko poklesu úrovně výuky a ztrátu včasné přípravy nadaných žáků.',
+        context: 'Jedním z hlavních školských témat roku 1946 byl návrh na zavedení takzvané jednotné školy, která by sloučila měšťanské školy a nižší stupně gymnázií do jednoho společného vzdělávacího proudu pro děti od 11 do 15 let. Jeden přístup zdůrazňoval rovné šance na vzdělání pro děti ze všech sociálních vrstev, druhý upozorňoval na riziko poklesu úrovně výuky a ztrátu včasné přípravy nadaných žáků.',
+        partyStances: { ksc: -1, csns: 1, csl: 1, ds: 1, cssd: -1, kss: -1 }
+      },
+      {
+        id: 31,
+        title: 'Rozdělování nadměrných bytů ve městech',
+        category: 'Bydlení a vlastnictví',
+        statement: 'Národní výbory by měly mít právo rozdělit větší soukromé byty a nastěhovat do nich další nájemníky k řešení poválečné bytové nouze.',
+        historicalNote: 'V důsledku válečného poškození měst a útlumu stavebnictví panoval v roce 1946 v celé republice nedostatek bytů. Diskutovalo se o tom, zda mají mít místní úřady pravomoc označit vícepokojové byty za nadměrné a přikázat do nich podnájemníky, nebo zda má být soukromí rodin a nedotknutelnost bytu chráněna a bytová krize řešena jen novou výstavbou.',
+        context: 'V důsledku válečného poškození měst a útlumu stavebnictví panoval v roce 1946 v celé republice nedostatek bytů. Diskutovalo se o tom, zda mají mít místní úřady pravomoc označit vícepokojové byty za nadměrné a přikázat do nich podnájemníky, nebo zda má být soukromí rodin a nedotknutelnost bytu chráněna a bytová krize řešena jen novou výstavbou.',
+        partyStances: { ksc: 1, csns: -1, csl: -1, ds: -1, cssd: 1, kss: 1 }
+      },
+      {
+        id: 32,
+        title: 'Zrušení všeobecné pracovní povinnosti',
+        category: 'Pracovní trh a právo',
+        statement: 'Stát by měl v době míru upustit od nařizování pracovní povinnosti občanům.',
+        historicalNote: 'Prezidentský dekret z podzimu 1945 zavedl všeobecnou pracovní povinnost, která úřadům umožňovala přikázat občanům práci v odvětvích trpících nedostatkem pracovních sil, zejména v hornictví, zemědělství a stavebnictví. Vedla se debata, zda je tento administrativní nástroj potřebný pro poválečnou obnovu země, nebo zda jde o zásah do osobní svobody, který by měl být nahrazen dobrovolným náborem a mzdovou motivací.',
+        context: 'Prezidentský dekret z podzimu 1945 zavedl všeobecnou pracovní povinnost, která úřadům umožňovala přikázat občanům práci v odvětvích trpících nedostatkem pracovních sil, zejména v hornictví, zemědělství a stavebnictví. Vedla se debata, zda je tento administrativní nástroj potřebný pro poválečnou obnovu země, nebo zda jde o zásah do osobní svobody, který by měl být nahrazen dobrovolným náborem a mzdovou motivací.',
+        partyStances: { ksc: -1, csns: 1, csl: 1, ds: 1, cssd: -1, kss: -1 }
+      },
+      {
+        id: 33,
+        title: 'Přesun průmyslových strojů z českého pohraničí na Slovensko',
+        category: 'Průmysl a regionální rozvoj',
+        statement: 'Část průmyslového zařízení z opuštěných továren v českém pohraničí by měla být přesunuta na Slovensko k podpoře jeho industrializace.',
+        historicalNote: 'Po vysídlení německého obyvatelstva zůstala v českém pohraničí řada průmyslových závodů bez dostatku pracovních sil, zatímco na Slovensku přetrvával přebytek pracovní síly v zemědělství. Zvažovalo se, zda přemístit část strojního vybavení z českých zemí na Slovensko a podpořit tak vyrovnání hospodářské úrovně obou částí republiky, anebo ponechat výrobní kapacity v původních průmyslových oblastech.',
+        context: 'Po vysídlení německého obyvatelstva zůstala v českém pohraničí řada průmyslových závodů bez dostatku pracovních sil, zatímco na Slovensku přetrvával přebytek pracovní síly v zemědělství. Zvažovalo se, zda přemístit část strojního vybavení z českých zemí na Slovensko a podpořit tak vyrovnání hospodářské úrovně obou částí republiky, anebo ponechat výrobní kapacity v původních průmyslových oblastech.',
+        partyStances: { ksc: 1, csns: -1, csl: 0, ds: 1, cssd: 0, kss: 1 }
+      },
+      {
+        id: 34,
+        title: 'Platové ohodnocení úředníků a inteligence',
+        category: 'Práce a mzdy',
+        statement: 'Platy státních úředníků, učitelů a technické inteligence by měly být zvýšeny, aby lépe odrážely požadovanou odbornou kvalifikaci.',
+        historicalNote: 'Poválečné úpravy mezd a cen vedly ke sblížení příjmů mezi manuálními pracovníky a duševně pracujícími zaměstnanci. Diskutovalo se o tom, zda je toto vyrovnávání mzdových rozdílů spravedlivým oceněním fyzické práce v průmyslu a zemědělství, nebo zda nižší ohodnocení kvalifikované práce demotivuje vzdělané odborníky a oslabuje chod státní správy i školství.',
+        context: 'Poválečné úpravy mezd a cen vedly ke sblížení příjmů mezi manuálními pracovníky a duševně pracujícími zaměstnanci. Diskutovalo se o tom, zda je toto vyrovnávání mzdových rozdílů spravedlivým oceněním fyzické práce v průmyslu a zemědělství, nebo zda nižší ohodnocení kvalifikované práce demotivuje vzdělané odborníky a oslabuje chod státní správy i školství.',
+        partyStances: { ksc: -1, csns: 1, csl: 1, ds: 1, cssd: 0, kss: -1 }
+      },
+      {
+        id: 35,
+        title: 'Sjednocení zdravotního a sociálního pojištění',
+        category: 'Sociální zabezpečení',
+        statement: 'Dosavadní samostatné pojišťovny jednotlivých profesních skupin by měly být sloučeny do jedné celostátní národní pojišťovny.',
+        historicalNote: 'Meziválečný systém sociálního a nemocenského pojištění byl rozdělen podle profesních stavů, přičemž úředníci, horníci či dělníci měli vlastní pojišťovací ústavy s různou výší příspěvků i dávek. V roce 1946 se řešilo, zda vybudovat jednotné celostátní pojištění se stejnými podmínkami pro všechny občany, nebo zachovat samosprávné profesní pojišťovny a nabytá práva jednotlivých skupin pojištěnců.',
+        context: 'Meziválečný systém sociálního a nemocenského pojištění byl rozdělen podle profesních stavů, přičemž úředníci, horníci či dělníci měli vlastní pojišťovací ústavy s různou výší příspěvků i dávek. V roce 1946 se řešilo, zda vybudovat jednotné celostátní pojištění se stejnými podmínkami pro všechny občany, nebo zachovat samosprávné profesní pojišťovny a nabytá práva jednotlivých skupin pojištěnců.',
+        partyStances: { ksc: 1, csns: -1, csl: -1, ds: -1, cssd: 1, kss: 1 }
+      },
+      {
+        id: 36,
+        title: 'Vyplacení náhrad za majetek znárodněný v roce 1945',
+        category: 'Majetek a finance',
+        statement: 'Bezúhonným československým občanům a drobným akcionářům by měla být vyplacena finanční náhrada za podniky a akcie znárodněné v roce 1945.',
+        historicalNote: 'Prezidentské dekrety o znárodnění klíčového průmyslu a bank z října 1945 počítaly s tím, že zatímco kolaborantům a osobám německé či maďarské národnosti se majetek zabavuje bez náhrady, loajálním československým občanům bude za znárodněný majetek vyplaceno odškodnění. V roce 1946 se vedl spor o to, zda má stát tyto náhrady původním vlastníkům a střadatelům skutečně vyplácet, nebo zda by výplata odškodného příliš zatížila státní finance a znárodněné podniky.',
+        context: 'Prezidentské dekrety o znárodnění klíčového průmyslu a bank z října 1945 počítaly s tím, že zatímco kolaborantům a osobám německé či maďarské národnosti se majetek zabavuje bez náhrady, loajálním československým občanům bude za znárodněný majetek vyplaceno odškodnění. V roce 1946 se vedl spor o to, zda má stát tyto náhrady původním vlastníkům a střadatelům skutečně vyplácet, nebo zda by výplata odškodného příliš zatížila státní finance a znárodněné podniky.',
+        partyStances: { ksc: -1, csns: 1, csl: 1, ds: 1, cssd: -1, kss: -1 }
+      },
+      {
+        id: 37,
+        title: 'Rozdělování zemědělské techniky',
+        category: 'Zemědělství a družstevnictví',
+        statement: 'Nové a zkonfiskované traktory by měly být přednostně umisťovány do společných strojních stanic a družstev namísto prodeje jednotlivým rolníkům.',
+        historicalNote: 'Mechanizace zemědělství byla v roce 1946 považována za důležitý předpoklad k překonání úbytku pracovních sil na venkově. Řešila se otázka distribuce nedostatkových zemědělských strojů: zda traktory a mlátičky soustředit ve státních strojních stanicích a družstvech, odkud by si je zemědělci půjčovali, nebo zda umožnit jejich přímý nákup do soukromého vlastnictví samostatně hospodařících sedláků.',
+        context: 'Mechanizace zemědělství byla v roce 1946 považována za důležitý předpoklad k překonání úbytku pracovních sil na venkově. Řešila se otázka distribuce nedostatkových zemědělských strojů: zda traktory a mlátičky soustředit ve státních strojních stanicích a družstvech, odkud by si je zemědělci půjčovali, nebo zda umožnit jejich přímý nákup do soukromého vlastnictví samostatně hospodařících sedláků.',
+        partyStances: { ksc: 1, csns: -1, csl: -1, ds: -1, cssd: 1, kss: 1 }
+      },
+      {
+        id: 38,
+        title: 'Vrácení majetku obětem nacistické perzekuce',
+        category: 'Spravedlnost a restituce',
+        statement: 'Majetek zabavený v době okupace obětem rasové a politické perzekuce by měl být vrácen původním vlastníkům bez ohledu na zájmy nynějších národních správců.',
+        historicalNote: 'Po válce se přeživší oběti nacistické perzekuce domáhaly navrácení svých domů, živností a podniků zabavených během okupace. Mnohé z těchto majetků však mezitím přešly pod národní správu. Zákonodárci řešili, zda prosadit vrácení majetku původním majitelům a jejich dědicům, anebo zda část podniků ponechat v rukou dosazených národních správců či státu.',
+        context: 'Po válce se přeživší oběti nacistické perzekuce domáhaly navrácení svých domů, živností a podniků zabavených během okupace. Mnohé z těchto majetků však mezitím přešly pod národní správu. Zákonodárci řešili, zda prosadit vrácení majetku původním majitelům a jejich dědicům, anebo zda část podniků ponechat v rukou dosazených národních správců či státu.',
+        partyStances: { ksc: -1, csns: 1, csl: 1, ds: 0, cssd: 0, kss: -1 }
+      },
+      {
+        id: 39,
+        title: 'Pravomoci prezidenta republiky v nové ústavě',
+        category: 'Ústava a státní zřízení',
+        statement: 'V nové ústavě by měly zůstat zachovány silné pravomoci prezidenta republiky vůči vládě a parlamentu podle tradice první republiky.',
+        historicalNote: 'Při přípravách nové ústavy se diskutovalo o postavení hlavy státu. Jeden ústavní koncept prosazoval zachování silného postavení prezidenta republiky s právem jmenovat vysoké úředníky, vracet zákony a rozpouštět parlament jako nadstranické pojistky stability. Druhý koncept usiloval o omezení prezidentských pravomocí a soustředění výkonné i zákonodárné moci do rukou vlády a jednokomorového parlamentu.',
+        context: 'Při přípravách nové ústavy se diskutovalo o postavení hlavy státu. Jeden ústavní koncept prosazoval zachování silného postavení prezidenta republiky s právem jmenovat vysoké úředníky, vracet zákony a rozpouštět parlament jako nadstranické pojistky stability. Druhý koncept usiloval o omezení prezidentských pravomocí a soustředění výkonné i zákonodárné moci do rukou vlády a jednokomorového parlamentu.',
+        partyStances: { ksc: -1, csns: 1, csl: 1, ds: 1, cssd: 0, kss: -1 }
+      },
+      {
+        id: 40,
+        title: 'Ochrana církevního pozemkového majetku',
+        category: 'Církev a majetek',
+        statement: 'Pozemkový a lesní majetek církví by měl být vyňat z vyvlastňování velkostatků.',
+        historicalNote: 'V souvislosti s úvahami o revizi pozemkové reformy a dalším omezení velkostatků se řešilo postavení církevní půdy a lesů. Jeden pohled zastával názor, že církevní majetek slouží k financování farností, charitativní péče a kulturních památek, a měl by proto zůstat zachován. Druhý pohled požadoval, aby se na církevní velkostatky vztahovala stejná pravidla vyvlastnění a parcelace jako na ostatní velkou pozemkovou držbu.',
+        context: 'V souvislosti s úvahami o revizi pozemkové reformy a dalším omezení velkostatků se řešilo postavení církevní půdy a lesů. Jeden pohled zastával názor, že církevní majetek slouží k financování farností, charitativní péče a kulturních památek, a měl by proto zůstat zachován. Druhý pohled požadoval, aby se na církevní velkostatky vztahovala stejná pravidla vyvlastnění a parcelace jako na ostatní velkou pozemkovou držbu.',
+        partyStances: { ksc: -1, csns: -1, csl: 1, ds: 1, cssd: -1, kss: -1 }
+      }
+    ],
     electionSystem: {
       body: 'Ústavodárné národní shromáždění (jednokomorový parlament o celkových 300 poslancích). Poměr mandátů nebyl pevně daný, ale odvodil se až z volební účasti – nakonec připadlo 231 křesel na české země a 69 na Slovensko. Hlavním úkolem sboru bylo vypracování nové poválečné ústavy.',
       system: 'Poměrný volební systém ve 28 krajích. Kandidovat směly výhradně povolené strany sdružené v Národní frontě (4 v českých zemích, 4 na Slovensku). Všechny ostatní opoziční strany byly zakázány. Hlasovalo se vázanými kandidátkami.',

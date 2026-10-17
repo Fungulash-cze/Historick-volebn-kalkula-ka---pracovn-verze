@@ -1,110 +1,103 @@
-# Rozšířená volební kalkulačka 1920 & Jazyková neutralizace otázek
+# Rozšířená volební kalkulačka 1946 (15 základních + 25 rozšiřujících otázek)
 
-Revidovaný plán pro rozšířenou verzi volební kalkulačky pro parlamentní volby 1920 (režim 15 základních vs. 37 otázek v rozšířené verzi), doplnění historických vysvětlivek a celkovou revizi jazyka otázek i kontextů (odstranění citově zabarvených slov a zjemnění formulací).
-
----
-
-### Uživatelské shrnutí & Potvrzená rozhodnutí
-
-> [!IMPORTANT]
-> **Klíčové požadavky a rozhodnutí:**
-> 1. **Jazyková neutralita a zjemnění (v celém kvízu):**
->    - Odstranění emotivních, přepjatých a absolutních výrazů (např. *obrovská*, *výrazně*, *kritický*, *naprostý*, *absolutní*).
->    - Nahrazení striktních imperativů typu *musí* a *nesmí* za doporučující formy *měl by* a *neměl by*.
->    - Zajištění maximální objektivity v otázkách i vysvětlivkách, aby text respondenta nenaváděl a neprozrazoval stranické preference.
-> 2. **Struktura otázek 1920:**
->    - **Základní verze:** 15 původních otázek s doplněnými historickými vysvětlivkami a zjemněnými formulacemi.
->    - **Rozšířená verze:** 37 otázek (15 základních + 22 doplňujících tematických otázek).
-> 3. **Postupné doplnění doplňujících otázek:**
->    - Otázky 1–5 a 6–10 (celkem 10 z 22 dodatečných) jsou plně formulovány a připraveny k nasazení.
->    - Pro zbývající otázky 11–22 bude připravena struktura pro okamžité doplnění po zaslání uživatelem.
+Tento plán detailně popisuje architekturu a postup přidání rozšířené varianty volební kalkulačky pro parlamentní volby do Ústavodárného národního shromáždění v květnu 1946. Kalkulačka bude mít k dispozici jak základní verzi (15 stěžejních otázek), tak plnou rozšířenou verzi (40 otázek), shodně s rokem 1920.
 
 ---
 
-## 1. Jazykový a stylistický standard (Tone of Voice)
+## 1. Uživatelská rozhodnutí a metodologický rámec
 
-Všechna tvrzení a vysvětlivky projdou jazykovou korekturou podle těchto pravidel:
-
-| Původní / nevhodný styl | Upravený neutrální styl | Odůvodnění |
-| :--- | :--- | :--- |
-| *Stát musí zabavit...* | *Stát by měl převzít...* | Odstranění imperativu *musí* ve prospěch hodnotícího *měl by* |
-| *Stát nesmí dovolit...* | *Stát by neměl umožňovat...* | Zjemnění striktního zákazu *nesmí* |
-| *Obrovská inflace / kritický nedostatek* | *Zvýšená inflace / nedostatek bytů* | Odstranění emotivních a zveličujících přívlastků |
-| *Výrazně omezit / naprosto zakázat* | *Omezit / regulovat* | Odstranění zesilujících zájmen a příslovcí |
-| *Absolutní rovnost* | *Rovné postavení* | Vyváženější a věcnější formulace |
-
----
-
-## 2. Uživatelská zkušenost & UI Design
-
-### Tok uživatele (User Flows)
-1. **Volba verze kalkulačky u voleb 1920:**
-   - Přepínač na úvodní kartě voleb 1920:
-     - `Základní verze (15 otázek)` – rychlé porovnání stěžejních témat.
-     - `Rozšířená verze (37 otázek)` – detailní historická analýza (15 základních + 22 doplňujících).
-2. **Průběh kalkulačky:**
-   - Indikátor postupu (např. *Otázka 6 z 37* vs. *Otázka 6 z 15*).
-   - Text otázky se zjemněnou a vyváženou formulací.
-   - Decentní ikona `(?)` vedle tvrzení – po najetí myší nebo klepnutí na mobilu otevře kontextový box s historickým pozadím.
-   - Texty v kontextovém boxu i informačních blocích formátovány se zarovnáním do bloku (`text-justify hyphens-auto`).
-3. **Vyhodnocení shody:**
-   - Výpočet procentuální shody se všemi 8 parlamentními stranami roku 1920 (ČSSD, RSZML, ČSL, ČSNS, ČSND, DSAP, BdL, SĽS).
-   - Transparentní rozpad shody po jednotlivých otázkách.
+Na základě potvrzených preferencí:
+1. **Struktura sady pro rok 1946:**
+   - **Základní verze (15 otázek):** Zůstává 15 původních otázek (id: 1–15) pokrývajících zásadní poválečné otázky (odsun, Košický vládní program, znárodnění průmyslu, zahraniční orientace na SSSR vs. Západ, retribuční soudnictví atd.).
+   - **Rozšířená verze (40 otázek):** Skládá se z původních 15 základních otázek (id: 1–15) + 25 nových tematických otázek (id: 16–40).
+2. **Přísně neutrální a objektivní styl vysvětlivek:**
+   - Texty v polích `context` a `historicalNote` nesmí vyzrazovat, které konkrétní strany hlasovaly PRO a které PROTI.
+   - Kontext musí popsat věcný spor, historické dilema a argumenty obou stran bez hodnotících soudů a bez jmenování stranických zkratek, aby vysvětlivka nepředjímala výsledek respondenta.
+   - Jazyk tvrzení dodržuje doporučující formát (*„stát by měl / neměl“*), bez expresivních slov.
+3. **Fázování doplňování otázek:**
+   - **Fáze 1 (okamžitá):** Příprava infrastruktury v `electionsData.ts` a nasazení kompletních otázek **16, 17 a 18** (včetně neutrálního kontextu a ověřených stranických postojů).
+   - **Fáze 2 (navazující):** Doplnění otázek **19 až 40** podle finálního seznamu (otázka 19 byla načata: *Zrušení přídělového systému na potraviny*; zbývající otázky uživatel dodá nebo je doplníme v dohodnutém znění).
 
 ---
 
-## 3. Datový model & Architektura
+## 2. Navržené změny v kódu
 
-```
-┌────────────────────────────────────────────────────────────────────────┐
-│                        electionsData.ts                                │
-├────────────────────────────────────────────────────────────────────────┤
-│ 1920 Election Definition:                                              │
-│  ├── questions: Question[] (15 položek s historickými kontexty)        │
-│  │    └── jazykově zjemněno (nahrazeno "musí/nesmí", smazány superlativy)│
-│  └── expandedQuestions: Question[] (37 položek celkem)                 │
-│       ├── [1..15] 15 základních otázek                                 │
-│       ├── [16..20] Doplňující otázky 1-5 (Dávka, Celibát, Tituly...)   │
-│       ├── [21..25] Doplňující otázky 6-10 (Armáda, Rolníci, Vojáci...) │
-│       └── [26..37] Doplňující otázky 11-22 (připravený slot pro data)  │
-└───────────────────────────────────┬────────────────────────────────────┘
-                                    │
-                                    ▼
-┌────────────────────────────────────────────────────────────────────────┐
-│                       Quiz / App Components                            │
-├────────────────────────────────────────────────────────────────────────┤
-│  ├── Mode Switcher: Základní (15) / Rozšířená (37)                     │
-│  ├── Question Context Tooltip & Modal: Neutrální historické vysvětlení │
-│  └── Match Calculator: Podpora dynamického počtu otázek                │
-└────────────────────────────────────────────────────────────────────────┘
-```
+### A. Datová vrstva (`src/data/electionsData.ts`)
 
-### Přehled dosud dodaných dodatečných otázek (1 až 10 z 22) se zjemněným jazykem:
-1. **Dávka z majetku (Mimořádné zdanění majetku):** Stát by měl zavést jednorázovou daň z majetku nabytého během války, aby pomohl stáhnout znehodnocené peníze a vyrovnal dluhy.
-2. **Zrušení celibátu učitelek:** Učitelky by měly mít právo se vdát a založit rodinu, aniž by tím automaticky ztratily místo ve státní škole.
-3. **Odstranění šlechtických titulů:** Stát by neměl tolerovat další užívání aristokratických titulů, protože v demokratické republice by si měli být všichni rovni bez ohledu na původ.
-4. **Státní podpora bytových družstev a ochrana nájemníků:** Stát by měl chránit nájemníky regulací nájmů a finančně podporovat výstavbu dělnických bytů.
-5. **Omezování alkoholu:** Stát by měl omezit prodej alkoholických nápojů a zakázat jejich podávání mladistvým.
-6. **Branná povinnost a armáda:** Československo by se mělo vyhnout budování stálé armády a nahradit ji dobrovolnickými milicemi, případně zkrátit povinnou vojenskou službu.
-7. **Nemocenské a úrazové pojištění rolníků:** Státní sociální pojištění by se mělo rozšířit i na samostatně hospodařící rolníky, nikoliv chránit pouze dělníky v továrnách.
-8. **Volební právo vojáků:** Vojáci v činné službě by neměli mít volební právo, aby se předešlo politizaci ozbrojených složek.
-9. **Zrovnoprávnění nemanželských dětí:** Zákon by měl zajistit, aby nemanželské děti měly v dědickém právu rovné postavení jako děti narozené v manželském svazku.
-10. **Zastoupení menšin ve státní správě:** Místa úředníků, policistů a soudců v pohraničí by se měla obsazovat loajálními občany Československa i za cenu toho, že budou uvolněni dosavadní zaměstnanci německé národnosti.
+1. **Definice `expandedQuestions` pro rok 1946:**
+   - Přidání pole `expandedQuestions: Question[]` do objektu `ELECTIONS_DATA[1946]`.
+   - Prvních 15 položek bude odpovídat stávajícím otázkám 1–15 z roku 1946, se zachováním jejich postojů stran `ksc`, `csns`, `csl`, `ds`, `cssd`, `kss` (příp. `ssl`, `sp`).
+   - Přidání otázek 16–18:
+     - **Otázka 16: Velikost přídělů půdy v pohraničí**
+       - *Kategorie:* Zemědělství a osidlování
+       - *Tvrzení:* Zkonfiskovaná půda v pohraničí by měla být rozdělena na menší příděly pro co nejvyšší počet bezzemků namísto vytváření větších selských statků.
+       - *Kontext / HistoricalNote:* Objektivní popis sporu mezi snahou o sociální stabilitu drobných rolníků (usedlosti do 13 ha) versus hospodářskou efektivitou větších statků.
+       - *Postoje:* `{ ksc: 1, csns: -1, csl: -1, ds: -1, cssd: 0, kss: 1 }`
+     - **Otázka 17: Zachování zemského zřízení Čech a Moravy se Slezskem**
+       - *Kategorie:* Státní správa a samospráva
+       - *Tvrzení:* V nové ústavě by mělo být zachováno historické zemské zřízení Čech a Moravy se Slezskem namísto rozdělení státu na menší kraje.
+       - *Kontext / HistoricalNote:* Spor o zachování tradiční zemské samosprávy s centry v Praze a Brně versus centralizovanější model menších krajů.
+       - *Postoje:* `{ ksc: -1, csns: 1, csl: 1, ds: 0, cssd: 0, kss: -1 }`
+     - **Otázka 18: Uvolnění vázaných vkladů z měnové reformy**
+       - *Kategorie:* Měnová politika a finance
+       - *Tvrzení:* Stát by měl občanům rychleji uvolnit peněžní úspory zmrazené na vázaných vkladech při měnové reformě z roku 1945.
+       - *Kontext / HistoricalNote:* Dilema mezi uvolněním úspor drobných střadatelů pro podporu spotřeby a investic versus obavou z inflační spirály a přebytečné kupní síly.
+       - *Postoje:* `{ ksc: -1, csns: 1, csl: 1, ds: 1, cssd: -1, kss: -1 }`
+     - **Příprava slotů pro otázky 19–40.**
+
+### B. Uživatelské rozhraní (`src/main.ts`)
+
+1. **Automatické zobrazení přepínače verzí pro rok 1946:**
+   - Karta roku 1946 na hlavní stránce již v šabloně obsahuje podmínku `${meta.expandedQuestions && meta.expandedQuestions.length > 0 ? ... : ''}`. Jakmile bude `expandedQuestions` přítomno, přepínač *Základní (15)* vs. *Rozšířená (40)* se u roku 1946 okamžitě a bezpečně aktivuje.
+2. **Přepínání stavu a volba počtu otázek:**
+   - Ve `state.selectedYearMode[1946]` bude možnost volit mezi `'standard'` a `'expanded'`.
+   - V kvízu i výsledcích se správně zobrazí počet otázek (např. *Otázka 1 z 40*).
 
 ---
 
-## 4. Fáze realizace
+## 3. Plán verifikace
 
-1. **Fáze 1: Jazyková neutralizace stávajících otázek a kontextů**
-   - Projít všech 15 základních otázek z roku 1920 i otázky z dalších volebních roků.
-   - Odstranit silná slova (*obrovský*, *výrazně*, *kritický*, *absolutní*), nahradit direktivní tvary *musí/nesmí* mírnějšími *měl by/neměl by*.
-2. **Fáze 2: Doplnění historických vysvětlivek k základním 15 otázkám roku 1920**
-   - Zformulovat věcný a nestranný historický kontext pro každou z 15 základních otázek roku 1920.
-3. **Fáze 3: Integrace doplňujících otázek 1–10 do `expandedQuestions`**
-   - Začlenit dodaných 10 otázek se specifikovanými stranickými postoji do rozšířené sady pro rok 1920.
-   - Připravit datové rozhraní pro vložení otázek 11–22.
-4. **Fáze 4: UI implementace přepínače a vysvětlivek**
-   - Implementovat přepínač mezi základním a rozšířeným režimem na detailu voleb 1920.
-   - Přidat interaktivní zobrazení historického kontextu (otazníček) s podporou zarovnání do bloku.
-5. **Fáze 5: Verifikace a sestavení aplikace**
-   - Spustit kontrolu typů a sestavení pomocí `compile_applet`.
+1. **Typová kontrola a build:**
+   - Spuštění `compile_applet` pro ověření bezchybné kompilace TypeScriptu a Vite bundle.
+2. **Funkční ověření:**
+   - Otevření úvodní stránky: ověření, že u roku 1946 se zobrazuje volba režimu (15 vs. 40 otázek).
+   - Spuštění kalkulačky pro rok 1946 v základním i rozšířeném režimu.
+   - Kontrola zobrazení kontextového okna s neutrálním vysvětlením (žádné prozrazení postojů stran).
+   - Kontrola správného výpočtu procentuální shody se stranami (KSČ, ČSNS, ČSL, DS, ČSSD, KSS).
+
+---
+
+## 4. Stav realizace
+
+- [x] **Fáze 1 (Hotovo):**
+  - Do `ELECTIONS_DATA[1946]` bylo implementováno pole `expandedQuestions`.
+  - Začleněno 15 základních otázek (id 1–15) s doplněnými stručnými názvy (`title`) a historickými kontexty.
+  - Úspěšně přidány otázky 16, 17 a 18 s neutrálními, objektivními texty bez prozrazení postojů stran:
+    - **16:** Velikost přídělů půdy v pohraničí
+    - **17:** Zachování zemského zřízení Čech a Moravy se Slezskem
+    - **18:** Uvolnění vázaných vkladů z měnové reformy
+  - Aplikace zkompilována a otestována bez chyb (`compile_applet` & `lint_applet` proběhly úspěšně).
+  - Přepínač základní/rozšířené verze na kartě roku 1946 se automaticky zobrazil a je funkční.
+
+- [x] **Fáze 2 (Hotovo v plném rozsahu):**
+  - Do `expandedQuestions` pro rok 1946 bylo úspěšně integrováno všech 25 rozšiřujících otázek (id: 16–40).
+  - Celkový počet otázek v rozšířené sadě roku 1946 nyní činí **přesně 40 otázek** (15 základních + 25 rozšiřujících).
+  - Všechny otázky (27–40):
+    - **27:** Volební právo od 18 let
+    - **28:** Daňové zrovnoprávnění živnostníků a družstev
+    - **29:** Obnova Senátu v nové ústavě
+    - **30:** Zachování víceletých gymnázií
+    - **31:** Rozdělování nadměrných bytů ve městech
+    - **32:** Zrušení všeobecné pracovní povinnosti
+    - **33:** Přesun průmyslových strojů z českého pohraničí na Slovensko
+    - **34:** Platové ohodnocení úředníků a inteligence
+    - **35:** Sjednocení zdravotního a sociálního pojištění
+    - **36:** Vyplacení náhrad za majetek znárodněný v roce 1945
+    - **37:** Rozdělování zemědělské techniky
+    - **38:** Vrácení majetku obětem nacistické perzekuce
+    - **39:** Pravomoci prezidenta republiky v nové ústavě
+    - **40:** Ochrana církevního pozemkového majetku
+  - Všechna tvrzení a vysvětlivky zachovávají maximální neutralitu, věcnost a absenci jakéhokoliv prozrazování stranických postojů.
+  - Tlačítko na úvodní kartě nyní automaticky nabízí: `Základní (15)` a `Rozšířená (40)`.
+  - Projekt bezchybně kompiluje a prošel typovou kontrolou.
+

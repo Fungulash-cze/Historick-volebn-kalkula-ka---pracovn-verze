@@ -1,6 +1,6 @@
 {
-  "summary": "Revidovaný implementační plán pro kalkulačku 1920 i celý kvíz:\n- Jazyková neutralizace: odstranění emotivních výrazů (\"obrovská\", \"výrazně\", \"kritický\", \"absolutní\"), nahrazení imperativů \"musí\"/\"nesmí\" tvary \"měl by\"/\"neměl by\"\n- Základní verze: 15 otázek s historickými vysvětlivkami v neutrálním tónu\n- Rozšířená verze: celkem 37 otázek (15 základních + 22 doplňujících), aktuálně zapracováno 10 dodaných otázek a připraveno pro zbývajících 12\n- Zarovnání textů do bloku a interaktivní zobrazení kontextu u otázek",
-  "updatedAt": "2026-10-13T20:41:24.005058861Z",
+  "summary": "Plán implementace rozšířené varianty volební kalkulačky pro rok 1946 (40 otázek), metodika zpracování otázek 16–40, neutrální formulace a technické kroky pro electionsData.ts a UI.",
+  "updatedAt": "2026-10-17T12:32:04.611663315Z",
   "requestFeedback": true,
   "userFacing": true
 }
