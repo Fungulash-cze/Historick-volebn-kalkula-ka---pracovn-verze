@@ -33,11 +33,11 @@ service cloud.firestore {
              data.keys().hasOnly(['year', 'mode', 'topPartyId', 'topPartyMatch', 'partyMatches', 'ageGroup', 'votedParty2021', 'answersCount', 'createdAt']) &&
              (data.year == 1920 || data.year == 1946 || data.year == 1990) &&
              (data.mode == 'standard' || data.mode == 'expanded') &&
-             data.topPartyId is string && data.topPartyId.size() > 0 && data.topPartyId.size() <= 32 &&
+             data.topPartyId is string && data.topPartyId.size() > 0 && data.topPartyId.size() <= 64 &&
              data.topPartyMatch is number && data.topPartyMatch >= 0 && data.topPartyMatch <= 100 &&
-             data.ageGroup is string && data.ageGroup.size() > 0 && data.ageGroup.size() <= 32 &&
-             data.votedParty2021 is string && data.votedParty2021.size() > 0 && data.votedParty2021.size() <= 64 &&
-             data.answersCount is number && data.answersCount >= 1 && data.answersCount <= 50;
+             data.ageGroup is string && data.ageGroup.size() > 0 && data.ageGroup.size() <= 64 &&
+             data.votedParty2021 is string && data.votedParty2021.size() > 0 && data.votedParty2021.size() <= 128 &&
+             data.answersCount is number && data.answersCount >= 0 && data.answersCount <= 100;
     }
 
     // Default deny
@@ -49,9 +49,7 @@ service cloud.firestore {
     match /site_metrics/{date} {
       allow read: if true;
       allow create: if isValidId(date) && isValidDate(date) && date == incoming().date && isValidDailyMetric(incoming());
-      allow update: if isValidId(date) && isValidDailyMetric(incoming()) &&
-                       incoming().date == existing().date &&
-                       incoming().diff(existing()).affectedKeys().hasOnly(['pageViews', 'quizStarts', 'quizCompletions', 'updatedAt']);
+      allow update: if isValidId(date) && isValidDailyMetric(incoming()) && incoming().date == existing().date;
       allow delete: if false;
     }
 

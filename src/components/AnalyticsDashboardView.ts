@@ -25,6 +25,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
           <h1 class="text-xl font-black text-zinc-900 tracking-tight mb-2">
             Administrátorský přístup
           </h1>
+
           <p class="text-xs text-zinc-500 mb-6 leading-relaxed">
             Přístup k anonymním statistikám a datům z kalkulačky je vyhrazen pouze pro správce projektu.
           </p>
@@ -71,7 +72,6 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
               ← Zpět na úvodní stránku
             </button>
           </form>
-
         </div>
       </div>
     `;
@@ -112,9 +112,9 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
       <!-- Horní navigační lišta dashboardu -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-zinc-200">
         <div>
-          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-800 text-[11px] font-bold mb-1.5 uppercase tracking-wider border border-emerald-200">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            Administrace ověřena (Heslo)
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-stone-100 text-stone-700 text-[11px] font-bold mb-1.5 uppercase tracking-wider border border-stone-200">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            Skrytý odkaz · Živá data z databáze
           </div>
           <h1 class="text-xl sm:text-2xl font-black text-zinc-900 tracking-tight">
             Statistiky návštěvnosti a výsledků
@@ -128,12 +128,12 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
           <button
             type="button"
             onclick="window.calcRefreshStats()"
-            class="px-3 py-2 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-700 text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer border border-zinc-200"
+            class="px-3.5 py-2 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-800 text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer border border-zinc-200"
           >
-            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg class="w-3.5 h-3.5 text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.03 0 01-15.357-2m15.357 2H15" />
             </svg>
-            <span>Obnovit</span>
+            <span>Obnovit data</span>
           </button>
 
           <button
@@ -150,7 +150,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
           <button
             type="button"
             onclick="window.calcAdminLogout()"
-            class="px-3 py-2 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-700 text-xs font-semibold transition-colors cursor-pointer border border-zinc-200"
+            class="px-3.5 py-2 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-700 text-xs font-semibold transition-colors cursor-pointer border border-zinc-200"
           >
             Zamknout / Odhlásit
           </button>
@@ -158,9 +158,9 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
           <button
             type="button"
             onclick="window.calcSetView('home')"
-            class="px-3 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-semibold transition-colors cursor-pointer"
+            class="px-3.5 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-semibold transition-colors cursor-pointer"
           >
-            ← Zpět na web
+            ← Zpět na kalkulačku
           </button>
         </div>
       </div>

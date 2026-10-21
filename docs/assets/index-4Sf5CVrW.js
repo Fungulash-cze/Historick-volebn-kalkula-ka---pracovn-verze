@@ -465,226 +465,98 @@ Total Duration: ${c-l}ms`),K.resolve({didRun:!0,sequenceNumbersCollected:r,targe
         <div class="h-2 rounded-full" style="width: ${i}%; background-color: ${r}"></div>
       </div>
     </div>
-  `}function Zx(e,t,n,r){let i=n[0],a=n[1],o=n[2];return i?`
-    <div class="bg-gradient-to-br from-zinc-900 via-zinc-950 to-black text-white rounded-2xl p-6 sm:p-8 mb-8 shadow-xl border border-zinc-800 relative overflow-hidden">
-      <!-- Jemný barevný odlesk nahoře -->
-      <div 
-        class="absolute -top-24 -right-24 w-72 h-72 rounded-full blur-3xl opacity-20 pointer-events-none"
-        style="background-color: ${i.party.color};"
-      ></div>
+  `}function Zx(e,t,n,r){if(!r.isModalOpen)return``;let i=n[0];return`
+    <div 
+      id="ballot-modal-backdrop"
+      onclick="if (event.target === this) window.calcCloseBallotModal();"
+      class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-stone-900/60 backdrop-blur-sm animate-fadeIn"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="share-modal-title"
+    >
+      <div class="relative max-w-md sm:max-w-lg w-full max-h-[90vh] bg-[#FAF7F2] border border-[#E8E1D5] rounded-3xl shadow-2xl p-4 sm:p-6 flex flex-col items-center overflow-hidden my-auto">
+        
+        <!-- Barevná linka odkazující na vítěznou stranu -->
+        <div 
+          class="absolute top-0 left-0 right-0 h-2"
+          style="background-color: ${i?i.party.color:`#B45309`};"
+        ></div>
 
-      <div class="relative z-10">
-        <!-- Hlavička sekce -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-zinc-800 mb-6">
-          <div>
-            <div class="flex items-center gap-2 text-xs font-bold text-zinc-400 uppercase tracking-widest mb-1">
-              <span>Sdílení výsledku</span>
-              <span>·</span>
-              <span>Volební lístek</span>
-            </div>
-            <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
-              Váš osobní volební lístek pro rok ${e}
-            </h2>
-            <p class="text-xs sm:text-sm text-zinc-400 mt-1 max-w-xl">
-              Grafická infografická karta optimalizovaná pro sociální sítě s vaší shodou, umístěním TOP 3 stran a QR kódem.
-            </p>
-          </div>
+        <!-- Zavírací tlačítko -->
+        <button 
+          onclick="window.calcCloseBallotModal()"
+          class="absolute top-3.5 right-3.5 text-stone-400 hover:text-stone-800 p-1.5 rounded-full hover:bg-stone-200/60 transition-colors cursor-pointer"
+          aria-label="Zavřít"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
 
-          <!-- Tlačítka akcí -->
-          <div class="flex flex-wrap sm:flex-nowrap items-center gap-2.5 shrink-0">
-            <button 
-              onclick="window.calcShareBallot()"
-              id="ballot-share-btn"
-              class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white text-zinc-900 hover:bg-zinc-100 font-bold text-xs tracking-tight transition-all shadow-md cursor-pointer active:scale-95"
-            >
-              <svg class="w-4 h-4 text-zinc-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-              </svg>
-              <span>Sdílet lístek</span>
-            </button>
-
-            <button 
-              onclick="window.calcDownloadBallot()"
-              id="ballot-download-btn"
-              class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-100 border border-zinc-700 font-semibold text-xs tracking-tight transition-all cursor-pointer active:scale-95"
-            >
-              <svg class="w-4 h-4 text-zinc-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-              <span>Stáhnout PNG</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Náhled lístku a pódium -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-          
-          <!-- Levá část: Živý náhled karty -->
-          <div class="lg:col-span-6 flex flex-col items-center">
-            <div 
-              onclick="window.calcOpenBallotModal()"
-              class="group relative max-w-sm w-full bg-zinc-950 rounded-2xl p-4 border border-zinc-800 shadow-2xl transition-all duration-300 hover:border-zinc-700 hover:shadow-zinc-800/30 cursor-pointer overflow-hidden"
-              title="Klikněte pro zvětšení lístku"
-            >
-              ${r.previewDataUrl?`
-                <img 
-                  src="${r.previewDataUrl}" 
-                  alt="Volební lístek ${e}"
-                  class="w-full h-auto rounded-xl object-contain shadow-inner block"
-                />
-              `:`
-                <div class="w-full aspect-[4/5] bg-zinc-900/80 rounded-xl flex flex-col items-center justify-center p-6 text-center animate-pulse">
-                  <svg class="w-10 h-10 text-zinc-500 mb-3 animate-spin" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                  </svg>
-                  <span class="text-xs font-semibold text-zinc-400">Připravuji grafický lístek v HD...</span>
-                </div>
-              `}
-
-              <!-- Hover overlay s ikonou lupy -->
-              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-2xl pointer-events-none">
-                <span class="px-3.5 py-1.5 rounded-full bg-zinc-900/90 text-white text-xs font-semibold border border-zinc-700 shadow-lg flex items-center gap-1.5">
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                  </svg>
-                  Zvětšit náhled
-                </span>
-              </div>
-            </div>
-            <span class="text-[11px] text-zinc-500 mt-2 font-medium">
-              Formát 1080 × 1350 px · 2× Retina HD · Ideální pro Instagram, WhatsApp a X
-            </span>
-          </div>
-
-          <!-- Pravá část: Souhrn informací na lístku -->
-          <div class="lg:col-span-6 space-y-4">
-            
-            <!-- 1. Místo box -->
-            <div class="p-4 rounded-xl bg-zinc-900/80 border border-zinc-800">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">1. místo · Vaše shoda</span>
-                <span class="text-2xl font-extrabold text-white font-mono">${i.matchPercentage} %</span>
-              </div>
-              <div class="flex items-center gap-2.5 mb-2">
-                <div class="w-2 h-7 rounded-full shrink-0" style="background-color: ${i.party.color};"></div>
-                <div>
-                  <strong class="text-sm font-bold text-white">${i.party.shortName}</strong>
-                  <span class="text-xs text-zinc-400 block">${i.party.fullName}</span>
-                </div>
-              </div>
-              <p class="text-xs text-zinc-400 line-clamp-2">
-                ${i.party.programHighlight}
-              </p>
-            </div>
-
-            <!-- Pódium 2. a 3. místa -->
-            <div class="grid grid-cols-2 gap-3">
-              ${a?`
-                <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800/80">
-                  <div class="flex items-center justify-between text-[11px] text-zinc-400 mb-1">
-                    <span>2. místo</span>
-                    <strong class="text-white font-mono font-bold">${a.matchPercentage} %</strong>
-                  </div>
-                  <div class="flex items-center gap-2 mb-1.5">
-                    <span class="w-1.5 h-3.5 rounded-full shrink-0" style="background-color: ${a.party.color};"></span>
-                    <strong class="text-xs text-white truncate">${a.party.shortName}</strong>
-                  </div>
-                  <div class="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden">
-                    <div class="h-full rounded-full" style="width: ${a.matchPercentage}%; background-color: ${a.party.color};"></div>
-                  </div>
-                </div>
-              `:``}
-
-              ${o?`
-                <div class="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800/80">
-                  <div class="flex items-center justify-between text-[11px] text-zinc-400 mb-1">
-                    <span>3. místo</span>
-                    <strong class="text-white font-mono font-bold">${o.matchPercentage} %</strong>
-                  </div>
-                  <div class="flex items-center gap-2 mb-1.5">
-                    <span class="w-1.5 h-3.5 rounded-full shrink-0" style="background-color: ${o.party.color};"></span>
-                    <strong class="text-xs text-white truncate">${o.party.shortName}</strong>
-                  </div>
-                  <div class="w-full bg-zinc-800 h-1.5 rounded-full overflow-hidden">
-                    <div class="h-full rounded-full" style="width: ${o.matchPercentage}%; background-color: ${o.party.color};"></div>
-                  </div>
-                </div>
-              `:``}
-            </div>
-
-            <!-- Výhody a tip ke sdílení -->
-            <div class="p-3.5 rounded-xl bg-zinc-900/40 border border-zinc-800/60 flex items-start gap-3">
-              <span class="text-base">📱</span>
-              <div class="text-xs text-zinc-400 leading-relaxed">
-                <strong class="text-zinc-200">Tip ke sdílení:</strong>
-                Na mobilu otevře tlačítko <em class="text-zinc-200 not-italic font-semibold">„Sdílet lístek“</em> přímé sdílení do Stories nebo chatu. Na počítači stáhnete čistý obrázek PNG.
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- Modální okno pro detailní zvětšený náhled -->
-    ${r.isModalOpen&&r.previewDataUrl?`
-      <div 
-        id="ballot-modal-backdrop"
-        onclick="if (event.target === this) window.calcCloseBallotModal();"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn"
-      >
-        <div class="relative max-w-lg w-full bg-zinc-900 border border-zinc-700 rounded-2xl shadow-2xl p-5 flex flex-col items-center">
-          
-          <!-- Zavírací křížek -->
-          <button 
-            onclick="window.calcCloseBallotModal()"
-            class="absolute top-4 right-4 text-zinc-400 hover:text-white p-1 rounded-lg hover:bg-zinc-800 transition-colors cursor-pointer"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-
-          <h3 class="text-base font-bold text-white mb-3 text-center pr-6">
-            Volební lístek – Volby ${e}
+        <!-- Hlavička modálního okna -->
+        <div class="text-center mt-1 mb-3">
+          <span class="text-[11px] font-bold text-stone-500 uppercase tracking-widest block mb-0.5">
+            Sdílení výsledku
+          </span>
+          <h3 id="share-modal-title" class="text-lg sm:text-xl font-extrabold text-stone-900 tracking-tight">
+            Váš výsledek – Volby ${e}
           </h3>
+        </div>
 
-          <div class="max-h-[70vh] overflow-y-auto rounded-xl border border-zinc-800 shadow-inner mb-4">
+        <!-- Náhled grafického výsledku (perfektně dimenzovaný, aby byl celý okamžitě vidět bez scrollování) -->
+        <div class="w-full flex-1 max-h-[52vh] sm:max-h-[56vh] overflow-hidden rounded-2xl border border-[#E5DEC3]/80 bg-white shadow-xs mb-4 p-2 flex items-center justify-center">
+          ${r.previewDataUrl?`
             <img 
               src="${r.previewDataUrl}" 
-              alt="Volební lístek ${e} HD"
-              class="w-full h-auto object-contain block"
+              alt="Výsledek voleb ${e}"
+              class="max-h-[50vh] sm:max-h-[54vh] w-auto h-auto object-contain rounded-xl block mx-auto"
             />
-          </div>
-
-          <div class="flex items-center gap-3 w-full justify-center">
-            <button 
-              onclick="window.calcShareBallot()"
-              class="flex-1 max-w-[200px] px-4 py-2.5 rounded-xl bg-white text-zinc-900 hover:bg-zinc-100 font-bold text-xs tracking-tight transition-colors shadow-md text-center cursor-pointer"
-            >
-              Sdílet lístek
-            </button>
-            <button 
-              onclick="window.calcDownloadBallot()"
-              class="flex-1 max-w-[200px] px-4 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white border border-zinc-700 font-semibold text-xs tracking-tight transition-colors text-center cursor-pointer"
-            >
-              Stáhnout PNG
-            </button>
-          </div>
-
+          `:`
+            <div class="w-full aspect-[4/5] bg-stone-50 rounded-xl flex flex-col items-center justify-center p-6 text-center">
+              <svg class="w-8 h-8 text-stone-400 mb-2 animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+              </svg>
+              <span class="text-xs font-semibold text-stone-600">Připravuji obrázek výsledku...</span>
+            </div>
+          `}
         </div>
+
+        <!-- Akční tlačítka ke sdílení a stažení -->
+        <div class="flex flex-wrap sm:flex-nowrap items-center gap-2.5 w-full shrink-0">
+          <button 
+            onclick="window.calcShareBallot()"
+            id="modal-share-btn"
+            class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs tracking-tight transition-all shadow-sm cursor-pointer active:scale-95"
+          >
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+            </svg>
+            <span>Sdílet výsledek</span>
+          </button>
+
+          <button 
+            onclick="window.calcDownloadBallot()"
+            id="modal-download-btn"
+            class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-stone-50 text-stone-800 border border-[#DDD5C7] font-semibold text-xs tracking-tight transition-all cursor-pointer active:scale-95 shadow-2xs"
+          >
+            <svg class="w-4 h-4 text-stone-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            <span>Stáhnout PNG</span>
+          </button>
+        </div>
+
       </div>
-    `:``}
-  `:``}var Qx=o(((e,t)=>{t.exports=function(){return typeof Promise==`function`&&Promise.prototype&&Promise.prototype.then}})),$x=o((e=>{var t,n=[0,26,44,70,100,134,172,196,242,292,346,404,466,532,581,655,733,815,901,991,1085,1156,1258,1364,1474,1588,1706,1828,1921,2051,2185,2323,2465,2611,2761,2876,3034,3196,3362,3532,3706];e.getSymbolSize=function(e){if(!e)throw Error(`"version" cannot be null or undefined`);if(e<1||e>40)throw Error(`"version" should be in range from 1 to 40`);return e*4+17},e.getSymbolTotalCodewords=function(e){return n[e]},e.getBCHDigit=function(e){let t=0;for(;e!==0;)t++,e>>>=1;return t},e.setToSJISFunction=function(e){if(typeof e!=`function`)throw Error(`"toSJISFunc" is not a valid function.`);t=e},e.isKanjiModeEnabled=function(){return t!==void 0},e.toSJIS=function(e){return t(e)}})),eS=o((e=>{e.L={bit:1},e.M={bit:0},e.Q={bit:3},e.H={bit:2};function t(t){if(typeof t!=`string`)throw Error(`Param is not a string`);switch(t.toLowerCase()){case`l`:case`low`:return e.L;case`m`:case`medium`:return e.M;case`q`:case`quartile`:return e.Q;case`h`:case`high`:return e.H;default:throw Error(`Unknown EC Level: `+t)}}e.isValid=function(e){return e&&e.bit!==void 0&&e.bit>=0&&e.bit<4},e.from=function(n,r){if(e.isValid(n))return n;try{return t(n)}catch{return r}}})),tS=o(((e,t)=>{function n(){this.buffer=[],this.length=0}n.prototype={get:function(e){let t=Math.floor(e/8);return(this.buffer[t]>>>7-e%8&1)==1},put:function(e,t){for(let n=0;n<t;n++)this.putBit((e>>>t-n-1&1)==1)},getLengthInBits:function(){return this.length},putBit:function(e){let t=Math.floor(this.length/8);this.buffer.length<=t&&this.buffer.push(0),e&&(this.buffer[t]|=128>>>this.length%8),this.length++}},t.exports=n})),nS=o(((e,t)=>{function n(e){if(!e||e<1)throw Error(`BitMatrix size must be defined and greater than 0`);this.size=e,this.data=new Uint8Array(e*e),this.reservedBit=new Uint8Array(e*e)}n.prototype.set=function(e,t,n,r){let i=e*this.size+t;this.data[i]=n,r&&(this.reservedBit[i]=!0)},n.prototype.get=function(e,t){return this.data[e*this.size+t]},n.prototype.xor=function(e,t,n){this.data[e*this.size+t]^=n},n.prototype.isReserved=function(e,t){return this.reservedBit[e*this.size+t]},t.exports=n})),rS=o((e=>{var t=$x().getSymbolSize;e.getRowColCoords=function(e){if(e===1)return[];let n=Math.floor(e/7)+2,r=t(e),i=r===145?26:Math.ceil((r-13)/(2*n-2))*2,a=[r-7];for(let e=1;e<n-1;e++)a[e]=a[e-1]-i;return a.push(6),a.reverse()},e.getPositions=function(t){let n=[],r=e.getRowColCoords(t),i=r.length;for(let e=0;e<i;e++)for(let t=0;t<i;t++)e===0&&t===0||e===0&&t===i-1||e===i-1&&t===0||n.push([r[e],r[t]]);return n}})),iS=o((e=>{var t=$x().getSymbolSize,n=7;e.getPositions=function(e){let r=t(e);return[[0,0],[r-n,0],[0,r-n]]}})),aS=o((e=>{e.Patterns={PATTERN000:0,PATTERN001:1,PATTERN010:2,PATTERN011:3,PATTERN100:4,PATTERN101:5,PATTERN110:6,PATTERN111:7};var t={N1:3,N2:3,N3:40,N4:10};e.isValid=function(e){return e!=null&&e!==``&&!isNaN(e)&&e>=0&&e<=7},e.from=function(t){return e.isValid(t)?parseInt(t,10):void 0},e.getPenaltyN1=function(e){let n=e.size,r=0,i=0,a=0,o=null,s=null;for(let c=0;c<n;c++){i=a=0,o=s=null;for(let l=0;l<n;l++){let n=e.get(c,l);n===o?i++:(i>=5&&(r+=t.N1+(i-5)),o=n,i=1),n=e.get(l,c),n===s?a++:(a>=5&&(r+=t.N1+(a-5)),s=n,a=1)}i>=5&&(r+=t.N1+(i-5)),a>=5&&(r+=t.N1+(a-5))}return r},e.getPenaltyN2=function(e){let n=e.size,r=0;for(let t=0;t<n-1;t++)for(let i=0;i<n-1;i++){let n=e.get(t,i)+e.get(t,i+1)+e.get(t+1,i)+e.get(t+1,i+1);(n===4||n===0)&&r++}return r*t.N2},e.getPenaltyN3=function(e){let n=e.size,r=0,i=0,a=0;for(let t=0;t<n;t++){i=a=0;for(let o=0;o<n;o++)i=i<<1&2047|e.get(t,o),o>=10&&(i===1488||i===93)&&r++,a=a<<1&2047|e.get(o,t),o>=10&&(a===1488||a===93)&&r++}return r*t.N3},e.getPenaltyN4=function(e){let n=0,r=e.data.length;for(let t=0;t<r;t++)n+=e.data[t];return Math.abs(Math.ceil(n*100/r/5)-10)*t.N4};function n(t,n,r){switch(t){case e.Patterns.PATTERN000:return(n+r)%2==0;case e.Patterns.PATTERN001:return n%2==0;case e.Patterns.PATTERN010:return r%3==0;case e.Patterns.PATTERN011:return(n+r)%3==0;case e.Patterns.PATTERN100:return(Math.floor(n/2)+Math.floor(r/3))%2==0;case e.Patterns.PATTERN101:return n*r%2+n*r%3==0;case e.Patterns.PATTERN110:return(n*r%2+n*r%3)%2==0;case e.Patterns.PATTERN111:return(n*r%3+(n+r)%2)%2==0;default:throw Error(`bad maskPattern:`+t)}}e.applyMask=function(e,t){let r=t.size;for(let i=0;i<r;i++)for(let a=0;a<r;a++)t.isReserved(a,i)||t.xor(a,i,n(e,a,i))},e.getBestMask=function(t,n){let r=Object.keys(e.Patterns).length,i=0,a=1/0;for(let o=0;o<r;o++){n(o),e.applyMask(o,t);let r=e.getPenaltyN1(t)+e.getPenaltyN2(t)+e.getPenaltyN3(t)+e.getPenaltyN4(t);e.applyMask(o,t),r<a&&(a=r,i=o)}return i}})),oS=o((e=>{var t=eS(),n=[1,1,1,1,1,1,1,1,1,1,2,2,1,2,2,4,1,2,4,4,2,4,4,4,2,4,6,5,2,4,6,6,2,5,8,8,4,5,8,8,4,5,8,11,4,8,10,11,4,9,12,16,4,9,16,16,6,10,12,18,6,10,17,16,6,11,16,19,6,13,18,21,7,14,21,25,8,16,20,25,8,17,23,25,9,17,23,34,9,18,25,30,10,20,27,32,12,21,29,35,12,23,34,37,12,25,34,40,13,26,35,42,14,28,38,45,15,29,40,48,16,31,43,51,17,33,45,54,18,35,48,57,19,37,51,60,19,38,53,63,20,40,56,66,21,43,59,70,22,45,62,74,24,47,65,77,25,49,68,81],r=[7,10,13,17,10,16,22,28,15,26,36,44,20,36,52,64,26,48,72,88,36,64,96,112,40,72,108,130,48,88,132,156,60,110,160,192,72,130,192,224,80,150,224,264,96,176,260,308,104,198,288,352,120,216,320,384,132,240,360,432,144,280,408,480,168,308,448,532,180,338,504,588,196,364,546,650,224,416,600,700,224,442,644,750,252,476,690,816,270,504,750,900,300,560,810,960,312,588,870,1050,336,644,952,1110,360,700,1020,1200,390,728,1050,1260,420,784,1140,1350,450,812,1200,1440,480,868,1290,1530,510,924,1350,1620,540,980,1440,1710,570,1036,1530,1800,570,1064,1590,1890,600,1120,1680,1980,630,1204,1770,2100,660,1260,1860,2220,720,1316,1950,2310,750,1372,2040,2430];e.getBlocksCount=function(e,r){switch(r){case t.L:return n[(e-1)*4+0];case t.M:return n[(e-1)*4+1];case t.Q:return n[(e-1)*4+2];case t.H:return n[(e-1)*4+3];default:return}},e.getTotalCodewordsCount=function(e,n){switch(n){case t.L:return r[(e-1)*4+0];case t.M:return r[(e-1)*4+1];case t.Q:return r[(e-1)*4+2];case t.H:return r[(e-1)*4+3];default:return}}})),sS=o((e=>{var t=new Uint8Array(512),n=new Uint8Array(256);(function(){let e=1;for(let r=0;r<255;r++)t[r]=e,n[e]=r,e<<=1,e&256&&(e^=285);for(let e=255;e<512;e++)t[e]=t[e-255]})(),e.log=function(e){if(e<1)throw Error(`log(`+e+`)`);return n[e]},e.exp=function(e){return t[e]},e.mul=function(e,r){return e===0||r===0?0:t[n[e]+n[r]]}})),cS=o((e=>{var t=sS();e.mul=function(e,n){let r=new Uint8Array(e.length+n.length-1);for(let i=0;i<e.length;i++)for(let a=0;a<n.length;a++)r[i+a]^=t.mul(e[i],n[a]);return r},e.mod=function(e,n){let r=new Uint8Array(e);for(;r.length-n.length>=0;){let e=r[0];for(let i=0;i<n.length;i++)r[i]^=t.mul(n[i],e);let i=0;for(;i<r.length&&r[i]===0;)i++;r=r.slice(i)}return r},e.generateECPolynomial=function(n){let r=new Uint8Array([1]);for(let i=0;i<n;i++)r=e.mul(r,new Uint8Array([1,t.exp(i)]));return r}})),lS=o(((e,t)=>{var n=cS();function r(e){this.genPoly=void 0,this.degree=e,this.degree&&this.initialize(this.degree)}r.prototype.initialize=function(e){this.degree=e,this.genPoly=n.generateECPolynomial(this.degree)},r.prototype.encode=function(e){if(!this.genPoly)throw Error(`Encoder not initialized`);let t=new Uint8Array(e.length+this.degree);t.set(e);let r=n.mod(t,this.genPoly),i=this.degree-r.length;if(i>0){let e=new Uint8Array(this.degree);return e.set(r,i),e}return r},t.exports=r})),uS=o((e=>{e.isValid=function(e){return!isNaN(e)&&e>=1&&e<=40}})),dS=o((e=>{var t=`[0-9]+`,n=`[A-Z $%*+\\-./:]+`,r=`(?:[u3000-u303F]|[u3040-u309F]|[u30A0-u30FF]|[uFF00-uFFEF]|[u4E00-u9FAF]|[u2605-u2606]|[u2190-u2195]|u203B|[u2010u2015u2018u2019u2025u2026u201Cu201Du2225u2260]|[u0391-u0451]|[u00A7u00A8u00B1u00B4u00D7u00F7])+`;r=r.replace(/u/g,`\\u`);var i=`(?:(?![A-Z0-9 $%*+\\-./:]|`+r+`)(?:.|[\r
+    </div>
+  `}var Qx=o(((e,t)=>{t.exports=function(){return typeof Promise==`function`&&Promise.prototype&&Promise.prototype.then}})),$x=o((e=>{var t,n=[0,26,44,70,100,134,172,196,242,292,346,404,466,532,581,655,733,815,901,991,1085,1156,1258,1364,1474,1588,1706,1828,1921,2051,2185,2323,2465,2611,2761,2876,3034,3196,3362,3532,3706];e.getSymbolSize=function(e){if(!e)throw Error(`"version" cannot be null or undefined`);if(e<1||e>40)throw Error(`"version" should be in range from 1 to 40`);return e*4+17},e.getSymbolTotalCodewords=function(e){return n[e]},e.getBCHDigit=function(e){let t=0;for(;e!==0;)t++,e>>>=1;return t},e.setToSJISFunction=function(e){if(typeof e!=`function`)throw Error(`"toSJISFunc" is not a valid function.`);t=e},e.isKanjiModeEnabled=function(){return t!==void 0},e.toSJIS=function(e){return t(e)}})),eS=o((e=>{e.L={bit:1},e.M={bit:0},e.Q={bit:3},e.H={bit:2};function t(t){if(typeof t!=`string`)throw Error(`Param is not a string`);switch(t.toLowerCase()){case`l`:case`low`:return e.L;case`m`:case`medium`:return e.M;case`q`:case`quartile`:return e.Q;case`h`:case`high`:return e.H;default:throw Error(`Unknown EC Level: `+t)}}e.isValid=function(e){return e&&e.bit!==void 0&&e.bit>=0&&e.bit<4},e.from=function(n,r){if(e.isValid(n))return n;try{return t(n)}catch{return r}}})),tS=o(((e,t)=>{function n(){this.buffer=[],this.length=0}n.prototype={get:function(e){let t=Math.floor(e/8);return(this.buffer[t]>>>7-e%8&1)==1},put:function(e,t){for(let n=0;n<t;n++)this.putBit((e>>>t-n-1&1)==1)},getLengthInBits:function(){return this.length},putBit:function(e){let t=Math.floor(this.length/8);this.buffer.length<=t&&this.buffer.push(0),e&&(this.buffer[t]|=128>>>this.length%8),this.length++}},t.exports=n})),nS=o(((e,t)=>{function n(e){if(!e||e<1)throw Error(`BitMatrix size must be defined and greater than 0`);this.size=e,this.data=new Uint8Array(e*e),this.reservedBit=new Uint8Array(e*e)}n.prototype.set=function(e,t,n,r){let i=e*this.size+t;this.data[i]=n,r&&(this.reservedBit[i]=!0)},n.prototype.get=function(e,t){return this.data[e*this.size+t]},n.prototype.xor=function(e,t,n){this.data[e*this.size+t]^=n},n.prototype.isReserved=function(e,t){return this.reservedBit[e*this.size+t]},t.exports=n})),rS=o((e=>{var t=$x().getSymbolSize;e.getRowColCoords=function(e){if(e===1)return[];let n=Math.floor(e/7)+2,r=t(e),i=r===145?26:Math.ceil((r-13)/(2*n-2))*2,a=[r-7];for(let e=1;e<n-1;e++)a[e]=a[e-1]-i;return a.push(6),a.reverse()},e.getPositions=function(t){let n=[],r=e.getRowColCoords(t),i=r.length;for(let e=0;e<i;e++)for(let t=0;t<i;t++)e===0&&t===0||e===0&&t===i-1||e===i-1&&t===0||n.push([r[e],r[t]]);return n}})),iS=o((e=>{var t=$x().getSymbolSize,n=7;e.getPositions=function(e){let r=t(e);return[[0,0],[r-n,0],[0,r-n]]}})),aS=o((e=>{e.Patterns={PATTERN000:0,PATTERN001:1,PATTERN010:2,PATTERN011:3,PATTERN100:4,PATTERN101:5,PATTERN110:6,PATTERN111:7};var t={N1:3,N2:3,N3:40,N4:10};e.isValid=function(e){return e!=null&&e!==``&&!isNaN(e)&&e>=0&&e<=7},e.from=function(t){return e.isValid(t)?parseInt(t,10):void 0},e.getPenaltyN1=function(e){let n=e.size,r=0,i=0,a=0,o=null,s=null;for(let c=0;c<n;c++){i=a=0,o=s=null;for(let l=0;l<n;l++){let n=e.get(c,l);n===o?i++:(i>=5&&(r+=t.N1+(i-5)),o=n,i=1),n=e.get(l,c),n===s?a++:(a>=5&&(r+=t.N1+(a-5)),s=n,a=1)}i>=5&&(r+=t.N1+(i-5)),a>=5&&(r+=t.N1+(a-5))}return r},e.getPenaltyN2=function(e){let n=e.size,r=0;for(let t=0;t<n-1;t++)for(let i=0;i<n-1;i++){let n=e.get(t,i)+e.get(t,i+1)+e.get(t+1,i)+e.get(t+1,i+1);(n===4||n===0)&&r++}return r*t.N2},e.getPenaltyN3=function(e){let n=e.size,r=0,i=0,a=0;for(let t=0;t<n;t++){i=a=0;for(let o=0;o<n;o++)i=i<<1&2047|e.get(t,o),o>=10&&(i===1488||i===93)&&r++,a=a<<1&2047|e.get(o,t),o>=10&&(a===1488||a===93)&&r++}return r*t.N3},e.getPenaltyN4=function(e){let n=0,r=e.data.length;for(let t=0;t<r;t++)n+=e.data[t];return Math.abs(Math.ceil(n*100/r/5)-10)*t.N4};function n(t,n,r){switch(t){case e.Patterns.PATTERN000:return(n+r)%2==0;case e.Patterns.PATTERN001:return n%2==0;case e.Patterns.PATTERN010:return r%3==0;case e.Patterns.PATTERN011:return(n+r)%3==0;case e.Patterns.PATTERN100:return(Math.floor(n/2)+Math.floor(r/3))%2==0;case e.Patterns.PATTERN101:return n*r%2+n*r%3==0;case e.Patterns.PATTERN110:return(n*r%2+n*r%3)%2==0;case e.Patterns.PATTERN111:return(n*r%3+(n+r)%2)%2==0;default:throw Error(`bad maskPattern:`+t)}}e.applyMask=function(e,t){let r=t.size;for(let i=0;i<r;i++)for(let a=0;a<r;a++)t.isReserved(a,i)||t.xor(a,i,n(e,a,i))},e.getBestMask=function(t,n){let r=Object.keys(e.Patterns).length,i=0,a=1/0;for(let o=0;o<r;o++){n(o),e.applyMask(o,t);let r=e.getPenaltyN1(t)+e.getPenaltyN2(t)+e.getPenaltyN3(t)+e.getPenaltyN4(t);e.applyMask(o,t),r<a&&(a=r,i=o)}return i}})),oS=o((e=>{var t=eS(),n=[1,1,1,1,1,1,1,1,1,1,2,2,1,2,2,4,1,2,4,4,2,4,4,4,2,4,6,5,2,4,6,6,2,5,8,8,4,5,8,8,4,5,8,11,4,8,10,11,4,9,12,16,4,9,16,16,6,10,12,18,6,10,17,16,6,11,16,19,6,13,18,21,7,14,21,25,8,16,20,25,8,17,23,25,9,17,23,34,9,18,25,30,10,20,27,32,12,21,29,35,12,23,34,37,12,25,34,40,13,26,35,42,14,28,38,45,15,29,40,48,16,31,43,51,17,33,45,54,18,35,48,57,19,37,51,60,19,38,53,63,20,40,56,66,21,43,59,70,22,45,62,74,24,47,65,77,25,49,68,81],r=[7,10,13,17,10,16,22,28,15,26,36,44,20,36,52,64,26,48,72,88,36,64,96,112,40,72,108,130,48,88,132,156,60,110,160,192,72,130,192,224,80,150,224,264,96,176,260,308,104,198,288,352,120,216,320,384,132,240,360,432,144,280,408,480,168,308,448,532,180,338,504,588,196,364,546,650,224,416,600,700,224,442,644,750,252,476,690,816,270,504,750,900,300,560,810,960,312,588,870,1050,336,644,952,1110,360,700,1020,1200,390,728,1050,1260,420,784,1140,1350,450,812,1200,1440,480,868,1290,1530,510,924,1350,1620,540,980,1440,1710,570,1036,1530,1800,570,1064,1590,1890,600,1120,1680,1980,630,1204,1770,2100,660,1260,1860,2220,720,1316,1950,2310,750,1372,2040,2430];e.getBlocksCount=function(e,r){switch(r){case t.L:return n[(e-1)*4+0];case t.M:return n[(e-1)*4+1];case t.Q:return n[(e-1)*4+2];case t.H:return n[(e-1)*4+3];default:return}},e.getTotalCodewordsCount=function(e,n){switch(n){case t.L:return r[(e-1)*4+0];case t.M:return r[(e-1)*4+1];case t.Q:return r[(e-1)*4+2];case t.H:return r[(e-1)*4+3];default:return}}})),sS=o((e=>{var t=new Uint8Array(512),n=new Uint8Array(256);(function(){let e=1;for(let r=0;r<255;r++)t[r]=e,n[e]=r,e<<=1,e&256&&(e^=285);for(let e=255;e<512;e++)t[e]=t[e-255]})(),e.log=function(e){if(e<1)throw Error(`log(`+e+`)`);return n[e]},e.exp=function(e){return t[e]},e.mul=function(e,r){return e===0||r===0?0:t[n[e]+n[r]]}})),cS=o((e=>{var t=sS();e.mul=function(e,n){let r=new Uint8Array(e.length+n.length-1);for(let i=0;i<e.length;i++)for(let a=0;a<n.length;a++)r[i+a]^=t.mul(e[i],n[a]);return r},e.mod=function(e,n){let r=new Uint8Array(e);for(;r.length-n.length>=0;){let e=r[0];for(let i=0;i<n.length;i++)r[i]^=t.mul(n[i],e);let i=0;for(;i<r.length&&r[i]===0;)i++;r=r.slice(i)}return r},e.generateECPolynomial=function(n){let r=new Uint8Array([1]);for(let i=0;i<n;i++)r=e.mul(r,new Uint8Array([1,t.exp(i)]));return r}})),lS=o(((e,t)=>{var n=cS();function r(e){this.genPoly=void 0,this.degree=e,this.degree&&this.initialize(this.degree)}r.prototype.initialize=function(e){this.degree=e,this.genPoly=n.generateECPolynomial(this.degree)},r.prototype.encode=function(e){if(!this.genPoly)throw Error(`Encoder not initialized`);let t=new Uint8Array(e.length+this.degree);t.set(e);let r=n.mod(t,this.genPoly),i=this.degree-r.length;if(i>0){let e=new Uint8Array(this.degree);return e.set(r,i),e}return r},t.exports=r})),uS=o((e=>{e.isValid=function(e){return!isNaN(e)&&e>=1&&e<=40}})),dS=o((e=>{var t=`[0-9]+`,n=`[A-Z $%*+\\-./:]+`,r=`(?:[u3000-u303F]|[u3040-u309F]|[u30A0-u30FF]|[uFF00-uFFEF]|[u4E00-u9FAF]|[u2605-u2606]|[u2190-u2195]|u203B|[u2010u2015u2018u2019u2025u2026u201Cu201Du2225u2260]|[u0391-u0451]|[u00A7u00A8u00B1u00B4u00D7u00F7])+`;r=r.replace(/u/g,`\\u`);var i=`(?:(?![A-Z0-9 $%*+\\-./:]|`+r+`)(?:.|[\r
 ]))+`;e.KANJI=new RegExp(r,`g`),e.BYTE_KANJI=RegExp(`[^A-Z0-9 $%*+\\-./:]+`,`g`),e.BYTE=new RegExp(i,`g`),e.NUMERIC=new RegExp(t,`g`),e.ALPHANUMERIC=new RegExp(n,`g`);var a=RegExp(`^`+r+`$`),o=RegExp(`^[0-9]+$`),s=RegExp(`^[A-Z0-9 $%*+\\-./:]+$`);e.testKanji=function(e){return a.test(e)},e.testNumeric=function(e){return o.test(e)},e.testAlphanumeric=function(e){return s.test(e)}})),fS=o((e=>{var t=uS(),n=dS();e.NUMERIC={id:`Numeric`,bit:1,ccBits:[10,12,14]},e.ALPHANUMERIC={id:`Alphanumeric`,bit:2,ccBits:[9,11,13]},e.BYTE={id:`Byte`,bit:4,ccBits:[8,16,16]},e.KANJI={id:`Kanji`,bit:8,ccBits:[8,10,12]},e.MIXED={bit:-1},e.getCharCountIndicator=function(e,n){if(!e.ccBits)throw Error(`Invalid mode: `+e);if(!t.isValid(n))throw Error(`Invalid version: `+n);return n>=1&&n<10?e.ccBits[0]:n<27?e.ccBits[1]:e.ccBits[2]},e.getBestModeForData=function(t){return n.testNumeric(t)?e.NUMERIC:n.testAlphanumeric(t)?e.ALPHANUMERIC:n.testKanji(t)?e.KANJI:e.BYTE},e.toString=function(e){if(e&&e.id)return e.id;throw Error(`Invalid mode`)},e.isValid=function(e){return e&&e.bit&&e.ccBits};function r(t){if(typeof t!=`string`)throw Error(`Param is not a string`);switch(t.toLowerCase()){case`numeric`:return e.NUMERIC;case`alphanumeric`:return e.ALPHANUMERIC;case`kanji`:return e.KANJI;case`byte`:return e.BYTE;default:throw Error(`Unknown mode: `+t)}}e.from=function(t,n){if(e.isValid(t))return t;try{return r(t)}catch{return n}}})),pS=o((e=>{var t=$x(),n=oS(),r=eS(),i=fS(),a=uS(),o=7973,s=t.getBCHDigit(o);function c(t,n,r){for(let i=1;i<=40;i++)if(n<=e.getCapacity(i,r,t))return i}function l(e,t){return i.getCharCountIndicator(e,t)+4}function u(e,t){let n=0;return e.forEach(function(e){let r=l(e.mode,t);n+=r+e.getBitsLength()}),n}function d(t,n){for(let r=1;r<=40;r++)if(u(t,r)<=e.getCapacity(r,n,i.MIXED))return r}e.from=function(e,t){return a.isValid(e)?parseInt(e,10):t},e.getCapacity=function(e,r,o){if(!a.isValid(e))throw Error(`Invalid QR Code version`);o===void 0&&(o=i.BYTE);let s=(t.getSymbolTotalCodewords(e)-n.getTotalCodewordsCount(e,r))*8;if(o===i.MIXED)return s;let c=s-l(o,e);switch(o){case i.NUMERIC:return Math.floor(c/10*3);case i.ALPHANUMERIC:return Math.floor(c/11*2);case i.KANJI:return Math.floor(c/13);case i.BYTE:default:return Math.floor(c/8)}},e.getBestVersionForData=function(e,t){let n,i=r.from(t,r.M);if(Array.isArray(e)){if(e.length>1)return d(e,i);if(e.length===0)return 1;n=e[0]}else n=e;return c(n.mode,n.getLength(),i)},e.getEncodedBits=function(e){if(!a.isValid(e)||e<7)throw Error(`Invalid QR Code version`);let n=e<<12;for(;t.getBCHDigit(n)-s>=0;)n^=o<<t.getBCHDigit(n)-s;return e<<12|n}})),mS=o((e=>{var t=$x(),n=1335,r=21522,i=t.getBCHDigit(n);e.getEncodedBits=function(e,a){let o=e.bit<<3|a,s=o<<10;for(;t.getBCHDigit(s)-i>=0;)s^=n<<t.getBCHDigit(s)-i;return(o<<10|s)^r}})),hS=o(((e,t)=>{var n=fS();function r(e){this.mode=n.NUMERIC,this.data=e.toString()}r.getBitsLength=function(e){return 10*Math.floor(e/3)+(e%3?e%3*3+1:0)},r.prototype.getLength=function(){return this.data.length},r.prototype.getBitsLength=function(){return r.getBitsLength(this.data.length)},r.prototype.write=function(e){let t,n,r;for(t=0;t+3<=this.data.length;t+=3)n=this.data.substr(t,3),r=parseInt(n,10),e.put(r,10);let i=this.data.length-t;i>0&&(n=this.data.substr(t),r=parseInt(n,10),e.put(r,i*3+1))},t.exports=r})),gS=o(((e,t)=>{var n=fS(),r=`0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:`.split(``);function i(e){this.mode=n.ALPHANUMERIC,this.data=e}i.getBitsLength=function(e){return 11*Math.floor(e/2)+e%2*6},i.prototype.getLength=function(){return this.data.length},i.prototype.getBitsLength=function(){return i.getBitsLength(this.data.length)},i.prototype.write=function(e){let t=0;for(;t+2<=this.data.length;t+=2){let n=r.indexOf(this.data[t])*45;n+=r.indexOf(this.data[t+1]),e.put(n,11)}this.data.length%2&&e.put(r.indexOf(this.data[t]),6)},t.exports=i})),_S=o(((e,t)=>{var n=fS();function r(e){this.mode=n.BYTE,this.data=typeof e==`string`?new TextEncoder().encode(e):new Uint8Array(e)}r.getBitsLength=function(e){return e*8},r.prototype.getLength=function(){return this.data.length},r.prototype.getBitsLength=function(){return r.getBitsLength(this.data.length)},r.prototype.write=function(e){for(let t=0,n=this.data.length;t<n;t++)e.put(this.data[t],8)},t.exports=r})),vS=o(((e,t)=>{var n=fS(),r=$x();function i(e){this.mode=n.KANJI,this.data=e}i.getBitsLength=function(e){return e*13},i.prototype.getLength=function(){return this.data.length},i.prototype.getBitsLength=function(){return i.getBitsLength(this.data.length)},i.prototype.write=function(e){let t=0;for(;t<this.data.length;t++){let n=r.toSJIS(this.data[t]);if(n>=33088&&n<=40956)n-=33088;else if(n>=57408&&n<=60351)n-=49472;else throw Error(`Invalid SJIS character: `+this.data[t]+`
 Make sure your charset is UTF-8`);n=(n>>>8&255)*192+(n&255),e.put(n,13)}},t.exports=i})),yS=o(((e,t)=>{var n={single_source_shortest_paths:function(e,t,r){var i={},a={};a[t]=0;var o=n.PriorityQueue.make();o.push(t,0);for(var s,c,l,u,d,f,p,m,h;!o.empty();)for(l in s=o.pop(),c=s.value,u=s.cost,d=e[c]||{},d)d.hasOwnProperty(l)&&(f=d[l],p=u+f,m=a[l],h=a[l]===void 0,(h||m>p)&&(a[l]=p,o.push(l,p),i[l]=c));if(r!==void 0&&a[r]===void 0){var g=[`Could not find a path from `,t,` to `,r,`.`].join(``);throw Error(g)}return i},extract_shortest_path_from_predecessor_list:function(e,t){for(var n=[],r=t;r;)n.push(r),e[r],r=e[r];return n.reverse(),n},find_path:function(e,t,r){var i=n.single_source_shortest_paths(e,t,r);return n.extract_shortest_path_from_predecessor_list(i,r)},PriorityQueue:{make:function(e){var t=n.PriorityQueue,r={},i;for(i in e||={},t)t.hasOwnProperty(i)&&(r[i]=t[i]);return r.queue=[],r.sorter=e.sorter||t.default_sorter,r},default_sorter:function(e,t){return e.cost-t.cost},push:function(e,t){var n={value:e,cost:t};this.queue.push(n),this.queue.sort(this.sorter)},pop:function(){return this.queue.shift()},empty:function(){return this.queue.length===0}}};t!==void 0&&(t.exports=n)})),bS=o((e=>{var t=fS(),n=hS(),r=gS(),i=_S(),a=vS(),o=dS(),s=$x(),c=yS();function l(e){return unescape(encodeURIComponent(e)).length}function u(e,t,n){let r=[],i;for(;(i=e.exec(n))!==null;)r.push({data:i[0],index:i.index,mode:t,length:i[0].length});return r}function d(e){let n=u(o.NUMERIC,t.NUMERIC,e),r=u(o.ALPHANUMERIC,t.ALPHANUMERIC,e),i,a;return s.isKanjiModeEnabled()?(i=u(o.BYTE,t.BYTE,e),a=u(o.KANJI,t.KANJI,e)):(i=u(o.BYTE_KANJI,t.BYTE,e),a=[]),n.concat(r,i,a).sort(function(e,t){return e.index-t.index}).map(function(e){return{data:e.data,mode:e.mode,length:e.length}})}function f(e,o){switch(o){case t.NUMERIC:return n.getBitsLength(e);case t.ALPHANUMERIC:return r.getBitsLength(e);case t.KANJI:return a.getBitsLength(e);case t.BYTE:return i.getBitsLength(e)}}function p(e){return e.reduce(function(e,t){let n=e.length-1>=0?e[e.length-1]:null;return n&&n.mode===t.mode?(e[e.length-1].data+=t.data,e):(e.push(t),e)},[])}function m(e){let n=[];for(let r=0;r<e.length;r++){let i=e[r];switch(i.mode){case t.NUMERIC:n.push([i,{data:i.data,mode:t.ALPHANUMERIC,length:i.length},{data:i.data,mode:t.BYTE,length:i.length}]);break;case t.ALPHANUMERIC:n.push([i,{data:i.data,mode:t.BYTE,length:i.length}]);break;case t.KANJI:n.push([i,{data:i.data,mode:t.BYTE,length:l(i.data)}]);break;case t.BYTE:n.push([{data:i.data,mode:t.BYTE,length:l(i.data)}])}}return n}function h(e,n){let r={},i={start:{}},a=[`start`];for(let o=0;o<e.length;o++){let s=e[o],c=[];for(let e=0;e<s.length;e++){let l=s[e],u=``+o+e;c.push(u),r[u]={node:l,lastCount:0},i[u]={};for(let e=0;e<a.length;e++){let o=a[e];r[o]&&r[o].node.mode===l.mode?(i[o][u]=f(r[o].lastCount+l.length,l.mode)-f(r[o].lastCount,l.mode),r[o].lastCount+=l.length):(r[o]&&(r[o].lastCount=l.length),i[o][u]=f(l.length,l.mode)+4+t.getCharCountIndicator(l.mode,n))}}a=c}for(let e=0;e<a.length;e++)i[a[e]].end=0;return{map:i,table:r}}function g(e,o){let c,l=t.getBestModeForData(e);if(c=t.from(o,l),c!==t.BYTE&&c.bit<l.bit)throw Error(`"`+e+`" cannot be encoded with mode `+t.toString(c)+`.
  Suggested mode is: `+t.toString(l));switch(c===t.KANJI&&!s.isKanjiModeEnabled()&&(c=t.BYTE),c){case t.NUMERIC:return new n(e);case t.ALPHANUMERIC:return new r(e);case t.KANJI:return new a(e);case t.BYTE:return new i(e)}}e.fromArray=function(e){return e.reduce(function(e,t){return typeof t==`string`?e.push(g(t,null)):t.data&&e.push(g(t.data,t.mode)),e},[])},e.fromString=function(t,n){let r=h(m(d(t,s.isKanjiModeEnabled())),n),i=c.find_path(r.map,`start`,`end`),a=[];for(let e=1;e<i.length-1;e++)a.push(r.table[i[e]].node);return e.fromArray(p(a))},e.rawSplit=function(t){return e.fromArray(d(t,s.isKanjiModeEnabled()))}})),xS=o((e=>{var t=$x(),n=eS(),r=tS(),i=nS(),a=rS(),o=iS(),s=aS(),c=oS(),l=lS(),u=pS(),d=mS(),f=fS(),p=bS();function m(e,t){let n=e.size,r=o.getPositions(t);for(let t=0;t<r.length;t++){let i=r[t][0],a=r[t][1];for(let t=-1;t<=7;t++)if(!(i+t<=-1||n<=i+t))for(let r=-1;r<=7;r++)a+r<=-1||n<=a+r||(t>=0&&t<=6&&(r===0||r===6)||r>=0&&r<=6&&(t===0||t===6)||t>=2&&t<=4&&r>=2&&r<=4?e.set(i+t,a+r,!0,!0):e.set(i+t,a+r,!1,!0))}}function h(e){let t=e.size;for(let n=8;n<t-8;n++){let t=n%2==0;e.set(n,6,t,!0),e.set(6,n,t,!0)}}function g(e,t){let n=a.getPositions(t);for(let t=0;t<n.length;t++){let r=n[t][0],i=n[t][1];for(let t=-2;t<=2;t++)for(let n=-2;n<=2;n++)t===-2||t===2||n===-2||n===2||t===0&&n===0?e.set(r+t,i+n,!0,!0):e.set(r+t,i+n,!1,!0)}}function _(e,t){let n=e.size,r=u.getEncodedBits(t),i,a,o;for(let t=0;t<18;t++)i=Math.floor(t/3),a=t%3+n-8-3,o=(r>>t&1)==1,e.set(i,a,o,!0),e.set(a,i,o,!0)}function ee(e,t,n){let r=e.size,i=d.getEncodedBits(t,n),a,o;for(a=0;a<15;a++)o=(i>>a&1)==1,a<6?e.set(a,8,o,!0):a<8?e.set(a+1,8,o,!0):e.set(r-15+a,8,o,!0),a<8?e.set(8,r-a-1,o,!0):a<9?e.set(8,15-a-1+1,o,!0):e.set(8,15-a-1,o,!0);e.set(r-8,8,1,!0)}function te(e,t){let n=e.size,r=-1,i=n-1,a=7,o=0;for(let s=n-1;s>0;s-=2)for(s===6&&s--;;){for(let n=0;n<2;n++)if(!e.isReserved(i,s-n)){let r=!1;o<t.length&&(r=(t[o]>>>a&1)==1),e.set(i,s-n,r),a--,a===-1&&(o++,a=7)}if(i+=r,i<0||n<=i){i-=r,r=-r;break}}}function ne(e,n,i){let a=new r;i.forEach(function(t){a.put(t.mode.bit,4),a.put(t.getLength(),f.getCharCountIndicator(t.mode,e)),t.write(a)});let o=(t.getSymbolTotalCodewords(e)-c.getTotalCodewordsCount(e,n))*8;for(a.getLengthInBits()+4<=o&&a.put(0,4);a.getLengthInBits()%8!=0;)a.putBit(0);let s=(o-a.getLengthInBits())/8;for(let e=0;e<s;e++)a.put(e%2?17:236,8);return re(a,e,n)}function re(e,n,r){let i=t.getSymbolTotalCodewords(n),a=i-c.getTotalCodewordsCount(n,r),o=c.getBlocksCount(n,r),s=o-i%o,u=Math.floor(i/o),d=Math.floor(a/o),f=d+1,p=u-d,m=new l(p),h=0,g=Array(o),_=Array(o),ee=0,te=new Uint8Array(e.buffer);for(let e=0;e<o;e++){let t=e<s?d:f;g[e]=te.slice(h,h+t),_[e]=m.encode(g[e]),h+=t,ee=Math.max(ee,t)}let ne=new Uint8Array(i),re=0,ie,ae;for(ie=0;ie<ee;ie++)for(ae=0;ae<o;ae++)ie<g[ae].length&&(ne[re++]=g[ae][ie]);for(ie=0;ie<p;ie++)for(ae=0;ae<o;ae++)ne[re++]=_[ae][ie];return ne}function ie(e,n,r,a){let o;if(Array.isArray(e))o=p.fromArray(e);else if(typeof e==`string`){let t=n;if(!t){let n=p.rawSplit(e);t=u.getBestVersionForData(n,r)}o=p.fromString(e,t||40)}else throw Error(`Invalid data`);let c=u.getBestVersionForData(o,r);if(!c)throw Error(`The amount of data is too big to be stored in a QR Code`);if(!n)n=c;else if(n<c)throw Error(`
 The chosen QR Code version cannot contain this amount of data.
 Minimum version required to store current data is: `+c+`.
 `);let l=ne(n,r,o),d=new i(t.getSymbolSize(n));return m(d,n),h(d),g(d,n),ee(d,r,0),n>=7&&_(d,n),te(d,l),isNaN(a)&&(a=s.getBestMask(d,ee.bind(null,d,r))),s.applyMask(a,d),ee(d,r,a),{modules:d,version:n,errorCorrectionLevel:r,maskPattern:a,segments:o}}e.create=function(e,r){if(e===void 0||e===``)throw Error(`No input text`);let i=n.M,a,o;return r!==void 0&&(i=n.from(r.errorCorrectionLevel,n.M),a=u.from(r.version),o=s.from(r.maskPattern),r.toSJISFunc&&t.setToSJISFunction(r.toSJISFunc)),ie(e,a,i,o)}})),SS=o((e=>{function t(e){if(typeof e==`number`&&(e=e.toString()),typeof e!=`string`)throw Error(`Color should be defined as hex string`);let t=e.slice().replace(`#`,``).split(``);if(t.length<3||t.length===5||t.length>8)throw Error(`Invalid hex color: `+e);(t.length===3||t.length===4)&&(t=Array.prototype.concat.apply([],t.map(function(e){return[e,e]}))),t.length===6&&t.push(`F`,`F`);let n=parseInt(t.join(``),16);return{r:n>>24&255,g:n>>16&255,b:n>>8&255,a:n&255,hex:`#`+t.slice(0,6).join(``)}}e.getOptions=function(e){e||={},e.color||(e.color={});let n=e.margin===void 0||e.margin===null||e.margin<0?4:e.margin,r=e.width&&e.width>=21?e.width:void 0,i=e.scale||4;return{width:r,scale:r?4:i,margin:n,color:{dark:t(e.color.dark||`#000000ff`),light:t(e.color.light||`#ffffffff`)},type:e.type,rendererOpts:e.rendererOpts||{}}},e.getScale=function(e,t){return t.width&&t.width>=e+t.margin*2?t.width/(e+t.margin*2):t.scale},e.getImageWidth=function(t,n){let r=e.getScale(t,n);return Math.floor((t+n.margin*2)*r)},e.qrToImageData=function(t,n,r){let i=n.modules.size,a=n.modules.data,o=e.getScale(i,r),s=Math.floor((i+r.margin*2)*o),c=r.margin*o,l=[r.color.light,r.color.dark];for(let e=0;e<s;e++)for(let n=0;n<s;n++){let u=(e*s+n)*4,d=r.color.light;if(e>=c&&n>=c&&e<s-c&&n<s-c){let t=Math.floor((e-c)/o),r=Math.floor((n-c)/o);d=l[+!!a[t*i+r]]}t[u++]=d.r,t[u++]=d.g,t[u++]=d.b,t[u]=d.a}}})),CS=o((e=>{var t=SS();function n(e,t,n){e.clearRect(0,0,t.width,t.height),t.style||={},t.height=n,t.width=n,t.style.height=n+`px`,t.style.width=n+`px`}function r(){try{return document.createElement(`canvas`)}catch{throw Error(`You need to specify a canvas element`)}}e.render=function(e,i,a){let o=a,s=i;o===void 0&&(!i||!i.getContext)&&(o=i,i=void 0),i||(s=r()),o=t.getOptions(o);let c=t.getImageWidth(e.modules.size,o),l=s.getContext(`2d`),u=l.createImageData(c,c);return t.qrToImageData(u.data,e,o),n(l,s,c),l.putImageData(u,0,0),s},e.renderToDataURL=function(t,n,r){let i=r;i===void 0&&(!n||!n.getContext)&&(i=n,n=void 0),i||={};let a=e.render(t,n,i),o=i.type||`image/png`,s=i.rendererOpts||{};return a.toDataURL(o,s.quality)}})),wS=o((e=>{var t=SS();function n(e,t){let n=e.a/255,r=t+`="`+e.hex+`"`;return n<1?r+` `+t+`-opacity="`+n.toFixed(2).slice(1)+`"`:r}function r(e,t,n){let r=e+t;return n!==void 0&&(r+=` `+n),r}function i(e,t,n){let i=``,a=0,o=!1,s=0;for(let c=0;c<e.length;c++){let l=Math.floor(c%t),u=Math.floor(c/t);!l&&!o&&(o=!0),e[c]?(s++,c>0&&l>0&&e[c-1]||(i+=o?r(`M`,l+n,.5+u+n):r(`m`,a,0),a=0,o=!1),l+1<t&&e[c+1]||(i+=r(`h`,s),s=0)):a++}return i}e.render=function(e,r,a){let o=t.getOptions(r),s=e.modules.size,c=e.modules.data,l=s+o.margin*2,u=o.color.light.a?`<path `+n(o.color.light,`fill`)+` d="M0 0h`+l+`v`+l+`H0z"/>`:``,d=`<path `+n(o.color.dark,`stroke`)+` d="`+i(c,s,o.margin)+`"/>`,f=`viewBox="0 0 `+l+` `+l+`"`,p=`<svg xmlns="http://www.w3.org/2000/svg" `+(o.width?`width="`+o.width+`" height="`+o.width+`" `:``)+f+` shape-rendering="crispEdges">`+u+d+`</svg>
-`;return typeof a==`function`&&a(null,p),p}})),TS=c(o((e=>{var t=Qx(),n=xS(),r=CS(),i=wS();function a(e,r,i,a,o){let s=[].slice.call(arguments,1),c=s.length,l=typeof s[c-1]==`function`;if(!l&&!t())throw Error(`Callback required as last argument`);if(l){if(c<2)throw Error(`Too few arguments provided`);c===2?(o=i,i=r,r=a=void 0):c===3&&(r.getContext&&o===void 0?(o=a,a=void 0):(o=a,a=i,i=r,r=void 0))}else{if(c<1)throw Error(`Too few arguments provided`);return c===1?(i=r,r=a=void 0):c===2&&!r.getContext&&(a=i,i=r,r=void 0),new Promise(function(t,o){try{t(e(n.create(i,a),r,a))}catch(e){o(e)}})}try{let t=n.create(i,a);o(null,e(t,r,a))}catch(e){o(e)}}e.create=n.create,e.toCanvas=a.bind(null,r.render),e.toDataURL=a.bind(null,r.renderToDataURL),e.toString=a.bind(null,function(e,t,n){return i.render(e,n)})}))(),1);function ES(e,t,n,r,i,a){e.beginPath(),e.moveTo(t+a,n),e.lineTo(t+r-a,n),e.quadraticCurveTo(t+r,n,t+r,n+a),e.lineTo(t+r,n+i-a),e.quadraticCurveTo(t+r,n+i,t+r-a,n+i),e.lineTo(t+a,n+i),e.quadraticCurveTo(t,n+i,t,n+i-a),e.lineTo(t,n+a),e.quadraticCurveTo(t,n,t+a,n),e.closePath()}function DS(e,t,n,r,i,a,o=3){let s=t.split(` `),c=``,l=0,u=r;for(let t=0;t<s.length;t++){let r=c+s[t]+` `;if(e.measureText(r).width>i&&t>0){if(l===o-1)return c=c.trim()+`...`,e.fillText(c,n,u),u+a;e.fillText(c,n,u),c=s[t]+` `,u+=a,l++}else c=r}return c.trim().length>0&&l<o&&(e.fillText(c.trim(),n,u),u+=a),u}async function OS(e){let t=1080,n=1350,r=document.createElement(`canvas`);r.width=t,r.height=n;let i=r.getContext(`2d`);if(!i)throw Error(`Nelze inicializovat 2D kontext pro generování lístku`);let a=e.scores[0],o=e.scores[1],s=e.scores[2];if(i.fillStyle=`#09090b`,i.fillRect(0,0,t,n),a){let e=i.createRadialGradient(930,150,20,930,150,550);e.addColorStop(0,a.party.color+`33`),e.addColorStop(1,`transparent`),i.fillStyle=e,i.fillRect(0,0,t,n)}if(i.strokeStyle=`rgba(255, 255, 255, 0.12)`,i.lineWidth=2,ES(i,32,32,1016,1286,32),i.stroke(),i.fillStyle=`#a1a1aa`,i.font=`700 18px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`HISTORICKÁ VOLEBNÍ KALKULAČKA`,72,90),i.fillStyle=`#ffffff`,i.font=`800 38px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`VOLBY DO NÁRODNÍHO SHROMÁŽDĚNÍ ${e.year}`,72,140),i.fillStyle=`#71717a`,i.font=`500 18px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`Autentický volební lístek a názorová shoda · ${e.quizMode===`expanded`?`Rozšířená verze`:`Základní verze`}`,72,172),i.strokeStyle=`rgba(255, 255, 255, 0.1)`,i.lineWidth=1,i.beginPath(),i.moveTo(72,196),i.lineTo(1008,196),i.stroke(),a){i.fillStyle=`#121215`,ES(i,72,220,936,490,24),i.fill(),i.strokeStyle=`rgba(255, 255, 255, 0.14)`,i.lineWidth=1.5,ES(i,72,220,936,490,24),i.stroke(),i.fillStyle=a.party.color,i.beginPath(),i.moveTo(96,220),i.lineTo(984,220),i.quadraticCurveTo(1008,220,1008,226),i.lineTo(1008,228),i.lineTo(72,228),i.lineTo(72,226),i.quadraticCurveTo(72,220,96,220),i.closePath(),i.fill(),i.fillStyle=`#a1a1aa`,i.font=`700 16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`1. MÍSTO · NEJVYŠŠÍ NÁZOROVÁ SHODA`,108,268),i.fillStyle=`#ffffff`,i.font=`800 86px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`${a.matchPercentage} %`,108,358),i.fillStyle=a.party.color,ES(i,432,290,8,72,4),i.fill(),i.fillStyle=`#ffffff`,i.font=`800 32px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(a.party.shortName,454,324),i.fillStyle=`#a1a1aa`,i.font=`500 18px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;let t=a.party.fullName.length>38?a.party.fullName.substring(0,36)+`...`:a.party.fullName;i.fillText(t,454,354),i.fillStyle=`#d4d4d8`,i.font=`600 18px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`Ideologie: ${a.party.ideology}`,108,412),i.fillStyle=`#a1a1aa`,i.font=`500 17px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`Lídři: ${a.party.leaders.join(`, `)}`,108,442),i.fillStyle=`#18181b`,ES(i,108,472,864,140,16),i.fill(),i.strokeStyle=`rgba(255, 255, 255, 0.08)`,i.lineWidth=1,ES(i,108,472,864,140,16),i.stroke(),i.fillStyle=`#71717a`,i.font=`700 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`HLAVNÍ PROGRAMOVÉ PILÍŘE`,128,506),i.fillStyle=`#e4e4e7`,i.font=`italic 500 17px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Georgia, serif`,DS(i,`„${a.party.programHighlight}“`,128,540,824,26,3),i.fillStyle=`#71717a`,i.font=`500 16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;let n=a.party.historicalSeats>0?`${a.party.historicalSeats} mandátů`:`bez mandátu`;i.fillText(`Skutečný volební zisk v roce ${e.year}: ${a.party.historicalPercentage} % (${n})`,108,660)}i.fillStyle=`#a1a1aa`,i.font=`700 17px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`DALŠÍ V POŘADÍ (TOP 3)`,72,735);let c=(e,t,n)=>{if(!e)return;i.fillStyle=`#121215`,ES(i,n,751,456,195,20),i.fill(),i.strokeStyle=`rgba(255, 255, 255, 0.1)`,i.lineWidth=1,ES(i,n,751,456,195,20),i.stroke(),i.fillStyle=`#71717a`,i.font=`700 15px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`${t}. MÍSTO`,n+24,781),i.fillStyle=`#ffffff`,i.font=`800 36px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`${e.matchPercentage} %`,n+456-110,787),i.fillStyle=e.party.color,ES(i,n+24,805,10,24,4),i.fill(),i.fillStyle=`#ffffff`,i.font=`700 22px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(e.party.shortName,n+44,825),i.fillStyle=`#a1a1aa`,i.font=`500 15px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;let r=e.party.fullName.length>28?e.party.fullName.substring(0,26)+`...`:e.party.fullName;i.fillText(r,n+24,855),i.fillStyle=`#27272a`,ES(i,n+24,875,408,10,5),i.fill(),i.fillStyle=e.party.color;let a=Math.max(10,408*e.matchPercentage/100);ES(i,n+24,875,a,10,5),i.fill(),i.fillStyle=`#71717a`,i.font=`500 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`Skutečný zisk: ${e.party.historicalPercentage} %`,n+24,915)};c(o,2,72),c(s,3,552),i.fillStyle=`#121215`,ES(i,72,965,936,295,24),i.fill(),i.strokeStyle=`rgba(255, 255, 255, 0.12)`,i.lineWidth=1,ES(i,72,965,936,295,24),i.stroke();let l=e.shareUrl||(typeof window<`u`?window.location.href:`https://kalkulacka.cz`),u=document.createElement(`canvas`);try{await TS.toCanvas(u,l,{width:190,margin:1,color:{dark:`#09090b`,light:`#ffffff`},errorCorrectionLevel:`M`}),i.fillStyle=`#ffffff`,ES(i,100,1009,206,206,14),i.fill(),i.drawImage(u,108,1017,190,190)}catch(e){console.error(`Chyba při kreslení QR kódu:`,e)}i.fillStyle=`#a1a1aa`,i.font=`700 15px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`VYZKOUŠEJTE HISTORICKÝ HLAS`,338,1033),i.fillStyle=`#ffffff`,i.font=`800 28px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`Koho byste volili vy?`,338,1073),i.fillStyle=`#d4d4d8`,i.font=`500 17px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,DS(i,`Srovnejte si své názory s autentickými programy stran v klíčových volbách 1920, 1946 a 1990.`,338,1109,636,26,2);let d=typeof window<`u`&&window.location.hostname||`historickavolebnikalkulacka.cz`;i.fillStyle=`#38bdf8`,i.font=`700 17px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace`,i.fillText(`🌐 ${d}`,338,1189);let f=new Date().toLocaleDateString(`cs-CZ`);return i.fillStyle=`#71717a`,i.font=`500 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`Volební lístek vytvořen: ${f}`,338,1217),r}async function kS(e){let t=await OS(e);return new Promise((e,n)=>{t.toBlob(t=>{t?e(t):n(Error(`Chyba při exportu canvasu do PNG blobu`))},`image/png`)})}async function AS(e){return(await OS(e)).toDataURL(`image/png`)}async function jS(e,t){let n=await kS(e),r=t||`volebni-listek-${e.year}.png`,i=document.createElement(`a`);i.href=URL.createObjectURL(n),i.download=r,document.body.appendChild(i),i.click(),document.body.removeChild(i),setTimeout(()=>URL.revokeObjectURL(i.href),1e3)}async function MS(e){let t=e.scores[0],n=`Můj volební lístek – Volby ${e.year}`,r=t?`V Historické volební kalkulačce pro rok ${e.year} mi vyšla nejvyšší shoda s: ${t.party.fullName} (${t.matchPercentage} %)!`:`Vyzkoušejte Historickou volební kalkulačku (${e.year})!`,i=await kS(e),a=`volebni-listek-${e.year}.png`,o=new File([i],a,{type:`image/png`});if(navigator.canShare&&navigator.canShare({files:[o]}))try{return await navigator.share({title:n,text:r,files:[o]}),{success:!0,method:`share`}}catch(e){if(e instanceof Error&&e.name===`AbortError`)return{success:!1,method:`share`}}return await jS(e,a),{success:!0,method:`download`}}var Q={view:`home`,year:1920,quizMode:`standard`,selectedYearMode:{1920:`standard`,1946:`standard`,1990:`standard`},questionIndex:0,answers:{},partyScores:[],showHistoricalNote:!1,activeContextTooltipId:null,toastMessage:null,comparisonFilter:`all`,selectedPartyForDetails:null,expandedPartiesYear:null,sliderYearFilter:`all`,activeModalParty:null,activeModalSystemYear:null,surveyState:{selectedAge:null,selectedVote2021:null,customVoteText:``,isSubmitting:!1},dashboardState:{summary:null,isLoading:!1,selectedCorrelationParty:null,isAuthenticated:Ux(),authError:null,isVerifying:!1},ballotShareState:{previewDataUrl:null,isGenerating:!1,isModalOpen:!1}};function NS(){Q.partyScores.length!==0&&(Q.ballotShareState.isGenerating=!0,AS({year:Q.year,quizMode:Q.quizMode,scores:Q.partyScores}).then(e=>{Q.ballotShareState.previewDataUrl=e,Q.ballotShareState.isGenerating=!1,$()}).catch(e=>{console.error(`Chyba při generování volebního lístku:`,e),Q.ballotShareState.isGenerating=!1,$()}))}function PS(e,t){let n=d[e];return t===`expanded`&&n.expandedQuestions&&n.expandedQuestions.length>0?n.expandedQuestions:n.questions}function FS(e){Q.toastMessage=e,$(),setTimeout(()=>{Q.toastMessage=null,$()},3e3)}function IS(e){Q.view=e,e===`results`&&!Q.ballotShareState.previewDataUrl&&Q.partyScores.length>0&&NS(),e===`admin`&&(Q.dashboardState.isAuthenticated=Ux(),Q.dashboardState.isAuthenticated?Q.dashboardState.summary||LS():(Q.dashboardState.isLoading=!1,$())),window.scrollTo({top:0,behavior:`smooth`}),$()}function LS(){Q.dashboardState.isAuthenticated?(Q.dashboardState.isLoading=!0,$(),Lx().then(e=>{Q.dashboardState.summary=e,Q.dashboardState.isLoading=!1,Q.dashboardState.authError=null,$()}).catch(e=>{console.warn(`Dashboard fetch warning:`,e),Q.dashboardState.isLoading=!1,Q.dashboardState.authError=`Nepodařilo se načíst statistiky z databáze. Zkontrolujte připojení k internetu.`,$()})):(Q.dashboardState.isLoading=!1,$())}async function RS(){let e=document.getElementById(`admin-pass-input`),t=e?e.value:``;if(!t.trim()){Q.dashboardState.authError=`Zadejte prosím administrátorské heslo.`,$();return}Q.dashboardState.isVerifying=!0,Q.dashboardState.authError=null,$();let n=await Hx(t);Q.dashboardState.isVerifying=!1,n?(Q.dashboardState.isAuthenticated=!0,Q.dashboardState.authError=null,LS()):(Q.dashboardState.authError=`Nesprávné heslo. Zkuste to prosím znovu.`,$())}function zS(){Wx(),Q.dashboardState.isAuthenticated=!1,Q.dashboardState.summary=null,Q.dashboardState.authError=null,$()}function BS(e,t){Q.year=e,Q.quizMode=t||Q.selectedYearMode[e]||`standard`,Q.questionIndex=0,Q.answers={},Q.partyScores=[],Q.showHistoricalNote=!1,Q.activeContextTooltipId=null,Q.view=`quiz`,Fx(),window.scrollTo({top:0,behavior:`smooth`}),$()}function VS(e){let t=PS(Q.year,Q.quizMode),n=t[Q.questionIndex];Q.answers[n.id]=e,Q.questionIndex<t.length-1?(Q.questionIndex++,Q.showHistoricalNote=!1,Q.activeContextTooltipId=null,$()):HS()}function HS(){let e=d[Q.year],t=PS(Q.year,Q.quizMode),n=f(e,Q.answers,t);Q.partyScores=n,Q.selectedPartyForDetails=n[0]?.party.id||null,Q.surveyState={selectedAge:null,selectedVote2021:null,customVoteText:``,isSubmitting:!1},Q.ballotShareState={previewDataUrl:null,isGenerating:!1,isModalOpen:!1},Q.view=`survey`,window.scrollTo({top:0,behavior:`smooth`}),$()}async function US(){Q.surveyState.isSubmitting=!0,$();let e={};Q.partyScores.forEach(t=>{e[t.party.id]=t.matchPercentage});let t=Q.partyScores[0],n=Q.surveyState.selectedVote2021||`Neuvedeno`;if(n===`Jiný subjekt`){let e=Q.surveyState.customVoteText?.trim();e&&(n=`Jiný: ${e}`.slice(0,60))}try{await Ix({year:Q.year,mode:Q.quizMode,topPartyId:t?.party.id||`unknown`,topPartyMatch:t?.matchPercentage||0,partyMatches:e,ageGroup:Q.surveyState.selectedAge||`Neuvedeno`,votedParty2021:n,answersCount:Object.keys(Q.answers).length})}catch(e){console.warn(`Survey submission warning:`,e)}Q.surveyState.isSubmitting=!1,Q.view=`results`,NS();try{u({particleCount:50,spread:60,origin:{y:.6}})}catch(e){console.error(e)}window.scrollTo({top:0,behavior:`smooth`}),$()}function WS(){let e={};Q.partyScores.forEach(t=>{e[t.party.id]=t.matchPercentage});let t=Q.partyScores[0];Ix({year:Q.year,mode:Q.quizMode,topPartyId:t?.party.id||`unknown`,topPartyMatch:t?.matchPercentage||0,partyMatches:e,ageGroup:`Přeskočeno`,votedParty2021:`Přeskočeno`,answersCount:Object.keys(Q.answers).length}).catch(()=>{}),Q.view=`results`,NS();try{u({particleCount:50,spread:60,origin:{y:.6}})}catch(e){console.error(e)}window.scrollTo({top:0,behavior:`smooth`}),$()}function GS(e,t){let n=d[t].parties.find(t=>t.id===e);n&&(Q.activeModalParty={party:n,year:t},$())}function KS(){Q.activeModalParty=null,$()}function qS(e){Q.activeModalSystemYear=e,$()}function JS(){Q.activeModalSystemYear=null,$()}function YS(e){let t=document.getElementById(`party-slider-scroll`);if(t){let n=e===`left`?-320:320;t.scrollBy({left:n,behavior:`smooth`})}}function XS(){return`
+`;return typeof a==`function`&&a(null,p),p}})),TS=c(o((e=>{var t=Qx(),n=xS(),r=CS(),i=wS();function a(e,r,i,a,o){let s=[].slice.call(arguments,1),c=s.length,l=typeof s[c-1]==`function`;if(!l&&!t())throw Error(`Callback required as last argument`);if(l){if(c<2)throw Error(`Too few arguments provided`);c===2?(o=i,i=r,r=a=void 0):c===3&&(r.getContext&&o===void 0?(o=a,a=void 0):(o=a,a=i,i=r,r=void 0))}else{if(c<1)throw Error(`Too few arguments provided`);return c===1?(i=r,r=a=void 0):c===2&&!r.getContext&&(a=i,i=r,r=void 0),new Promise(function(t,o){try{t(e(n.create(i,a),r,a))}catch(e){o(e)}})}try{let t=n.create(i,a);o(null,e(t,r,a))}catch(e){o(e)}}e.create=n.create,e.toCanvas=a.bind(null,r.render),e.toDataURL=a.bind(null,r.renderToDataURL),e.toString=a.bind(null,function(e,t,n){return i.render(e,n)})}))(),1);function ES(e,t,n,r,i,a){e.beginPath(),e.moveTo(t+a,n),e.lineTo(t+r-a,n),e.quadraticCurveTo(t+r,n,t+r,n+a),e.lineTo(t+r,n+i-a),e.quadraticCurveTo(t+r,n+i,t+r-a,n+i),e.lineTo(t+a,n+i),e.quadraticCurveTo(t,n+i,t,n+i-a),e.lineTo(t,n+a),e.quadraticCurveTo(t,n,t+a,n),e.closePath()}function DS(e,t){let n=e.replace(`#`,``);n.length===3&&(n=n.split(``).map(e=>e+e).join(``));let r=parseInt(n,16);return isNaN(r)?`rgba(200, 200, 200, ${t})`:`rgba(${r>>16&255}, ${r>>8&255}, ${r&255}, ${t})`}function OS(e,t,n,r,i,a){let o=t.split(/\s+/),s=``,c=r;for(let t=0;t<o.length;t++){let r=s?`${s} ${o[t]}`:o[t];e.measureText(r).width>i&&t>0?(e.fillText(s,n,c),s=o[t],c+=a):s=r}return s&&e.fillText(s,n,c),c}async function kS(e){let t=1080,n=1240,r=document.createElement(`canvas`);r.width=t,r.height=n;let i=r.getContext(`2d`);if(!i)throw Error(`Nelze inicializovat 2D kontext pro generování karty výsledku`);let a=e.scores[0],o=e.scores[1],s=e.scores[2],c=a?a.party.color:`#B45309`;i.fillStyle=`#FAF7F2`,i.fillRect(0,0,t,n),i.strokeStyle=`#E8E1D5`,i.lineWidth=2,ES(i,36,36,1008,1168,32),i.stroke(),i.fillStyle=c,ES(i,70,52,940,10,5),i.fill(),i.fillStyle=`#8C827A`,i.font=`700 17px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`HISTORICKÁ VOLEBNÍ KALKULAČKA`,70,118),i.fillStyle=`#1C1917`,i.font=`800 48px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`VÝSLEDEK · VOLBY ${e.year}`,70,175),i.strokeStyle=`#EAE3D8`,i.lineWidth=1.5,i.beginPath(),i.moveTo(70,205),i.lineTo(1010,205),i.stroke(),a&&(i.fillStyle=`#FFFFFF`,ES(i,70,230,940,350,26),i.fill(),i.strokeStyle=`#E8E1D5`,i.lineWidth=1.5,ES(i,70,230,940,350,26),i.stroke(),i.fillStyle=c,ES(i,114,274,10,80,5),i.fill(),i.fillStyle=DS(c,.12),ES(i,140,274,255,30,8),i.fill(),i.fillStyle=c,i.font=`700 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`1. MÍSTO · NEJVYŠŠÍ SHODA`,154,294),i.fillStyle=`#1C1917`,i.font=`800 74px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`${a.matchPercentage} %`,140,358),i.fillStyle=`#1C1917`,i.font=`800 40px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(a.party.shortName,114,425),i.fillStyle=`#44403C`,i.font=`600 24px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,OS(i,a.party.fullName,114,468,852,34)),i.fillStyle=`#8C827A`,i.font=`700 16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`DALŠÍ POŘADÍ SHODY`,70,603);let l=(e,t,n)=>{if(!e)return;i.fillStyle=`#FFFFFF`,ES(i,n,615,460,270,22),i.fill(),i.strokeStyle=`#E8E1D5`,i.lineWidth=1.5,ES(i,n,615,460,270,22),i.stroke(),i.fillStyle=`#8C827A`,i.font=`700 15px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`${t}. MÍSTO`,n+24,659),i.fillStyle=`#1C1917`,i.font=`800 36px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`${e.matchPercentage} %`,n+460-110,663),i.fillStyle=e.party.color,ES(i,n+24,683,8,26,4),i.fill(),i.fillStyle=`#1C1917`,i.font=`800 24px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(e.party.shortName,n+42,705),i.fillStyle=`#57534E`,i.font=`500 16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,OS(i,e.party.fullName,n+24,741,412,24),i.fillStyle=`#F2ECE4`,ES(i,n+24,840,412,10,5),i.fill(),i.fillStyle=e.party.color;let r=Math.max(10,412*e.matchPercentage/100);ES(i,n+24,840,r,10,5),i.fill()};l(o,2,70),l(s,3,550),i.fillStyle=`#FFFFFF`,ES(i,70,920,940,250,26),i.fill(),i.strokeStyle=`#E8E1D5`,i.lineWidth=1.5,ES(i,70,920,940,250,26),i.stroke();let u=e.shareUrl||(typeof window<`u`?window.location.href:`https://kalkulacka.cz`),d=document.createElement(`canvas`);try{await TS.toCanvas(d,u,{width:170,margin:1,color:{dark:`#1C1917`,light:`#FFFFFF`},errorCorrectionLevel:`M`}),i.drawImage(d,110,960,170,170)}catch(e){console.error(`Chyba při kreslení QR kódu:`,e)}return i.fillStyle=`#8C827A`,i.font=`700 16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`HISTORICKÁ VOLEBNÍ KALKULAČKA`,316,1e3),i.fillStyle=`#1C1917`,i.font=`800 36px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`Koho byste volili vy?`,316,1050),i.fillStyle=`#57534E`,i.font=`500 20px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`,i.fillText(`Naskenujte kód a zjistěte svou shodu v historii.`,316,1092),r}async function AS(e){let t=await kS(e);return new Promise((e,n)=>{t.toBlob(t=>{t?e(t):n(Error(`Chyba při exportu canvasu do PNG blobu`))},`image/png`)})}async function jS(e){return(await kS(e)).toDataURL(`image/png`)}async function MS(e,t){let n=await AS(e),r=t||`vysledek-${e.year}.png`,i=document.createElement(`a`);i.href=URL.createObjectURL(n),i.download=r,document.body.appendChild(i),i.click(),document.body.removeChild(i),setTimeout(()=>URL.revokeObjectURL(i.href),1e3)}async function NS(e){let t=e.scores[0],n=`Můj výsledek – Volby ${e.year}`,r=t?`V Historické volební kalkulačce pro rok ${e.year} mi vyšla nejvyšší shoda s: ${t.party.fullName} (${t.matchPercentage} %)!`:`Vyzkoušejte Historickou volební kalkulačku (${e.year})!`,i=await AS(e),a=`vysledek-${e.year}.png`,o=new File([i],a,{type:`image/png`});if(navigator.canShare&&navigator.canShare({files:[o]}))try{return await navigator.share({title:n,text:r,files:[o]}),{success:!0,method:`share`}}catch(e){if(e instanceof Error&&e.name===`AbortError`)return{success:!1,method:`share`}}return await MS(e,a),{success:!0,method:`download`}}var Q={view:`home`,year:1920,quizMode:`standard`,selectedYearMode:{1920:`standard`,1946:`standard`,1990:`standard`},questionIndex:0,answers:{},partyScores:[],showHistoricalNote:!1,activeContextTooltipId:null,toastMessage:null,comparisonFilter:`all`,selectedPartyForDetails:null,expandedPartiesYear:null,sliderYearFilter:`all`,activeModalParty:null,activeModalSystemYear:null,surveyState:{selectedAge:null,selectedVote2021:null,customVoteText:``,isSubmitting:!1},dashboardState:{summary:null,isLoading:!1,selectedCorrelationParty:null,isAuthenticated:Ux(),authError:null,isVerifying:!1},ballotShareState:{previewDataUrl:null,isGenerating:!1,isModalOpen:!1}};function PS(){Q.partyScores.length!==0&&(Q.ballotShareState.isGenerating=!0,jS({year:Q.year,quizMode:Q.quizMode,scores:Q.partyScores}).then(e=>{Q.ballotShareState.previewDataUrl=e,Q.ballotShareState.isGenerating=!1,$()}).catch(e=>{console.error(`Chyba při generování volebního lístku:`,e),Q.ballotShareState.isGenerating=!1,$()}))}function FS(e,t){let n=d[e];return t===`expanded`&&n.expandedQuestions&&n.expandedQuestions.length>0?n.expandedQuestions:n.questions}function IS(e){Q.toastMessage=e,$(),setTimeout(()=>{Q.toastMessage=null,$()},3e3)}function LS(e){Q.view=e,e===`results`&&!Q.ballotShareState.previewDataUrl&&Q.partyScores.length>0&&PS(),e===`admin`&&(Q.dashboardState.isAuthenticated=Ux(),Q.dashboardState.isAuthenticated?Q.dashboardState.summary||RS():(Q.dashboardState.isLoading=!1,$())),window.scrollTo({top:0,behavior:`smooth`}),$()}function RS(){Q.dashboardState.isAuthenticated?(Q.dashboardState.isLoading=!0,$(),Lx().then(e=>{Q.dashboardState.summary=e,Q.dashboardState.isLoading=!1,Q.dashboardState.authError=null,$()}).catch(e=>{console.warn(`Dashboard fetch warning:`,e),Q.dashboardState.isLoading=!1,Q.dashboardState.authError=`Nepodařilo se načíst statistiky z databáze. Zkontrolujte připojení k internetu.`,$()})):(Q.dashboardState.isLoading=!1,$())}async function zS(){let e=document.getElementById(`admin-pass-input`),t=e?e.value:``;if(!t.trim()){Q.dashboardState.authError=`Zadejte prosím administrátorské heslo.`,$();return}Q.dashboardState.isVerifying=!0,Q.dashboardState.authError=null,$();let n=await Hx(t);Q.dashboardState.isVerifying=!1,n?(Q.dashboardState.isAuthenticated=!0,Q.dashboardState.authError=null,RS()):(Q.dashboardState.authError=`Nesprávné heslo. Zkuste to prosím znovu.`,$())}function BS(){Wx(),Q.dashboardState.isAuthenticated=!1,Q.dashboardState.summary=null,Q.dashboardState.authError=null,$()}function VS(e,t){Q.year=e,Q.quizMode=t||Q.selectedYearMode[e]||`standard`,Q.questionIndex=0,Q.answers={},Q.partyScores=[],Q.showHistoricalNote=!1,Q.activeContextTooltipId=null,Q.view=`quiz`,Fx(),window.scrollTo({top:0,behavior:`smooth`}),$()}function HS(e){let t=FS(Q.year,Q.quizMode),n=t[Q.questionIndex];Q.answers[n.id]=e,Q.questionIndex<t.length-1?(Q.questionIndex++,Q.showHistoricalNote=!1,Q.activeContextTooltipId=null,$()):US()}function US(){let e=d[Q.year],t=FS(Q.year,Q.quizMode),n=f(e,Q.answers,t);Q.partyScores=n,Q.selectedPartyForDetails=n[0]?.party.id||null,Q.surveyState={selectedAge:null,selectedVote2021:null,customVoteText:``,isSubmitting:!1},Q.ballotShareState={previewDataUrl:null,isGenerating:!1,isModalOpen:!1},Q.view=`survey`,window.scrollTo({top:0,behavior:`smooth`}),$()}async function WS(){Q.surveyState.isSubmitting=!0,$();let e={};Q.partyScores.forEach(t=>{e[t.party.id]=t.matchPercentage});let t=Q.partyScores[0],n=Q.surveyState.selectedVote2021||`Neuvedeno`;if(n===`Jiný subjekt`){let e=Q.surveyState.customVoteText?.trim();e&&(n=`Jiný: ${e}`.slice(0,60))}try{await Ix({year:Q.year,mode:Q.quizMode,topPartyId:t?.party.id||`unknown`,topPartyMatch:t?.matchPercentage||0,partyMatches:e,ageGroup:Q.surveyState.selectedAge||`Neuvedeno`,votedParty2021:n,answersCount:Object.keys(Q.answers).length})}catch(e){console.warn(`Survey submission warning:`,e)}Q.surveyState.isSubmitting=!1,Q.view=`results`,PS();try{u({particleCount:50,spread:60,origin:{y:.6}})}catch(e){console.error(e)}window.scrollTo({top:0,behavior:`smooth`}),$()}function GS(){let e={};Q.partyScores.forEach(t=>{e[t.party.id]=t.matchPercentage});let t=Q.partyScores[0];Ix({year:Q.year,mode:Q.quizMode,topPartyId:t?.party.id||`unknown`,topPartyMatch:t?.matchPercentage||0,partyMatches:e,ageGroup:`Přeskočeno`,votedParty2021:`Přeskočeno`,answersCount:Object.keys(Q.answers).length}).catch(()=>{}),Q.view=`results`,PS();try{u({particleCount:50,spread:60,origin:{y:.6}})}catch(e){console.error(e)}window.scrollTo({top:0,behavior:`smooth`}),$()}function KS(e,t){let n=d[t].parties.find(t=>t.id===e);n&&(Q.activeModalParty={party:n,year:t},$())}function qS(){Q.activeModalParty=null,$()}function JS(e){Q.activeModalSystemYear=e,$()}function YS(){Q.activeModalSystemYear=null,$()}function XS(e){let t=document.getElementById(`party-slider-scroll`);if(t){let n=e===`left`?-320:320;t.scrollBy({left:n,behavior:`smooth`})}}function ZS(){return`
     <header class="bg-white border-b border-zinc-200 sticky top-0 z-30">
       <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         
@@ -720,7 +592,7 @@ Minimum version required to store current data is: `+c+`.
         </nav>
       </div>
     </header>
-  `}function ZS(){return`
+  `}function QS(){return`
     <main class="max-w-5xl mx-auto px-4 sm:px-6 py-10 flex-1 animate-fadeIn">
       
       <!-- Minimalistický Editorial Úvod -->
@@ -864,7 +736,7 @@ Minimum version required to store current data is: `+c+`.
         </div>
       </section>
     </main>
-  `}function QS(){d[Q.year];let e=PS(Q.year,Q.quizMode),t=e.length,n=e[Q.questionIndex],r=Math.round((Q.questionIndex+1)/t*100),i=Q.answers[n.id];return`
+  `}function $S(){d[Q.year];let e=FS(Q.year,Q.quizMode),t=e.length,n=e[Q.questionIndex],r=Math.round((Q.questionIndex+1)/t*100),i=Q.answers[n.id];return`
     <main class="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-12 flex-1 animate-fadeIn">
       
       <!-- Progress Bar & Krok otázky -->
@@ -1034,7 +906,7 @@ Minimum version required to store current data is: `+c+`.
       </div>
 
     </main>
-  `}function $S(){let e=d[Q.year],t=PS(Q.year,Q.quizMode),n=Q.partyScores[0],r=Q.selectedPartyForDetails||n?.party.id,i=e.parties.find(e=>e.id===r)||n?.party;return`
+  `}function eC(){let e=d[Q.year],t=FS(Q.year,Q.quizMode),n=Q.partyScores[0],r=Q.selectedPartyForDetails||n?.party.id,i=e.parties.find(e=>e.id===r)||n?.party;return`
     <main class="max-w-4xl mx-auto px-4 sm:px-6 py-10 flex-1 animate-fadeIn">
       
       <!-- Titulek výsledků -->
@@ -1055,55 +927,85 @@ Minimum version required to store current data is: `+c+`.
             </span>
           `}
         </div>
-        <h1 class="text-2xl sm:text-3xl font-extrabold text-zinc-900 tracking-tight">
-          Vaše názorová shoda s kandidujícími stranami
-        </h1>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-zinc-900 tracking-tight">
+            Vaše názorová shoda s kandidujícími stranami
+          </h1>
+          <button 
+            onclick="window.calcOpenBallotModal()"
+            class="inline-flex items-center gap-2 self-start sm:self-auto px-4 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs tracking-tight shadow-sm transition-all cursor-pointer active:scale-95 shrink-0"
+            title="Otevřít shrnutí a sdílet výsledek"
+          >
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+            </svg>
+            <span>Sdílet výsledek</span>
+          </button>
+        </div>
       </div>
 
-      <!-- Volební lístek ke sdílení (Grafická infografická karta) -->
-      ${Zx(Q.year,Q.quizMode,Q.partyScores,Q.ballotShareState)}
-
-      <!-- Hlavní vítězná strana -->
+      <!-- Hlavní vítězná strana (jemný pastelový podklad v barvě strany) -->
       ${n?`
-        <div class="bg-zinc-900 text-white rounded-xl p-6 sm:p-8 mb-8 shadow-sm border border-zinc-800">
-          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <div 
+          class="rounded-2xl p-6 sm:p-8 mb-8 shadow-xs border relative overflow-hidden transition-all"
+          style="background-color: ${n.party.color}0D; border-color: ${n.party.color}35;"
+        >
+          <!-- Barevná linka vítězné strany nahoře -->
+          <div 
+            class="absolute top-0 left-0 right-0 h-1.5"
+            style="background-color: ${n.party.color};"
+          ></div>
+
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pt-1">
             <div class="max-w-xl">
-              <div class="flex items-center gap-3.5 mb-3">
-                <div class="w-2 h-12 rounded-full shrink-0 shadow-xs" style="background-color: ${n.party.color};"></div>
-                <div>
-                  <span class="text-xs uppercase tracking-wider font-semibold text-zinc-400 block">
-                    Nejvyšší programová shoda
-                  </span>
-                  <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight text-white">
-                    ${n.party.fullName} (${n.party.shortName})
-                  </h2>
+              <div class="mb-3">
+                <div 
+                  class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-bold tracking-wider uppercase mb-1.5"
+                  style="background-color: ${n.party.color}1E; color: ${n.party.color};"
+                >
+                  <span class="w-1.5 h-1.5 rounded-full" style="background-color: ${n.party.color};"></span>
+                  <span>Nejvyšší programová shoda</span>
                 </div>
+                <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight text-stone-900">
+                  ${n.party.fullName} (${n.party.shortName})
+                </h2>
               </div>
 
-              <div class="text-xs text-zinc-400 mb-3 font-medium">
-                ${n.party.ideology} · Osobnosti: <strong class="text-zinc-200">${n.party.leaders.join(`, `)}</strong>
+              <div class="text-xs text-stone-600 mb-3 font-medium">
+                ${n.party.ideology} · Osobnosti: <strong class="text-stone-800">${n.party.leaders.join(`, `)}</strong>
               </div>
-              <p class="text-xs sm:text-sm text-zinc-300 leading-relaxed font-normal mb-4 text-justify [hyphens:auto]">
+              <p class="text-xs sm:text-sm text-stone-700 leading-relaxed font-normal mb-4 text-justify [hyphens:auto]">
                 ${n.party.description}
               </p>
-              <div class="p-3 rounded-lg bg-zinc-800 text-xs text-zinc-200 border border-zinc-700 text-justify [hyphens:auto]">
-                <strong>Programové pilíře:</strong> ${n.party.programHighlight}
+              <div class="p-3.5 rounded-xl bg-white/90 border border-stone-200/80 text-xs text-stone-800 text-justify [hyphens:auto] shadow-2xs">
+                <strong class="text-stone-900">Programové pilíře:</strong> ${n.party.programHighlight}
               </div>
             </div>
 
-            <div class="flex flex-col items-center justify-center p-5 rounded-xl bg-zinc-800 border border-zinc-700 min-w-[130px] shrink-0 self-center sm:self-auto text-center">
-              <span class="text-4xl sm:text-5xl font-extrabold tracking-tight text-white font-mono">
+            <div class="flex flex-col items-center justify-center p-5 rounded-2xl bg-white border border-stone-200/90 shadow-sm min-w-[145px] shrink-0 self-center sm:self-auto text-center">
+              <span class="text-4xl sm:text-5xl font-extrabold tracking-tight text-stone-900 font-mono">
                 ${n.matchPercentage}%
               </span>
-              <span class="text-[11px] uppercase tracking-wider text-zinc-400 mt-1 font-semibold">
+              <span class="text-[11px] uppercase tracking-wider text-stone-500 mt-1 font-bold">
                 Shoda
               </span>
-              <button 
-                onclick="window.calcOpenPartyModal('${n.party.id}', ${Q.year})"
-                class="mt-3 text-[11px] text-zinc-300 hover:text-white underline font-medium cursor-pointer"
-              >
-                Detail strany ↗
-              </button>
+              <div class="mt-3 flex flex-col gap-2 w-full">
+                <button 
+                  onclick="window.calcOpenPartyModal('${n.party.id}', ${Q.year})"
+                  class="text-[11px] text-stone-600 hover:text-stone-900 underline font-medium cursor-pointer"
+                >
+                  Detail strany ↗
+                </button>
+                <button 
+                  onclick="window.calcOpenBallotModal()"
+                  class="px-2.5 py-1.5 rounded-lg bg-stone-900 hover:bg-stone-800 text-white text-[11px] font-semibold transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                  </svg>
+                  <span>Sdílet</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -1283,21 +1185,30 @@ Minimum version required to store current data is: `+c+`.
       <!-- Akční tlačítka -->
       <div class="flex flex-wrap items-center justify-center gap-3">
         <button 
-          onclick="window.calcShareResult()"
-          class="px-5 py-2.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white font-semibold text-xs tracking-tight transition-colors cursor-pointer shadow-xs border border-zinc-800"
+          onclick="window.calcOpenBallotModal()"
+          class="px-5 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs tracking-tight transition-all cursor-pointer shadow-sm border border-stone-800 flex items-center gap-2 active:scale-95"
         >
-          Kopírovat výsledek
+          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+          </svg>
+          <span>Sdílet výsledek</span>
+        </button>
+        <button 
+          onclick="window.calcShareResult()"
+          class="px-5 py-2.5 rounded-xl bg-white hover:bg-stone-50 text-stone-800 border border-stone-300 font-semibold text-xs tracking-tight transition-colors cursor-pointer"
+        >
+          Kopírovat text
         </button>
         <button 
           onclick="window.calcSetView('home')"
-          class="px-5 py-2.5 rounded-lg bg-white hover:bg-zinc-100 text-zinc-800 border border-zinc-300 font-semibold text-xs tracking-tight transition-colors cursor-pointer"
+          class="px-5 py-2.5 rounded-xl bg-white hover:bg-stone-50 text-stone-800 border border-stone-300 font-semibold text-xs tracking-tight transition-colors cursor-pointer"
         >
           Vyzkoušet jiný volební rok
         </button>
       </div>
 
     </main>
-  `}function eC(){let e=[1920,1946,1990],t=[];return e.forEach(e=>{(Q.sliderYearFilter===`all`||Q.sliderYearFilter===e)&&d[e].parties.forEach(n=>{t.push({party:n,year:e})})}),`
+  `}function tC(){let e=[1920,1946,1990],t=[];return e.forEach(e=>{(Q.sliderYearFilter===`all`||Q.sliderYearFilter===e)&&d[e].parties.forEach(n=>{t.push({party:n,year:e})})}),`
     <section class="border-t border-zinc-200 bg-white py-8 px-4 sm:px-6 mt-12 shadow-xs">
       <div class="max-w-5xl mx-auto">
         
@@ -1424,7 +1335,7 @@ Minimum version required to store current data is: `+c+`.
 
       </div>
     </section>
-  `}function tC(){if(!Q.activeModalParty)return``;let{party:e,year:t}=Q.activeModalParty;return`
+  `}function nC(){if(!Q.activeModalParty)return``;let{party:e,year:t}=Q.activeModalParty;return`
     <div 
       id="party-modal-backdrop"
       class="fixed inset-0 z-50 bg-zinc-900/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fadeIn"
@@ -1527,7 +1438,7 @@ Minimum version required to store current data is: `+c+`.
 
       </div>
     </div>
-  `}function nC(){if(!Q.activeModalSystemYear)return``;let e=Q.activeModalSystemYear,t=d[e],n=t.electionSystem;return`
+  `}function rC(){if(!Q.activeModalSystemYear)return``;let e=Q.activeModalSystemYear,t=d[e],n=t.electionSystem;return`
     <div 
       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/60 backdrop-blur-xs animate-fadeIn"
       onclick="if (event.target === this) window.calcCloseSystemModal()"
@@ -1664,11 +1575,11 @@ Minimum version required to store current data is: `+c+`.
 
       </div>
     </div>
-  `}function rC(){return Q.toastMessage?`
+  `}function iC(){return Q.toastMessage?`
     <div class="fixed bottom-6 right-6 z-50 bg-zinc-900 text-white px-4 py-2.5 rounded-lg shadow-lg text-xs font-medium animate-fadeIn border border-zinc-700">
       <span>${Q.toastMessage}</span>
     </div>
-  `:``}function iC(){return`
+  `:``}function aC(){return`
     <footer class="border-t border-zinc-200 py-8 px-4 sm:px-6 text-zinc-500 text-xs bg-[#f4f4f5]">
       <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
         <div class="text-[11px] text-zinc-500">
@@ -1681,17 +1592,18 @@ Minimum version required to store current data is: `+c+`.
         </div>
       </div>
     </footer>
-  `}function $(){let e=document.getElementById(`app`);if(!e)console.error(`Historická kalkulačka: Element s id="app" nebyl v dokumentu nalezen.`);else try{let t=``;switch(Q.view){case`home`:t=ZS();break;case`quiz`:t=QS();break;case`survey`:t=qx(Q.surveyState,Q.year,Q.quizMode);break;case`results`:t=$S();break;case`admin`:t=Jx(Q.dashboardState)}let n=Q.view!==`survey`&&Q.view!==`admin`;e.innerHTML=`
-      ${XS()}
+  `}function $(){let e=document.getElementById(`app`);if(!e)console.error(`Historická kalkulačka: Element s id="app" nebyl v dokumentu nalezen.`);else try{let t=``;switch(Q.view){case`home`:t=QS();break;case`quiz`:t=$S();break;case`survey`:t=qx(Q.surveyState,Q.year,Q.quizMode);break;case`results`:t=eC();break;case`admin`:t=Jx(Q.dashboardState)}let n=Q.view!==`survey`&&Q.view!==`admin`;e.innerHTML=`
+      ${ZS()}
       ${t}
-      ${n?eC():``}
-      ${iC()}
-      ${tC()}
+      ${n?tC():``}
+      ${aC()}
       ${nC()}
       ${rC()}
+      ${Zx(Q.year,Q.quizMode,Q.partyScores,Q.ballotShareState)}
+      ${iC()}
     `}catch(t){console.error(`Chyba při vykreslování Historické kalkulačky:`,t),e.innerHTML=`
       <div class="max-w-xl mx-auto my-12 p-6 bg-white rounded-xl border border-zinc-200 text-center font-sans">
         <h2 class="text-base font-bold text-zinc-900 mb-2">Historická volební kalkulačka se načítá...</h2>
         <p class="text-xs text-zinc-500 mb-4">Pokud tato zpráva nezmizí, zkuste prosím obnovit stránku (F5 / Ctrl+R).</p>
       </div>
-    `}}window.addEventListener(`keydown`,e=>{if(e.key===`Escape`){if(Q.ballotShareState?.isModalOpen){Q.ballotShareState.isModalOpen=!1,$();return}Q.activeModalParty&&KS(),Q.activeModalSystemYear&&JS()}}),window.calcStartQuiz=e=>BS(e),window.calcHandleAnswer=e=>VS(e),window.calcPrevQuestion=()=>{Q.questionIndex>0&&(Q.questionIndex--,Q.showHistoricalNote=!1,Q.activeContextTooltipId=null,$())},window.calcJumpQuestion=e=>{Q.questionIndex=e,Q.showHistoricalNote=!1,Q.activeContextTooltipId=null,$()},window.calcSetView=e=>IS(e),window.calcSelectPartyDetails=e=>{Q.selectedPartyForDetails=e,$()},window.calcSetComparisonFilter=e=>{Q.comparisonFilter=e,$()},window.calcToggleParties=e=>{Q.expandedPartiesYear=Q.expandedPartiesYear===e?null:e,$()},window.calcSetSliderFilter=e=>{Q.sliderYearFilter=e,$()},window.calcScrollSlider=e=>YS(e),window.calcOpenPartyModal=(e,t)=>GS(e,t),window.calcClosePartyModal=()=>KS(),window.calcOpenSystemModal=e=>qS(e),window.calcCloseSystemModal=()=>JS(),window.calcSetYearMode=(e,t)=>{Q.selectedYearMode[e]=t,$()},window.calcToggleContextTooltip=e=>{Q.activeContextTooltipId=Q.activeContextTooltipId===e?null:e,$()},window.calcCloseContextTooltip=()=>{Q.activeContextTooltipId=null,$()},window.calcSelectSurveyAge=e=>{Q.surveyState.selectedAge=e,$()},window.calcSelectSurveyVote=e=>{Q.surveyState.selectedVote2021=e,$()},window.calcUpdateCustomVote=e=>{Q.surveyState.customVoteText=e},window.calcSubmitSurvey=()=>{US()},window.calcSkipSurvey=()=>{WS()},window.calcRefreshStats=()=>{LS()},window.calcExportCSV=()=>{Q.dashboardState.summary?.recentSubmissions?Rx(Q.dashboardState.summary.recentSubmissions):FS(`Zatím nejsou načtena data pro export`)},window.calcSelectCorrelationParty=e=>{Q.dashboardState.selectedCorrelationParty=e,$()},window.calcVerifyPassword=()=>{RS()},window.calcAdminLogout=()=>{zS()},window.calcShareBallot=async()=>{FS(`Připravuji volební lístek ke sdílení...`);try{let e=await MS({year:Q.year,quizMode:Q.quizMode,scores:Q.partyScores});e.method===`share`&&e.success?FS(`Volební lístek byl úspěšně sdílen!`):e.method===`download`&&FS(`Volební lístek byl stažen (PNG)`)}catch(e){console.error(`Chyba při sdílení lístku:`,e),FS(`Stahuji volební lístek...`),await jS({year:Q.year,quizMode:Q.quizMode,scores:Q.partyScores})}},window.calcDownloadBallot=async()=>{FS(`Stahuji volební lístek v HD rozlišení...`);try{await jS({year:Q.year,quizMode:Q.quizMode,scores:Q.partyScores}),FS(`Volební lístek byl stažen (PNG)`)}catch(e){console.error(`Chyba při stahování:`,e),FS(`Nepodařilo se stáhnout volební lístek`)}},window.calcOpenBallotModal=()=>{Q.ballotShareState.isModalOpen=!0,$()},window.calcCloseBallotModal=()=>{Q.ballotShareState.isModalOpen=!1,$()},window.calcShareResult=()=>{let e=Q.partyScores[0],t=e?`V Historické volební kalkulačce pro rok ${Q.year} mi vyšla nejvyšší shoda s: ${e.party.fullName} (${e.matchPercentage} %)!`:`Vyzkoušejte Historickou volební kalkulačku (1920, 1946, 1990)!`;navigator.clipboard?navigator.clipboard.writeText(t).then(()=>{FS(`Zkopírováno do schránky`)}).catch(()=>{FS(t)}):FS(t)};function aC(){let e=new URLSearchParams(window.location.search),t=e.get(`admin`)===`1`||e.get(`view`)===`admin`,n=window.location.hash===`#admin`;(t||n)&&IS(`admin`)}window.addEventListener(`hashchange`,aC),window.addEventListener(`popstate`,aC),Px(),document.readyState===`loading`?document.addEventListener(`DOMContentLoaded`,()=>{aC(),$()}):(aC(),$());
+    `}}window.addEventListener(`keydown`,e=>{if(e.key===`Escape`){if(Q.ballotShareState?.isModalOpen){Q.ballotShareState.isModalOpen=!1,document.body.classList.remove(`overflow-hidden`),$();return}Q.activeModalParty&&qS(),Q.activeModalSystemYear&&YS()}}),window.calcStartQuiz=e=>VS(e),window.calcHandleAnswer=e=>HS(e),window.calcPrevQuestion=()=>{Q.questionIndex>0&&(Q.questionIndex--,Q.showHistoricalNote=!1,Q.activeContextTooltipId=null,$())},window.calcJumpQuestion=e=>{Q.questionIndex=e,Q.showHistoricalNote=!1,Q.activeContextTooltipId=null,$()},window.calcSetView=e=>LS(e),window.calcSelectPartyDetails=e=>{Q.selectedPartyForDetails=e,$()},window.calcSetComparisonFilter=e=>{Q.comparisonFilter=e,$()},window.calcToggleParties=e=>{Q.expandedPartiesYear=Q.expandedPartiesYear===e?null:e,$()},window.calcSetSliderFilter=e=>{Q.sliderYearFilter=e,$()},window.calcScrollSlider=e=>XS(e),window.calcOpenPartyModal=(e,t)=>KS(e,t),window.calcClosePartyModal=()=>qS(),window.calcOpenSystemModal=e=>JS(e),window.calcCloseSystemModal=()=>YS(),window.calcSetYearMode=(e,t)=>{Q.selectedYearMode[e]=t,$()},window.calcToggleContextTooltip=e=>{Q.activeContextTooltipId=Q.activeContextTooltipId===e?null:e,$()},window.calcCloseContextTooltip=()=>{Q.activeContextTooltipId=null,$()},window.calcSelectSurveyAge=e=>{Q.surveyState.selectedAge=e,$()},window.calcSelectSurveyVote=e=>{Q.surveyState.selectedVote2021=e,$()},window.calcUpdateCustomVote=e=>{Q.surveyState.customVoteText=e},window.calcSubmitSurvey=()=>{WS()},window.calcSkipSurvey=()=>{GS()},window.calcRefreshStats=()=>{RS()},window.calcExportCSV=()=>{Q.dashboardState.summary?.recentSubmissions?Rx(Q.dashboardState.summary.recentSubmissions):IS(`Zatím nejsou načtena data pro export`)},window.calcSelectCorrelationParty=e=>{Q.dashboardState.selectedCorrelationParty=e,$()},window.calcVerifyPassword=()=>{zS()},window.calcAdminLogout=()=>{BS()},window.calcShareBallot=async()=>{IS(`Připravuji výsledek ke sdílení...`);try{let e=await NS({year:Q.year,quizMode:Q.quizMode,scores:Q.partyScores});e.method===`share`&&e.success?IS(`Výsledek byl úspěšně sdílen!`):e.method===`download`&&IS(`Výsledek byl stažen (PNG)`)}catch(e){console.error(`Chyba při sdílení výsledku:`,e),IS(`Stahuji výsledek...`),await MS({year:Q.year,quizMode:Q.quizMode,scores:Q.partyScores})}},window.calcDownloadBallot=async()=>{IS(`Stahuji výsledek v HD rozlišení...`);try{await MS({year:Q.year,quizMode:Q.quizMode,scores:Q.partyScores}),IS(`Výsledek byl stažen (PNG)`)}catch(e){console.error(`Chyba při stahování:`,e),IS(`Nepodařilo se stáhnout výsledek`)}},window.calcOpenBallotModal=()=>{Q.ballotShareState.isModalOpen=!0,document.body.classList.add(`overflow-hidden`),$()},window.calcCloseBallotModal=()=>{Q.ballotShareState.isModalOpen=!1,document.body.classList.remove(`overflow-hidden`),$()},window.calcOpenShareModal=window.calcOpenBallotModal,window.calcCloseShareModal=window.calcCloseBallotModal,window.calcShareResult=()=>{let e=Q.partyScores[0],t=e?`V Historické volební kalkulačce pro rok ${Q.year} mi vyšla nejvyšší shoda s: ${e.party.fullName} (${e.matchPercentage} %)!`:`Vyzkoušejte Historickou volební kalkulačku (1920, 1946, 1990)!`;navigator.clipboard?navigator.clipboard.writeText(t).then(()=>{IS(`Zkopírováno do schránky`)}).catch(()=>{IS(t)}):IS(t)};function oC(){let e=new URLSearchParams(window.location.search),t=e.get(`admin`)===`1`||e.get(`view`)===`admin`,n=window.location.hash===`#admin`;(t||n)&&LS(`admin`)}window.addEventListener(`hashchange`,oC),window.addEventListener(`popstate`,oC),Px(),document.readyState===`loading`?document.addEventListener(`DOMContentLoaded`,()=>{oC(),$()}):(oC(),$());

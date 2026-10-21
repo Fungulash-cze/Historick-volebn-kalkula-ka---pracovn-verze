@@ -133,12 +133,19 @@ function setView(view: AppState['view']) {
   if (view === 'admin') {
     state.dashboardState.isAuthenticated = isAdminSessionActive();
     if (state.dashboardState.isAuthenticated) {
-      if (!state.dashboardState.summary) {
-        loadDashboardStats();
-      }
+      loadDashboardStats();
     } else {
-      state.dashboardState.isLoading = false;
-      renderApp();
+      state.dashboardState.authError = null;
+    }
+  } else {
+    // Pokud uživatel odchází ze statistik zpět na web, vyčistíme hash z adresního řádku
+    const currentHash = (window.location.hash || '').toLowerCase();
+    if (currentHash === '#admin' || currentHash === '#statistiky' || currentHash === '#stats') {
+      try {
+        history.pushState(null, '', window.location.pathname + window.location.search);
+      } catch {
+        window.location.hash = '';
+      }
     }
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -146,14 +153,10 @@ function setView(view: AppState['view']) {
 }
 
 function loadDashboardStats() {
-  if (!state.dashboardState.isAuthenticated) {
-    state.dashboardState.isLoading = false;
-    renderApp();
-    return;
-  }
-
   state.dashboardState.isLoading = true;
+  state.dashboardState.authError = null;
   renderApp();
+
   fetchAnalyticsSummary()
     .then((summary) => {
       state.dashboardState.summary = summary;
@@ -1523,9 +1526,9 @@ function renderFooter(): string {
         <div class="text-[11px] text-zinc-500">
           vytvořil po večerech Adam Simota :)
         </div>
-        <div>
+        <div class="flex items-center gap-2">
           <span class="font-bold text-zinc-900">Historická volební kalkulačka (HVK)</span>
-          <span class="text-zinc-300 mx-2">·</span>
+          <span class="text-zinc-300">·</span>
           <span>1920 · 1946 · 1990</span>
         </div>
       </div>
@@ -1816,12 +1819,30 @@ window.calcShareResult = () => {
   }
 };
 
-// Detekce skryté administrátorské adresy (?admin=1, ?view=admin, #admin)
+// Detekce skryté adresy statistik pouze přes URL (#statistiky, #stats, ?statistiky, ?stats, #admin atd.)
 function checkAdminRoute() {
+  const hash = (window.location.hash || '').toLowerCase();
+  const search = (window.location.search || '').toLowerCase();
+  const path = (window.location.pathname || '').toLowerCase();
   const urlParams = new URLSearchParams(window.location.search);
-  const isAdminParam = urlParams.get('admin') === '1' || urlParams.get('view') === 'admin';
-  const isAdminHash = window.location.hash === '#admin';
-  if (isAdminParam || isAdminHash) {
+
+  const isStatsRoute =
+    hash === '#statistiky' ||
+    hash === '#stats' ||
+    hash === '#admin' ||
+    urlParams.has('statistiky') ||
+    urlParams.has('stats') ||
+    urlParams.get('admin') === '1' ||
+    urlParams.get('view') === 'admin' ||
+    urlParams.get('view') === 'statistiky' ||
+    urlParams.get('view') === 'stats' ||
+    search.includes('statistiky') ||
+    search.includes('stats') ||
+    path.endsWith('/statistiky') ||
+    path.endsWith('/stats') ||
+    path.endsWith('/admin');
+
+  if (isStatsRoute) {
     setView('admin');
   }
 }
