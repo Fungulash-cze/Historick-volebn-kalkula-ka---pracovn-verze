@@ -1524,7 +1524,7 @@ function renderFooter(): string {
     <footer class="border-t border-zinc-200 py-8 px-4 sm:px-6 text-zinc-500 text-xs bg-[#f4f4f5]">
       <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
         <div class="text-[11px] text-zinc-500">
-          vytvořil po večerech Adam Simota :)
+          Díky moc všem za zpětnou vazbu <3 Adam
         </div>
         <div class="flex items-center gap-2">
           <span class="font-bold text-zinc-900">Historická volební kalkulačka (HVK)</span>
