@@ -38,10 +38,10 @@ export function renderSurveyView(
   return `
     <div class="max-w-2xl mx-auto px-4 py-8 sm:py-12">
       <!-- Karta dotazníku -->
-      <div class="bg-white rounded-2xl border border-zinc-200 shadow-sm p-6 sm:p-8">
+      <div class="bg-white rounded-sm border border-zinc-300 shadow-sm p-6 sm:p-8">
         
         <div class="text-center mb-8">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-semibold mb-3 border border-emerald-200">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-xs bg-emerald-50 text-emerald-800 text-xs font-semibold mb-3 border border-emerald-200">
             <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
             </svg>
@@ -67,7 +67,7 @@ export function renderSurveyView(
                 <button
                   type="button"
                   onclick="window.calcSelectSurveyAge('${age}')"
-                  class="px-3 py-2.5 rounded-lg text-xs font-medium border text-center transition-all cursor-pointer ${
+                  class="px-3 py-2.5 rounded-sm text-xs font-medium border text-center transition-all cursor-pointer ${
                     isSelected
                       ? 'bg-zinc-900 text-white border-zinc-900 shadow-xs'
                       : 'bg-zinc-50 hover:bg-zinc-100 text-zinc-700 border-zinc-200'
@@ -94,7 +94,7 @@ export function renderSurveyView(
                   <button
                     type="button"
                     onclick="window.calcSelectSurveyVote('${vote.replace(/'/g, "\\'")}')"
-                    class="w-full text-left px-3.5 py-2.5 rounded-lg text-xs font-medium border transition-all flex items-center justify-between cursor-pointer ${
+                    class="w-full text-left px-3.5 py-2.5 rounded-sm text-xs font-medium border transition-all flex items-center justify-between cursor-pointer ${
                       isSelected
                         ? 'bg-zinc-900 text-white border-zinc-900 shadow-xs'
                         : 'bg-zinc-50 hover:bg-zinc-100 text-zinc-700 border-zinc-200'
@@ -121,7 +121,7 @@ export function renderSurveyView(
                         value="${(surveyState.customVoteText || '').replace(/"/g, '&quot;')}"
                         oninput="window.calcUpdateCustomVote(this.value)"
                         placeholder="Napište název jiného subjektu..."
-                        class="w-full px-3.5 py-2.5 text-xs rounded-lg border border-zinc-300 bg-white text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-zinc-900 shadow-inner"
+                        class="w-full px-3.5 py-2.5 text-xs rounded-sm border border-zinc-300 bg-white text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-zinc-900 shadow-inner"
                         autofocus
                       />
                     </div>
@@ -135,7 +135,7 @@ export function renderSurveyView(
         </div>
 
         <!-- Garance anonymity -->
-        <div class="bg-zinc-50 rounded-xl p-3.5 border border-zinc-200 mb-6 flex items-start gap-2.5 text-[11px] text-zinc-500 leading-normal">
+        <div class="bg-zinc-50 rounded-sm p-3.5 border border-zinc-200 mb-6 flex items-start gap-2.5 text-[11px] text-zinc-500 leading-normal">
           <svg class="w-4 h-4 text-zinc-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
           </svg>
@@ -158,7 +158,7 @@ export function renderSurveyView(
             type="button"
             onclick="window.calcSubmitSurvey()"
             ${surveyState.isSubmitting ? 'disabled' : ''}
-            class="w-full sm:w-auto px-6 py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs sm:text-sm tracking-tight transition-all text-center flex items-center justify-center gap-2 shadow-sm cursor-pointer disabled:opacity-50"
+            class="w-full sm:w-auto px-6 py-3 rounded-sm bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs sm:text-sm tracking-tight transition-all text-center flex items-center justify-center gap-2 shadow-sm cursor-pointer disabled:opacity-50"
           >
             <span>${surveyState.isSubmitting ? 'Ukládám...' : 'Uložit a zobrazit mé výsledky'}</span>
             <span>→</span>

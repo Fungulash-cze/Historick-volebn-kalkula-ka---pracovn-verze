@@ -14,9 +14,9 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
   if (!state.isAuthenticated) {
     return `
       <div class="max-w-md mx-auto px-4 py-16 sm:py-24">
-        <div class="bg-white rounded-2xl border border-zinc-200 shadow-sm p-6 sm:p-8 text-center">
+        <div class="bg-white rounded-sm border border-zinc-200 shadow-sm p-6 sm:p-8 text-center">
           
-          <div class="w-12 h-12 rounded-xl bg-zinc-100 border border-zinc-200 flex items-center justify-center mx-auto mb-4 text-zinc-900">
+          <div class="w-12 h-12 rounded-sm bg-zinc-100 border border-zinc-200 flex items-center justify-center mx-auto mb-4 text-zinc-900">
             <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
@@ -33,7 +33,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
           ${
             state.authError
               ? `
-            <div class="mb-5 p-3 rounded-lg bg-red-50 border border-red-200 text-red-800 text-xs text-center font-medium">
+            <div class="mb-5 p-3 rounded-sm bg-red-50 border border-red-200 text-red-800 text-xs text-center font-medium">
               ${state.authError}
             </div>
           `
@@ -50,7 +50,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
                 type="password"
                 autocomplete="current-password"
                 placeholder="Zadejte heslo"
-                class="w-full px-3.5 py-2.5 rounded-xl border border-zinc-300 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-zinc-900 text-xs sm:text-sm text-zinc-900 transition-all font-mono"
+                class="w-full px-3.5 py-2.5 rounded-sm border border-zinc-300 focus:outline-none focus:ring-2 focus:ring-zinc-900 focus:border-zinc-900 text-xs sm:text-sm text-zinc-900 transition-all font-mono"
                 autofocus
               />
             </div>
@@ -58,7 +58,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
             <button
               type="submit"
               ${state.isVerifying ? 'disabled' : ''}
-              class="w-full py-3 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs sm:text-sm tracking-tight transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer disabled:opacity-50"
+              class="w-full py-3 px-4 rounded-sm bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs sm:text-sm tracking-tight transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer disabled:opacity-50"
             >
               <span>${state.isVerifying ? 'Ověřuji...' : 'Odemknout statistiky'}</span>
               <span>→</span>
@@ -112,7 +112,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
       <!-- Horní navigační lišta dashboardu -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-zinc-200">
         <div>
-          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-stone-100 text-stone-700 text-[11px] font-bold mb-1.5 uppercase tracking-wider border border-stone-200">
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-xs bg-stone-100 text-stone-700 text-[11px] font-bold mb-1.5 uppercase tracking-wider border border-stone-200">
             <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
             Skrytý odkaz · Živá data z databáze
           </div>
@@ -128,7 +128,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
           <button
             type="button"
             onclick="window.calcRefreshStats()"
-            class="px-3.5 py-2 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-800 text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer border border-zinc-200"
+            class="px-3.5 py-2 rounded-sm bg-zinc-100 hover:bg-zinc-200 text-zinc-800 text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer border border-zinc-200"
           >
             <svg class="w-3.5 h-3.5 text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.03 0 01-15.357-2m15.357 2H15" />
@@ -139,7 +139,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
           <button
             type="button"
             onclick="window.calcExportCSV()"
-            class="px-3.5 py-2 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
+            class="px-3.5 py-2 rounded-sm bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
           >
             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -150,7 +150,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
           <button
             type="button"
             onclick="window.calcAdminLogout()"
-            class="px-3.5 py-2 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-700 text-xs font-semibold transition-colors cursor-pointer border border-zinc-200"
+            class="px-3.5 py-2 rounded-sm bg-zinc-100 hover:bg-zinc-200 text-zinc-700 text-xs font-semibold transition-colors cursor-pointer border border-zinc-200"
           >
             Zamknout / Odhlásit
           </button>
@@ -158,7 +158,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
           <button
             type="button"
             onclick="window.calcSetView('home')"
-            class="px-3.5 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-semibold transition-colors cursor-pointer"
+            class="px-3.5 py-2 rounded-sm bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-semibold transition-colors cursor-pointer"
           >
             ← Zpět na kalkulačku
           </button>
@@ -168,7 +168,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
       <!-- Karta 1: Hlavní ukazatele (KPI) -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-8">
         
-        <div class="bg-white p-4 sm:p-5 rounded-xl border border-zinc-200 shadow-xs">
+        <div class="bg-white p-4 sm:p-5 rounded-sm border border-zinc-200 shadow-xs">
           <div class="text-[11px] font-bold text-zinc-500 uppercase tracking-wider mb-1">
             Návštěvnost webu
           </div>
@@ -178,7 +178,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
           <div class="text-[11px] text-zinc-400 mt-1">zobrazení stránek celkem</div>
         </div>
 
-        <div class="bg-white p-4 sm:p-5 rounded-xl border border-zinc-200 shadow-xs">
+        <div class="bg-white p-4 sm:p-5 rounded-sm border border-zinc-200 shadow-xs">
           <div class="text-[11px] font-bold text-zinc-500 uppercase tracking-wider mb-1">
             Vyplněné kalkulačky
           </div>
@@ -188,7 +188,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
           <div class="text-[11px] text-zinc-400 mt-1">dokončených průchodů</div>
         </div>
 
-        <div class="bg-white p-4 sm:p-5 rounded-xl border border-zinc-200 shadow-xs">
+        <div class="bg-white p-4 sm:p-5 rounded-sm border border-zinc-200 shadow-xs">
           <div class="text-[11px] font-bold text-zinc-500 uppercase tracking-wider mb-1">
             Oblíbený ročník
           </div>
@@ -198,7 +198,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
           <div class="text-[11px] text-zinc-400 mt-1">nejvíce vyplňovaný</div>
         </div>
 
-        <div class="bg-white p-4 sm:p-5 rounded-xl border border-zinc-200 shadow-xs">
+        <div class="bg-white p-4 sm:p-5 rounded-sm border border-zinc-200 shadow-xs">
           <div class="text-[11px] font-bold text-zinc-500 uppercase tracking-wider mb-1">
             Poměr verzí
           </div>
@@ -216,7 +216,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         
         <!-- Rozdělení dle volebních roků -->
-        <div class="bg-white p-5 rounded-xl border border-zinc-200 shadow-xs">
+        <div class="bg-white p-5 rounded-sm border border-zinc-200 shadow-xs">
           <h2 class="text-sm font-bold text-zinc-900 mb-4 flex items-center justify-between">
             <span>Zájem o jednotlivé historické volby</span>
             <span class="text-xs font-normal text-zinc-500">${totalSubmissions} celkem</span>
@@ -229,7 +229,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
         </div>
 
         <!-- Věkové rozložení -->
-        <div class="bg-white p-5 rounded-xl border border-zinc-200 shadow-xs">
+        <div class="bg-white p-5 rounded-sm border border-zinc-200 shadow-xs">
           <h2 class="text-sm font-bold text-zinc-900 mb-4 flex items-center justify-between">
             <span>Věková struktura účastníků</span>
             <span class="text-xs font-normal text-zinc-500">samostatně uvedeno</span>
@@ -245,8 +245,8 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
                       <span class="font-medium text-zinc-700">${age}</span>
                       <span class="text-zinc-500 font-mono">${count} (${pct} %)</span>
                     </div>
-                    <div class="w-full bg-zinc-100 rounded-full h-2">
-                      <div class="bg-zinc-800 h-2 rounded-full" style="width: ${pct}%"></div>
+                    <div class="w-full bg-zinc-100 rounded-xs h-2">
+                      <div class="bg-zinc-800 h-2 rounded-xs" style="width: ${pct}%"></div>
                     </div>
                   </div>
                 `;
@@ -263,7 +263,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
       </div>
 
       <!-- Karta 4: Volební preference a historické korelace -->
-      <div class="bg-white p-6 rounded-xl border border-zinc-200 shadow-xs mb-8">
+      <div class="bg-white p-6 rounded-sm border border-zinc-200 shadow-xs mb-8">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
           <div>
             <h2 class="text-base font-bold text-zinc-900">
@@ -283,7 +283,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
               <button
                 type="button"
                 onclick="window.calcSelectCorrelationParty('${partyName.replace(/'/g, "\\'")}')"
-                class="px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all cursor-pointer ${
+                class="px-2.5 py-1.5 rounded-sm text-xs font-semibold border transition-all cursor-pointer ${
                   isSel
                     ? 'bg-zinc-900 text-white border-zinc-900 shadow-xs'
                     : 'bg-zinc-50 hover:bg-zinc-100 text-zinc-700 border-zinc-200'
@@ -299,7 +299,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
         ${
           activeParty
             ? `
-          <div class="bg-zinc-50 rounded-xl p-4 border border-zinc-200">
+          <div class="bg-zinc-50 rounded-sm p-4 border border-zinc-200">
             <h3 class="text-xs font-bold text-zinc-700 uppercase tracking-wider mb-3">
               Historická shoda pro voliče „${activeParty}“:
             </h3>
@@ -308,7 +308,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
                 .sort((a, b) => b[1] - a[1])
                 .map(([histParty, count]) => {
                   return `
-                    <div class="bg-white p-3 rounded-lg border border-zinc-200 flex items-center justify-between">
+                    <div class="bg-white p-3 rounded-sm border border-zinc-200 flex items-center justify-between">
                       <span class="text-xs font-bold text-zinc-900">${histParty}</span>
                       <span class="text-xs font-mono font-bold text-zinc-600 bg-zinc-100 px-2 py-0.5 rounded">
                         ${count} ×
@@ -330,12 +330,12 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
       </div>
 
       <!-- Karta 5: Všechna anonymní dokončení -->
-      <div class="bg-white rounded-xl border border-zinc-200 shadow-xs overflow-hidden mb-8">
+      <div class="bg-white rounded-sm border border-zinc-200 shadow-xs overflow-hidden mb-8">
         <div class="p-5 border-b border-zinc-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <div class="flex items-center gap-2">
               <h2 class="text-sm font-bold text-zinc-900">Všechna anonymní dokončení kalkulačky</h2>
-              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-zinc-100 text-zinc-800 border border-zinc-200">
+              <span class="inline-flex items-center px-2 py-0.5 rounded-xs text-[11px] font-bold bg-zinc-100 text-zinc-800 border border-zinc-200">
                 ${recentSubmissions.length} záznamů
               </span>
             </div>
@@ -345,7 +345,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
             <button
               type="button"
               onclick="window.calcExportCSV()"
-              class="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+              class="px-3 py-1.5 rounded-sm bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
             >
               <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -433,8 +433,8 @@ function renderYearProgress(
         <span class="font-bold text-zinc-800">Volby ${year}</span>
         <span class="text-zinc-500 font-mono">${count} vyplnění (${pct} %)</span>
       </div>
-      <div class="w-full bg-zinc-100 rounded-full h-2">
-        <div class="h-2 rounded-full" style="width: ${pct}%; background-color: ${colorHex}"></div>
+      <div class="w-full bg-zinc-100 rounded-xs h-2">
+        <div class="h-2 rounded-xs" style="width: ${pct}%; background-color: ${colorHex}"></div>
       </div>
     </div>
   `;

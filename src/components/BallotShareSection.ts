@@ -32,7 +32,7 @@ export function renderBallotShareSection(
       aria-modal="true"
       aria-labelledby="share-modal-title"
     >
-      <div class="relative max-w-md sm:max-w-lg w-full max-h-[90vh] bg-[#FAF7F2] border border-[#E8E1D5] rounded-3xl shadow-2xl p-4 sm:p-6 flex flex-col items-center overflow-hidden my-auto">
+      <div class="relative max-w-md sm:max-w-lg w-full max-h-[90vh] bg-[#FAF7F2] border border-[#E8E1D5] rounded-sm shadow-2xl p-4 sm:p-6 flex flex-col items-center overflow-hidden my-auto">
         
         <!-- Barevná linka odkazující na vítěznou stranu -->
         <div 
@@ -43,7 +43,7 @@ export function renderBallotShareSection(
         <!-- Zavírací tlačítko -->
         <button 
           onclick="window.calcCloseBallotModal()"
-          class="absolute top-3.5 right-3.5 text-stone-400 hover:text-stone-800 p-1.5 rounded-full hover:bg-stone-200/60 transition-colors cursor-pointer"
+          class="absolute top-3.5 right-3.5 text-stone-400 hover:text-stone-800 p-1.5 rounded-sm hover:bg-stone-200/60 transition-colors cursor-pointer"
           aria-label="Zavřít"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,15 +62,15 @@ export function renderBallotShareSection(
         </div>
 
         <!-- Náhled grafického výsledku (perfektně dimenzovaný, aby byl celý okamžitě vidět bez scrollování) -->
-        <div class="w-full flex-1 max-h-[52vh] sm:max-h-[56vh] overflow-hidden rounded-2xl border border-[#E5DEC3]/80 bg-white shadow-xs mb-4 p-2 flex items-center justify-center">
+        <div class="w-full flex-1 max-h-[52vh] sm:max-h-[56vh] overflow-hidden rounded-sm border border-[#E5DEC3]/80 bg-white shadow-xs mb-4 p-2 flex items-center justify-center">
           ${state.previewDataUrl ? `
             <img 
               src="${state.previewDataUrl}" 
               alt="Výsledek voleb ${year}"
-              class="max-h-[50vh] sm:max-h-[54vh] w-auto h-auto object-contain rounded-xl block mx-auto"
+              class="max-h-[50vh] sm:max-h-[54vh] w-auto h-auto object-contain rounded-xs block mx-auto"
             />
           ` : `
-            <div class="w-full aspect-[4/5] bg-stone-50 rounded-xl flex flex-col items-center justify-center p-6 text-center">
+            <div class="w-full aspect-[4/5] bg-stone-50 rounded-xs flex flex-col items-center justify-center p-6 text-center">
               <svg class="w-8 h-8 text-stone-400 mb-2 animate-spin" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
@@ -85,7 +85,7 @@ export function renderBallotShareSection(
           <button 
             onclick="window.calcShareBallot()"
             id="modal-share-btn"
-            class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs tracking-tight transition-all shadow-sm cursor-pointer active:scale-95"
+            class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-sm bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs tracking-tight transition-all shadow-sm cursor-pointer active:scale-95"
           >
             <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
@@ -96,7 +96,7 @@ export function renderBallotShareSection(
           <button 
             onclick="window.calcDownloadBallot()"
             id="modal-download-btn"
-            class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-stone-50 text-stone-800 border border-[#DDD5C7] font-semibold text-xs tracking-tight transition-all cursor-pointer active:scale-95 shadow-2xs"
+            class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-sm bg-white hover:bg-stone-50 text-stone-800 border border-[#DDD5C7] font-semibold text-xs tracking-tight transition-all cursor-pointer active:scale-95 shadow-2xs"
           >
             <svg class="w-4 h-4 text-stone-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />

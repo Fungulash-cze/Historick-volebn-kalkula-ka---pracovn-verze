@@ -1,7 +1,7 @@
 import './index.css';
 import confetti from 'canvas-confetti';
 import { ELECTIONS_DATA } from './data/electionsData.ts';
-import { calculatePartyScores } from './calculator.ts';
+import { calculatePartyScores, isCoreTopicForParty } from './calculator.ts';
 import { ElectionYear, UserAnswerValue, PartyScore, Party } from './types.ts';
 import {
   recordPageView,
@@ -45,6 +45,7 @@ interface AppState {
   dashboardState: DashboardState;
   ballotShareState: BallotShareState;
   hasAcceptedWelcome: boolean;
+  importantQuestions: Record<number, boolean>;
 }
 
 const state: AppState = {
@@ -87,7 +88,8 @@ const state: AppState = {
     isGenerating: false,
     isModalOpen: false
   },
-  hasAcceptedWelcome: false
+  hasAcceptedWelcome: false,
+  importantQuestions: {}
 };
 
 function initBallotShareCard() {
@@ -216,6 +218,7 @@ function startQuiz(year: ElectionYear, mode?: 'standard' | 'expanded') {
   state.quizMode = mode || state.selectedYearMode[year] || 'standard';
   state.questionIndex = 0;
   state.answers = {};
+  state.importantQuestions = {};
   state.partyScores = [];
   state.showHistoricalNote = false;
   state.activeContextTooltipId = null;
@@ -243,7 +246,12 @@ function handleAnswer(val: UserAnswerValue) {
 function finishQuiz() {
   const currentElection = ELECTIONS_DATA[state.year];
   const currentQuestions = getCurrentQuestions(state.year, state.quizMode);
-  const scores = calculatePartyScores(currentElection, state.answers, currentQuestions);
+  const scores = calculatePartyScores(
+    currentElection,
+    state.answers,
+    currentQuestions,
+    state.importantQuestions
+  );
   state.partyScores = scores;
   state.selectedPartyForDetails = scores[0]?.party.id || null;
   state.surveyState = {
@@ -395,7 +403,7 @@ function renderHeader(): string {
         
         <!-- Logo / Brand s HVK -->
         <button onclick="window.calcSetView('home')" class="flex items-center gap-3 text-left group cursor-pointer">
-          <div class="w-9 h-8 rounded-lg bg-zinc-900 text-white flex items-center justify-center font-extrabold text-xs tracking-wider shadow-xs border border-zinc-800 transition-colors group-hover:bg-zinc-800">
+          <div class="w-9 h-8 rounded-xs bg-zinc-900 text-white flex items-center justify-center font-extrabold text-xs tracking-wider shadow-xs border border-zinc-800 transition-colors group-hover:bg-zinc-800">
             HVK
           </div>
           <div>
@@ -412,7 +420,7 @@ function renderHeader(): string {
         <nav class="flex items-center gap-2.5 text-xs font-medium">
           <button 
             onclick="window.calcSetView('home')" 
-            class="px-3 py-1.5 rounded-md transition-colors cursor-pointer ${state.view === 'home' ? 'bg-zinc-100 text-zinc-900 font-semibold' : 'text-zinc-600 hover:text-zinc-900'}"
+            class="px-3 py-1.5 rounded-sm transition-colors cursor-pointer ${state.view === 'home' ? 'bg-zinc-100 text-zinc-900 font-semibold' : 'text-zinc-600 hover:text-zinc-900'}"
           >
             Výběr voleb
           </button>
@@ -494,14 +502,14 @@ function renderHomeView(): string {
                 </div>
 
                 ${isExpanded ? `
-                  <div class="mt-3 p-3 bg-zinc-50 rounded-lg border border-zinc-200 text-xs text-zinc-700 animate-fadeIn">
+                  <div class="mt-3 p-3 bg-zinc-50 rounded-sm border border-zinc-200 text-xs text-zinc-700 animate-fadeIn">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       ${meta.parties.map(p => `
                         <div 
                           onclick="window.calcOpenPartyModal('${p.id}', ${y})" 
-                          class="flex items-center gap-2.5 p-1.5 rounded hover:bg-zinc-100 transition-colors cursor-pointer group"
+                          class="flex items-center gap-2.5 p-1.5 rounded-xs hover:bg-zinc-100 transition-colors cursor-pointer group"
                         >
-                          <div class="w-1.5 h-5 rounded-full shrink-0" style="background-color: ${p.color};"></div>
+                          <div class="w-1.5 h-5 rounded-none shrink-0" style="background-color: ${p.color};"></div>
                           <strong class="text-zinc-900 font-semibold group-hover:underline">${p.shortName}:</strong>
                           <span class="text-zinc-500 truncate">${p.fullName}</span>
                           <span class="text-[10px] text-zinc-400 ml-auto group-hover:text-zinc-700">info ↗</span>
@@ -516,7 +524,7 @@ function renderHomeView(): string {
               <div class="shrink-0 pt-2 md:pt-0 flex flex-col gap-2.5 w-full md:w-56">
                 <button 
                   onclick="window.calcOpenSystemModal(${y})"
-                  class="w-full px-4 py-2.5 rounded-lg bg-white hover:bg-zinc-100 text-zinc-800 font-semibold text-xs tracking-tight transition-colors shadow-xs flex items-center justify-center gap-2 cursor-pointer border border-zinc-300 group"
+                  class="w-full px-4 py-2.5 rounded-sm bg-white hover:bg-zinc-100 text-zinc-800 font-semibold text-xs tracking-tight transition-colors shadow-xs flex items-center justify-center gap-2 cursor-pointer border border-zinc-300 group"
                   title="Informace o volebním systému, kdo mohl volit a zajímavosti"
                 >
                   <svg class="w-4 h-4 text-zinc-500 group-hover:text-zinc-800 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -527,18 +535,18 @@ function renderHomeView(): string {
 
                 ${meta.expandedQuestions && meta.expandedQuestions.length > 0 ? `
                   <!-- Přepínač verze otázek -->
-                  <div class="bg-zinc-100 p-1 rounded-lg border border-zinc-200 flex items-center gap-1 text-[11px] font-medium w-full">
+                  <div class="bg-zinc-100 p-1 rounded-sm border border-zinc-200 flex items-center gap-1 text-[11px] font-medium w-full">
                     <button 
                       type="button"
                       onclick="window.calcSetYearMode(${y}, 'standard')"
-                      class="flex-1 py-1.5 px-2 rounded-md transition-all cursor-pointer text-center ${state.selectedYearMode[y] === 'standard' ? 'bg-white text-zinc-900 font-bold shadow-xs border border-zinc-200' : 'text-zinc-600 hover:text-zinc-900'}"
+                      class="flex-1 py-1.5 px-2 rounded-xs transition-all cursor-pointer text-center ${state.selectedYearMode[y] === 'standard' ? 'bg-white text-zinc-900 font-bold shadow-xs border border-zinc-200' : 'text-zinc-600 hover:text-zinc-900'}"
                     >
                       Základní (${meta.questions.length})
                     </button>
                     <button 
                       type="button"
                       onclick="window.calcSetYearMode(${y}, 'expanded')"
-                      class="flex-1 py-1.5 px-2 rounded-md transition-all cursor-pointer text-center ${state.selectedYearMode[y] === 'expanded' ? 'bg-white text-zinc-900 font-bold shadow-xs border border-zinc-200' : 'text-zinc-600 hover:text-zinc-900'}"
+                      class="flex-1 py-1.5 px-2 rounded-xs transition-all cursor-pointer text-center ${state.selectedYearMode[y] === 'expanded' ? 'bg-white text-zinc-900 font-bold shadow-xs border border-zinc-200' : 'text-zinc-600 hover:text-zinc-900'}"
                     >
                       Rozšířená (${meta.expandedQuestions.length})
                     </button>
@@ -547,7 +555,7 @@ function renderHomeView(): string {
 
                 <button 
                   onclick="window.calcStartQuiz(${y})"
-                  class="w-full px-6 py-2.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white font-semibold text-xs sm:text-sm tracking-tight transition-colors shadow-xs flex items-center justify-center gap-2 cursor-pointer border border-zinc-800"
+                  class="w-full px-6 py-2.5 rounded-sm bg-zinc-900 hover:bg-zinc-800 text-white font-semibold text-xs sm:text-sm tracking-tight transition-colors shadow-xs flex items-center justify-center gap-2 cursor-pointer border border-zinc-800"
                 >
                   <span>Spustit kalkulačku</span>
                   <span>→</span>
@@ -590,6 +598,8 @@ function renderQuizView(): string {
   const q = questionsToUse[state.questionIndex];
   const progressPercent = Math.round(((state.questionIndex + 1) / totalQuestions) * 100);
   const currentAnswer = state.answers[q.id];
+  const isImportant = Boolean(state.importantQuestions[q.id]);
+  const importantCount = questionsToUse.filter((item) => Boolean(state.importantQuestions[item.id])).length;
 
   return `
     <main class="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-12 flex-1 animate-fadeIn">
@@ -608,11 +618,11 @@ function renderQuizView(): string {
           <div class="flex items-center gap-2">
             <span class="font-bold text-zinc-900">Volby ${state.year}</span>
             ${state.quizMode === 'expanded' ? `
-              <span class="text-[10px] font-bold text-emerald-800 bg-emerald-100 border border-emerald-200 px-2 py-0.5 rounded-full">
+              <span class="text-[10px] font-bold text-emerald-800 bg-emerald-100 border border-emerald-200 px-2 py-0.5 rounded-xs">
                 Rozšířená verze
               </span>
             ` : `
-              <span class="text-[10px] font-medium text-zinc-600 bg-zinc-100 border border-zinc-200 px-2 py-0.5 rounded-full">
+              <span class="text-[10px] font-medium text-zinc-600 bg-zinc-100 border border-zinc-200 px-2 py-0.5 rounded-xs">
                 Základní verze
               </span>
             `}
@@ -623,7 +633,7 @@ function renderQuizView(): string {
           </div>
         </div>
 
-        <div class="w-full bg-zinc-200 h-1.5 rounded-full overflow-hidden">
+        <div class="w-full bg-zinc-200 h-1.5 rounded-none overflow-hidden">
           <div 
             class="bg-zinc-900 h-full transition-all duration-300 ease-out" 
             style="width: ${progressPercent}%;"
@@ -632,7 +642,7 @@ function renderQuizView(): string {
       </div>
 
       <!-- Hlavní dotazníková karta v bílošedém stylu -->
-      <div class="bg-white border border-zinc-200 rounded-xl p-6 sm:p-8 shadow-xs mb-6 relative">
+      <div class="bg-white border border-zinc-300 rounded-sm p-6 sm:p-8 shadow-xs mb-6 relative">
         
         ${(q.context || q.historicalNote) ? `
           <!-- Tlačítko s dobovým kontextem -->
@@ -641,18 +651,18 @@ function renderQuizView(): string {
               <button 
                 type="button"
                 onclick="window.calcToggleContextTooltip(${q.id})"
-                class="inline-flex items-center gap-2 pl-1.5 pr-3 py-1 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-950 border-2 border-amber-400 font-bold text-xs transition-all cursor-help shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-1 ${state.activeContextTooltipId === q.id ? 'bg-amber-200 ring-2 ring-amber-500 ring-offset-1' : ''}"
+                class="inline-flex items-center gap-2 pl-1.5 pr-3 py-1 rounded-sm bg-amber-100 hover:bg-amber-200 text-amber-950 border-2 border-amber-400 font-bold text-xs transition-all cursor-help shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-1 ${state.activeContextTooltipId === q.id ? 'bg-amber-200 ring-2 ring-amber-500 ring-offset-1' : ''}"
                 title="Dobový kontext otázky (najetím myší nebo kliknutím zobrazíte vysvětlení)"
                 aria-label="Historický kontext otázky"
               >
-                <span class="w-5 h-5 rounded-full bg-amber-500 text-white font-black text-xs flex items-center justify-center shadow-2xs shrink-0">?</span>
+                <span class="w-5 h-5 rounded-xs bg-amber-500 text-white font-black text-xs flex items-center justify-center shadow-2xs shrink-0">?</span>
                 <span>Historický kontext</span>
               </button>
 
               <!-- Tooltip bublina (zobrazí se při najetí myší i při kliknutí/tapnutí) -->
               <div 
                 id="context-tooltip-${q.id}"
-                class="${state.activeContextTooltipId === q.id ? 'block' : 'hidden group-hover/tooltip:block'} absolute right-0 top-full mt-2 w-72 sm:w-88 md:w-96 p-4 bg-zinc-900 text-zinc-100 text-xs leading-relaxed rounded-xl shadow-2xl z-50 border border-zinc-800 text-justify [hyphens:auto] animate-fadeIn"
+                class="${state.activeContextTooltipId === q.id ? 'block' : 'hidden group-hover/tooltip:block'} absolute right-0 top-full mt-2 w-72 sm:w-88 md:w-96 p-4 bg-zinc-900 text-zinc-100 text-xs leading-relaxed rounded-sm shadow-2xl z-50 border border-zinc-800 text-justify [hyphens:auto] animate-fadeIn"
               >
                 <div class="flex items-center justify-between pb-2 mb-2 border-b border-zinc-800">
                   <div class="flex items-center gap-1.5 text-zinc-200 font-semibold text-[11px]">
@@ -712,13 +722,32 @@ function renderQuizView(): string {
 
         </div>
 
+        <!-- Označení zásadního tématu -->
+        <div class="mt-4 pt-4 border-t border-zinc-100">
+          <button
+            type="button"
+            onclick="window.calcToggleImportant(${q.id})"
+            role="checkbox"
+            aria-checked="${isImportant ? 'true' : 'false'}"
+            class="w-full py-2.5 px-4 rounded-sm border text-xs sm:text-sm font-semibold transition-all flex items-center justify-center sm:justify-start gap-2.5 cursor-pointer ${isImportant ? 'bg-amber-50 border-amber-400 text-amber-950 shadow-xs ring-1 ring-amber-300' : 'bg-zinc-50/70 hover:bg-zinc-100 border-zinc-200 text-zinc-700 hover:border-zinc-300'}"
+          >
+            <span class="w-4 h-4 rounded-xs flex items-center justify-center border transition-colors shrink-0 ${isImportant ? 'bg-amber-500 border-amber-500 text-white' : 'bg-white border-zinc-300 text-transparent'}">
+              <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </span>
+            <span class="text-base leading-none ${isImportant ? 'text-amber-500' : 'text-zinc-400'}">${isImportant ? '★' : '☆'}</span>
+            <span>Považuji za zásadní</span>
+          </button>
+        </div>
+
       </div>
 
       <!-- Navigace mezi otázkami (Předchozí / Přeskočit) -->
       <div class="flex items-center justify-between text-xs text-zinc-500 mb-4 px-1">
         <button 
           ${state.questionIndex > 0 ? `onclick="window.calcPrevQuestion()"` : 'disabled'}
-          class="hover:text-zinc-900 transition-colors disabled:opacity-30 disabled:cursor-not-allowed font-medium flex items-center gap-1.5 cursor-pointer py-1.5 px-3 rounded-lg bg-white border border-zinc-200 hover:bg-zinc-50 shadow-2xs"
+          class="hover:text-zinc-900 transition-colors disabled:opacity-30 disabled:cursor-not-allowed font-medium flex items-center gap-1.5 cursor-pointer py-1.5 px-3 rounded-sm bg-white border border-zinc-200 hover:bg-zinc-50 shadow-2xs"
         >
           <span>←</span>
           <span>Předchozí otázka</span>
@@ -730,7 +759,7 @@ function renderQuizView(): string {
 
         <button 
           onclick="window.calcHandleAnswer(0)"
-          class="hover:text-zinc-900 transition-colors font-medium flex items-center gap-1.5 cursor-pointer py-1.5 px-3 rounded-lg bg-white border border-zinc-200 hover:bg-zinc-50 shadow-2xs"
+          class="hover:text-zinc-900 transition-colors font-medium flex items-center gap-1.5 cursor-pointer py-1.5 px-3 rounded-sm bg-white border border-zinc-200 hover:bg-zinc-50 shadow-2xs"
         >
           <span>Přeskočit</span>
           <span>→</span>
@@ -738,23 +767,28 @@ function renderQuizView(): string {
       </div>
 
       <!-- Číselník otázek: zarovnaný přesně na šířku okna s otázkou ve více řádcích -->
-      <div class="w-full bg-white border border-zinc-200 rounded-xl p-4 sm:p-5 shadow-xs">
-        <div class="flex items-center justify-between text-xs text-zinc-500 font-medium mb-3 pb-2 border-b border-zinc-100">
+      <div class="w-full bg-white border border-zinc-300 rounded-sm p-4 sm:p-5 shadow-xs">
+        <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-zinc-500 font-medium mb-3 pb-2 border-b border-zinc-100">
           <span class="text-zinc-800 font-semibold">Číselník otázek:</span>
-          <span>Zodpovězeno ${Object.keys(state.answers).length} z ${totalQuestions}</span>
+          <div class="flex items-center gap-3">
+            ${importantCount > 0 ? `<span class="text-amber-700 font-semibold">★ Zásadních: ${importantCount}</span>` : ''}
+            <span>Zodpovězeno ${Object.keys(state.answers).length} z ${totalQuestions}</span>
+          </div>
         </div>
 
         <div class="grid grid-cols-6 sm:grid-cols-10 md:grid-cols-12 gap-1.5 sm:gap-2 w-full">
           ${questionsToUse.map((item, idx) => {
             const isAnswered = state.answers[item.id] !== undefined;
             const isCurrent = idx === state.questionIndex;
+            const itemImportant = Boolean(state.importantQuestions[item.id]);
             return `
               <button 
                 onclick="window.calcJumpQuestion(${idx})"
-                title="Přejít na otázku ${idx + 1}: ${item.title || item.category}"
-                class="h-8 rounded-lg flex items-center justify-center text-xs font-mono font-medium transition-all cursor-pointer border ${isCurrent ? 'bg-zinc-900 text-white border-zinc-900 font-bold shadow-xs ring-2 ring-zinc-400 ring-offset-1' : isAnswered ? 'bg-zinc-100 text-zinc-800 border-zinc-300 hover:bg-zinc-200 font-semibold' : 'bg-white text-zinc-400 border-zinc-200 hover:border-zinc-300 hover:text-zinc-700 hover:bg-zinc-50'}"
+                title="Přejít na otázku ${idx + 1}: ${item.title || item.category}${itemImportant ? ' (Zásadní téma)' : ''}"
+                class="relative h-8 rounded-xs flex items-center justify-center text-xs font-mono font-medium transition-all cursor-pointer border ${isCurrent ? 'bg-zinc-900 text-white border-zinc-900 font-bold shadow-xs ring-2 ring-zinc-400 ring-offset-1' : itemImportant ? 'bg-amber-50 text-amber-900 border-amber-300 hover:bg-amber-100 font-semibold' : isAnswered ? 'bg-zinc-100 text-zinc-800 border-zinc-300 hover:bg-zinc-200 font-semibold' : 'bg-white text-zinc-400 border-zinc-200 hover:border-zinc-300 hover:text-zinc-700 hover:bg-zinc-50'}"
               >
                 ${idx + 1}
+                ${itemImportant ? '<span class="absolute -top-1 -right-1 text-[9px] leading-none text-amber-500 drop-shadow-2xs">★</span>' : ''}
               </button>
             `;
           }).join('')}
@@ -771,6 +805,13 @@ function renderResultsView(): string {
   const topMatch = state.partyScores[0];
   const selectedPartyId = state.selectedPartyForDetails || topMatch?.party.id;
   const selectedParty = currentElection.parties.find(p => p.id === selectedPartyId) || topMatch?.party;
+  const allYearQuestions =
+    currentElection.expandedQuestions && currentElection.expandedQuestions.length > 0
+      ? currentElection.expandedQuestions
+      : questionsToUse;
+  const topCoreQuestions = topMatch
+    ? allYearQuestions.filter((q) => isCoreTopicForParty(state.year, q.id, topMatch.party.id))
+    : [];
 
   return `
     <main class="max-w-4xl mx-auto px-4 sm:px-6 py-10 flex-1 animate-fadeIn">
@@ -799,7 +840,7 @@ function renderResultsView(): string {
           </h1>
           <button 
             onclick="window.calcOpenBallotModal()"
-            class="inline-flex items-center gap-2 self-start sm:self-auto px-4 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs tracking-tight shadow-sm transition-all cursor-pointer active:scale-95 shrink-0"
+            class="inline-flex items-center gap-2 self-start sm:self-auto px-4 py-2.5 rounded-sm bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs tracking-tight shadow-sm transition-all cursor-pointer active:scale-95 shrink-0"
             title="Otevřít shrnutí a sdílet výsledek"
           >
             <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -813,7 +854,7 @@ function renderResultsView(): string {
       <!-- Hlavní vítězná strana (jemný pastelový podklad v barvě strany) -->
       ${topMatch ? `
         <div 
-          class="rounded-2xl p-6 sm:p-8 mb-8 shadow-xs border relative overflow-hidden transition-all"
+          class="rounded-sm p-6 sm:p-8 mb-8 shadow-xs border relative overflow-hidden transition-all"
           style="background-color: ${topMatch.party.color}0D; border-color: ${topMatch.party.color}35;"
         >
           <!-- Barevná linka vítězné strany nahoře -->
@@ -826,7 +867,7 @@ function renderResultsView(): string {
             <div class="max-w-xl">
               <div class="mb-3">
                 <div 
-                  class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-bold tracking-wider uppercase mb-1.5"
+                  class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs text-[11px] font-bold tracking-wider uppercase mb-1.5"
                   style="background-color: ${topMatch.party.color}1E; color: ${topMatch.party.color};"
                 >
                   <span class="w-1.5 h-1.5 rounded-full" style="background-color: ${topMatch.party.color};"></span>
@@ -843,12 +884,40 @@ function renderResultsView(): string {
               <p class="text-xs sm:text-sm text-stone-700 leading-relaxed font-normal mb-4 text-justify [hyphens:auto]">
                 ${topMatch.party.description}
               </p>
-              <div class="p-3.5 rounded-xl bg-white/90 border border-stone-200/80 text-xs text-stone-800 text-justify [hyphens:auto] shadow-2xs">
+              <div class="p-3.5 rounded-sm bg-white/90 border border-stone-200/80 text-xs text-stone-800 text-justify [hyphens:auto] shadow-2xs">
                 <strong class="text-stone-900">Programové pilíře:</strong> ${topMatch.party.programHighlight}
               </div>
+
+              ${topCoreQuestions.length > 0 ? `
+                <div class="mt-3 p-3.5 rounded-sm bg-white/90 border border-stone-200/80 text-xs text-stone-800 shadow-2xs">
+                  <div class="font-bold text-stone-900 mb-2 flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full shrink-0" style="background-color: ${topMatch.party.color};"></span>
+                    <span>Zásadní témata pro ${topMatch.party.shortName}:</span>
+                  </div>
+                  <ul class="space-y-1.5">
+                    ${topCoreQuestions.map((cq) => {
+                      const stance = cq.partyStances[topMatch.party.id] ?? 0;
+                      const stanceLabel = stance === 1 ? 'Prosazovala (Ano)' : stance === -1 ? 'Odmítala (Ne)' : 'Neutrální';
+                      const stanceClass = stance === 1
+                        ? 'text-emerald-800 bg-emerald-50 border-emerald-200'
+                        : stance === -1
+                        ? 'text-rose-800 bg-rose-50 border-rose-200'
+                        : 'text-zinc-600 bg-zinc-100 border-zinc-200';
+                      return `
+                        <li class="flex flex-wrap items-center justify-between gap-2 text-xs">
+                          <span class="text-stone-800 font-medium">${cq.title || cq.category}</span>
+                          <span class="text-[11px] font-semibold px-2 py-0.5 rounded-xs border ${stanceClass} shrink-0">
+                            ${stanceLabel}
+                          </span>
+                        </li>
+                      `;
+                    }).join('')}
+                  </ul>
+                </div>
+              ` : ''}
             </div>
 
-            <div class="flex flex-col items-center justify-center p-5 rounded-2xl bg-white border border-stone-200/90 shadow-sm min-w-[145px] shrink-0 self-center sm:self-auto text-center">
+            <div class="flex flex-col items-center justify-center p-5 rounded-sm bg-white border border-stone-200/90 shadow-sm min-w-[145px] shrink-0 self-center sm:self-auto text-center">
               <span class="text-4xl sm:text-5xl font-extrabold tracking-tight text-stone-900 font-mono">
                 ${topMatch.matchPercentage}%
               </span>
@@ -864,7 +933,7 @@ function renderResultsView(): string {
                 </button>
                 <button 
                   onclick="window.calcOpenBallotModal()"
-                  class="px-2.5 py-1.5 rounded-lg bg-stone-900 hover:bg-stone-800 text-white text-[11px] font-semibold transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+                  class="px-2.5 py-1.5 rounded-sm bg-stone-900 hover:bg-stone-800 text-white text-[11px] font-semibold transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
                 >
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
@@ -878,7 +947,7 @@ function renderResultsView(): string {
       ` : ''}
 
       <!-- Kompletní žebříček stran -->
-      <div class="bg-white border border-zinc-200 rounded-xl p-6 mb-8 shadow-xs">
+      <div class="bg-white border border-zinc-300 rounded-sm p-6 mb-8 shadow-xs">
         <h3 class="text-base font-bold text-zinc-900 mb-1">
           Celkové pořadí všech kandidujících stran
         </h3>
@@ -892,14 +961,14 @@ function renderResultsView(): string {
             return `
               <div 
                 onclick="window.calcSelectPartyDetails('${score.party.id}')"
-                class="p-3.5 rounded-lg border transition-all cursor-pointer ${isSelected ? 'border-zinc-900 bg-zinc-50' : 'border-zinc-200 hover:border-zinc-300 bg-white'}"
+                class="p-3.5 rounded-sm border transition-all cursor-pointer ${isSelected ? 'border-zinc-900 bg-zinc-50' : 'border-zinc-200 hover:border-zinc-400 bg-white'}"
               >
                 <div class="flex items-center justify-between mb-2 text-xs">
                   <div class="flex items-center gap-3">
-                    <span class="w-5 h-5 rounded bg-zinc-100 text-zinc-700 font-bold flex items-center justify-center text-[10px]">
+                    <span class="w-5 h-5 rounded-xs bg-zinc-100 text-zinc-700 font-bold flex items-center justify-center text-[10px]">
                       ${index + 1}
                     </span>
-                    <div class="w-1.5 h-6 rounded-full shrink-0" style="background-color: ${score.party.color};"></div>
+                    <div class="w-1.5 h-6 rounded-none shrink-0" style="background-color: ${score.party.color};"></div>
                     <div>
                       <strong class="text-zinc-900 text-sm font-semibold">${score.party.shortName}</strong>
                       <span class="text-zinc-500 text-xs hidden sm:inline ml-1">– ${score.party.fullName}</span>
@@ -919,9 +988,9 @@ function renderResultsView(): string {
                 </div>
 
                 <!-- Match bar -->
-                <div class="w-full bg-zinc-100 h-2.5 rounded-full overflow-hidden mb-1.5">
+                <div class="w-full bg-zinc-100 h-2.5 rounded-none overflow-hidden mb-1.5">
                   <div 
-                    class="h-full rounded-full transition-all duration-300" 
+                    class="h-full rounded-none transition-all duration-300" 
                     style="width: ${score.matchPercentage}%; background-color: ${score.party.color};"
                   ></div>
                 </div>
@@ -938,10 +1007,10 @@ function renderResultsView(): string {
 
       <!-- Rozbor otázek -->
       ${selectedParty ? `
-        <div class="bg-white border border-zinc-200 rounded-xl p-6 mb-8 shadow-xs">
+        <div class="bg-white border border-zinc-300 rounded-sm p-6 mb-8 shadow-xs">
           <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-4 border-b border-zinc-100 mb-5">
             <div class="flex items-center gap-3">
-              <div class="w-2 h-10 rounded-full shrink-0" style="background-color: ${selectedParty.color};"></div>
+              <div class="w-2 h-10 rounded-none shrink-0" style="background-color: ${selectedParty.color};"></div>
               <div>
                 <span class="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider block">Podrobný rozbor</span>
                 <h3 class="text-base font-bold text-zinc-900">
@@ -951,22 +1020,22 @@ function renderResultsView(): string {
             </div>
 
             <!-- Filtry shody / rozporu -->
-            <div class="flex items-center gap-1 p-1 bg-zinc-100 rounded-lg text-xs font-medium">
+            <div class="flex items-center gap-1 p-1 bg-zinc-100 rounded-sm text-xs font-medium">
               <button 
                 onclick="window.calcSetComparisonFilter('all')"
-                class="px-3 py-1 rounded-md transition-colors cursor-pointer ${state.comparisonFilter === 'all' ? 'bg-white text-zinc-900 shadow-xs font-semibold' : 'text-zinc-600 hover:text-zinc-900'}"
+                class="px-3 py-1 rounded-xs transition-colors cursor-pointer ${state.comparisonFilter === 'all' ? 'bg-white text-zinc-900 shadow-xs font-semibold' : 'text-zinc-600 hover:text-zinc-900'}"
               >
                 Všechny (${questionsToUse.length})
               </button>
               <button 
                 onclick="window.calcSetComparisonFilter('agree')"
-                class="px-3 py-1 rounded-md transition-colors cursor-pointer ${state.comparisonFilter === 'agree' ? 'bg-white text-zinc-900 shadow-xs font-semibold' : 'text-zinc-600 hover:text-zinc-900'}"
+                class="px-3 py-1 rounded-xs transition-colors cursor-pointer ${state.comparisonFilter === 'agree' ? 'bg-white text-zinc-900 shadow-xs font-semibold' : 'text-zinc-600 hover:text-zinc-900'}"
               >
                 Shoda
               </button>
               <button 
                 onclick="window.calcSetComparisonFilter('disagree')"
-                class="px-3 py-1 rounded-md transition-colors cursor-pointer ${state.comparisonFilter === 'disagree' ? 'bg-white text-zinc-900 shadow-xs font-semibold' : 'text-zinc-600 hover:text-zinc-900'}"
+                class="px-3 py-1 rounded-xs transition-colors cursor-pointer ${state.comparisonFilter === 'disagree' ? 'bg-white text-zinc-900 shadow-xs font-semibold' : 'text-zinc-600 hover:text-zinc-900'}"
               >
                 Rozpor
               </button>
@@ -994,12 +1063,18 @@ function renderResultsView(): string {
 
                 const labelUser = userVal === 1 ? 'Ano' : userVal === -1 ? 'Ne' : 'Nevím';
                 const labelParty = partyVal === 1 ? 'Ano' : partyVal === -1 ? 'Ne' : 'Neutrální';
+                const isImportant = Boolean(state.importantQuestions[q.id]);
+                const isCore = isCoreTopicForParty(state.year, q.id, selectedParty.id);
 
                 return `
-                  <div class="p-3.5 rounded-lg border text-xs ${isMatch ? 'border-emerald-200 bg-emerald-50/20' : isOpposite ? 'border-rose-200 bg-rose-50/20' : 'border-zinc-200 bg-white'}">
-                    <div class="flex items-center justify-between mb-1.5">
-                      <span class="text-zinc-500 font-semibold uppercase text-[10px]">${q.category}</span>
-                      <span class="text-[11px] font-semibold px-2 py-0.5 rounded ${isMatch ? 'text-emerald-700 bg-emerald-100' : isOpposite ? 'text-rose-700 bg-rose-100' : 'text-zinc-600 bg-zinc-100'}">
+                  <div class="p-3.5 rounded-sm border text-xs ${isMatch ? 'border-emerald-200 bg-emerald-50/20' : isOpposite ? 'border-rose-200 bg-rose-50/20' : 'border-zinc-200 bg-white'}">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+                      <div class="flex flex-wrap items-center gap-1.5">
+                        <span class="text-zinc-500 font-semibold uppercase text-[10px]">${q.category}</span>
+                        ${isImportant ? '<span class="text-[10px] font-bold px-1.5 py-0.5 rounded-xs bg-amber-100 text-amber-900 border border-amber-300">★ Považuji za zásadní</span>' : ''}
+                        ${isCore ? `<span class="text-[10px] font-bold px-1.5 py-0.5 rounded-xs bg-stone-100 text-stone-800 border border-stone-300">Zásadní pro ${selectedParty.shortName}</span>` : ''}
+                      </div>
+                      <span class="text-[11px] font-semibold px-2 py-0.5 rounded-xs ${isMatch ? 'text-emerald-700 bg-emerald-100' : isOpposite ? 'text-rose-700 bg-rose-100' : 'text-zinc-600 bg-zinc-100'}">
                         ${isMatch ? '✔ Shoda' : isOpposite ? '✖ Rozpor' : '— Neutrální'}
                       </span>
                     </div>
@@ -1030,7 +1105,7 @@ function renderResultsView(): string {
       ` : ''}
 
       <!-- Skutečné historické výsledky -->
-      <div class="bg-white border border-zinc-200 rounded-xl p-6 mb-8 shadow-xs">
+      <div class="bg-white border border-zinc-300 rounded-sm p-6 mb-8 shadow-xs">
         <h3 class="text-base font-bold text-zinc-900 mb-1">
           Jak tyto volby v roce ${state.year} skutečně dopadly?
         </h3>
@@ -1038,7 +1113,7 @@ function renderResultsView(): string {
           ${currentElection.historicalContext}
         </p>
 
-        <div class="p-4 bg-zinc-50 rounded-lg border border-zinc-200 text-xs text-zinc-800 leading-relaxed mb-6 text-justify [hyphens:auto]">
+        <div class="p-4 bg-zinc-50 rounded-sm border border-zinc-200 text-xs text-zinc-800 leading-relaxed mb-6 text-justify [hyphens:auto]">
           <strong>Povolební vývoj:</strong> ${currentElection.outcomeSummary}
         </div>
 
@@ -1049,11 +1124,11 @@ function renderResultsView(): string {
           ${currentElection.parties.map(p => `
             <div 
               onclick="window.calcOpenPartyModal('${p.id}', ${state.year})"
-              class="p-3 rounded-lg bg-zinc-50 border border-zinc-200 text-xs hover:border-zinc-300 hover:bg-zinc-100 transition-colors cursor-pointer group"
+              class="p-3 rounded-sm bg-zinc-50 border border-zinc-200 text-xs hover:border-zinc-400 hover:bg-zinc-100 transition-colors cursor-pointer group"
             >
               <div class="flex items-center justify-between mb-1.5">
                 <div class="flex items-center gap-2">
-                  <div class="w-1.5 h-5 rounded-full shrink-0" style="background-color: ${p.color};"></div>
+                  <div class="w-1.5 h-5 rounded-none shrink-0" style="background-color: ${p.color};"></div>
                   <div>
                     <strong class="text-zinc-900 font-semibold group-hover:underline block">${p.shortName}</strong>
                     <span class="text-[10px] text-zinc-500 truncate block">${p.fullName}</span>
@@ -1061,8 +1136,8 @@ function renderResultsView(): string {
                 </div>
                 <span class="font-mono font-bold text-zinc-900">${p.historicalPercentage}%</span>
               </div>
-              <div class="w-full bg-zinc-200 h-1.5 rounded-full overflow-hidden mb-1.5">
-                <div class="h-full rounded-full" style="width: ${Math.min(100, p.historicalPercentage * 2.2)}%; background-color: ${p.color};"></div>
+              <div class="w-full bg-zinc-200 h-1.5 rounded-none overflow-hidden mb-1.5">
+                <div class="h-full rounded-none" style="width: ${Math.min(100, p.historicalPercentage * 2.2)}%; background-color: ${p.color};"></div>
               </div>
               <div class="text-[11px] text-zinc-500 flex justify-between">
                 <span>Mandátů: <strong>${p.historicalSeats > 0 ? p.historicalSeats : '0'}</strong></span>
@@ -1077,7 +1152,7 @@ function renderResultsView(): string {
       <div class="flex flex-wrap items-center justify-center gap-3">
         <button 
           onclick="window.calcOpenBallotModal()"
-          class="px-5 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs tracking-tight transition-all cursor-pointer shadow-sm border border-stone-800 flex items-center gap-2 active:scale-95"
+          class="px-5 py-2.5 rounded-sm bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs tracking-tight transition-all cursor-pointer shadow-sm border border-stone-800 flex items-center gap-2 active:scale-95"
         >
           <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
@@ -1086,13 +1161,13 @@ function renderResultsView(): string {
         </button>
         <button 
           onclick="window.calcShareResult()"
-          class="px-5 py-2.5 rounded-xl bg-white hover:bg-stone-50 text-stone-800 border border-stone-300 font-semibold text-xs tracking-tight transition-colors cursor-pointer"
+          class="px-5 py-2.5 rounded-sm bg-white hover:bg-stone-50 text-stone-800 border border-stone-300 font-semibold text-xs tracking-tight transition-colors cursor-pointer"
         >
           Kopírovat text
         </button>
         <button 
           onclick="window.calcSetView('home')"
-          class="px-5 py-2.5 rounded-xl bg-white hover:bg-stone-50 text-stone-800 border border-stone-300 font-semibold text-xs tracking-tight transition-colors cursor-pointer"
+          class="px-5 py-2.5 rounded-sm bg-white hover:bg-stone-50 text-stone-800 border border-stone-300 font-semibold text-xs tracking-tight transition-colors cursor-pointer"
         >
           Vyzkoušet jiný volební rok
         </button>
@@ -1140,28 +1215,28 @@ function renderPartySlider(): string {
           <!-- Filtry období & Šipky posuvu -->
           <div class="flex items-center gap-3">
             <!-- Záložky období -->
-            <div class="flex items-center gap-1 bg-zinc-100 p-1 rounded-lg text-xs font-medium">
+            <div class="flex items-center gap-1 bg-zinc-100 p-1 rounded-sm text-xs font-medium">
               <button 
                 onclick="window.calcSetSliderFilter('all')" 
-                class="px-2.5 py-1 rounded transition-colors cursor-pointer ${state.sliderYearFilter === 'all' ? 'bg-white text-zinc-900 shadow-xs font-semibold' : 'text-zinc-600 hover:text-zinc-900'}"
+                class="px-2.5 py-1 rounded-xs transition-colors cursor-pointer ${state.sliderYearFilter === 'all' ? 'bg-white text-zinc-900 shadow-xs font-semibold' : 'text-zinc-600 hover:text-zinc-900'}"
               >
                 Vše (22)
               </button>
               <button 
                 onclick="window.calcSetSliderFilter(1920)" 
-                class="px-2.5 py-1 rounded transition-colors cursor-pointer ${state.sliderYearFilter === 1920 ? 'bg-white text-zinc-900 shadow-xs font-semibold' : 'text-zinc-600 hover:text-zinc-900'}"
+                class="px-2.5 py-1 rounded-xs transition-colors cursor-pointer ${state.sliderYearFilter === 1920 ? 'bg-white text-zinc-900 shadow-xs font-semibold' : 'text-zinc-600 hover:text-zinc-900'}"
               >
                 1920
               </button>
               <button 
                 onclick="window.calcSetSliderFilter(1946)" 
-                class="px-2.5 py-1 rounded transition-colors cursor-pointer ${state.sliderYearFilter === 1946 ? 'bg-white text-zinc-900 shadow-xs font-semibold' : 'text-zinc-600 hover:text-zinc-900'}"
+                class="px-2.5 py-1 rounded-xs transition-colors cursor-pointer ${state.sliderYearFilter === 1946 ? 'bg-white text-zinc-900 shadow-xs font-semibold' : 'text-zinc-600 hover:text-zinc-900'}"
               >
                 1946
               </button>
               <button 
                 onclick="window.calcSetSliderFilter(1990)" 
-                class="px-2.5 py-1 rounded transition-colors cursor-pointer ${state.sliderYearFilter === 1990 ? 'bg-white text-zinc-900 shadow-xs font-semibold' : 'text-zinc-600 hover:text-zinc-900'}"
+                class="px-2.5 py-1 rounded-xs transition-colors cursor-pointer ${state.sliderYearFilter === 1990 ? 'bg-white text-zinc-900 shadow-xs font-semibold' : 'text-zinc-600 hover:text-zinc-900'}"
               >
                 1990
               </button>
@@ -1172,14 +1247,14 @@ function renderPartySlider(): string {
               <button 
                 onclick="window.calcScrollSlider('left')" 
                 aria-label="Posunout doleva" 
-                class="w-8 h-8 rounded-lg border border-zinc-200 bg-white hover:bg-zinc-100 text-zinc-800 flex items-center justify-center text-xs font-bold transition-colors cursor-pointer shadow-xs"
+                class="w-8 h-8 rounded-sm border border-zinc-200 bg-white hover:bg-zinc-100 text-zinc-800 flex items-center justify-center text-xs font-bold transition-colors cursor-pointer shadow-xs"
               >
                 ◀
               </button>
               <button 
                 onclick="window.calcScrollSlider('right')" 
                 aria-label="Posunout doprava" 
-                class="w-8 h-8 rounded-lg border border-zinc-200 bg-white hover:bg-zinc-100 text-zinc-800 flex items-center justify-center text-xs font-bold transition-colors cursor-pointer shadow-xs"
+                class="w-8 h-8 rounded-sm border border-zinc-200 bg-white hover:bg-zinc-100 text-zinc-800 flex items-center justify-center text-xs font-bold transition-colors cursor-pointer shadow-xs"
               >
                 ▶
               </button>
@@ -1195,15 +1270,15 @@ function renderPartySlider(): string {
           ${allPartiesWithYear.map(({ party, year }) => `
             <div 
               onclick="window.calcOpenPartyModal('${party.id}', ${year})"
-              class="w-[230px] sm:w-[250px] shrink-0 bg-white rounded-xl border border-zinc-200 p-4 hover:border-zinc-400 hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group overflow-hidden"
+              class="w-[230px] sm:w-[250px] shrink-0 bg-white rounded-sm border border-zinc-200 p-4 hover:border-zinc-900 hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group overflow-hidden"
             >
               <div>
                 <!-- Barevný proužek nahoře v typické barvě strany -->
-                <div class="h-1.5 w-full rounded-t-xl -mt-4 -mx-4 mb-3" style="background-color: ${party.color};"></div>
+                <div class="h-1.5 w-full rounded-none -mt-4 -mx-4 mb-3" style="background-color: ${party.color};"></div>
 
                 <!-- Vrchní lišta: Rok & Výsledek -->
                 <div class="flex items-center justify-between mb-2.5">
-                  <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-zinc-100 text-zinc-700 border border-zinc-200">
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-xs bg-zinc-100 text-zinc-700 border border-zinc-200">
                     Volby ${year}
                   </span>
                   <span class="text-xs font-mono font-bold text-zinc-900">
@@ -1213,7 +1288,7 @@ function renderPartySlider(): string {
 
                 <!-- Barevný proužek a název strany v době voleb -->
                 <div class="flex items-start gap-2.5 mb-2">
-                  <div class="w-1.5 h-9 rounded-full shrink-0 mt-0.5" style="background-color: ${party.color};"></div>
+                  <div class="w-1.5 h-9 rounded-none shrink-0 mt-0.5" style="background-color: ${party.color};"></div>
                   <div class="overflow-hidden">
                     <h4 class="font-extrabold text-sm text-zinc-900 truncate group-hover:underline">
                       ${party.shortName}
@@ -1225,7 +1300,7 @@ function renderPartySlider(): string {
                 </div>
 
                 <div class="mb-2">
-                  <span class="inline-block px-1.5 py-0.5 bg-zinc-100 rounded text-[10px] text-zinc-600 border border-zinc-200 truncate max-w-full">
+                  <span class="inline-block px-1.5 py-0.5 bg-zinc-100 rounded-xs text-[10px] text-zinc-600 border border-zinc-200 truncate max-w-full">
                     ${party.ideology}
                   </span>
                 </div>
@@ -1265,7 +1340,7 @@ function renderWelcomeModal(): string {
       aria-labelledby="welcome-modal-title"
     >
       <div 
-        class="max-w-2xl w-full bg-white rounded-2xl border border-zinc-200 shadow-2xl max-h-[92vh] flex flex-col overflow-hidden text-zinc-900 animate-fadeIn"
+        class="max-w-2xl w-full bg-white rounded-sm border border-zinc-300 shadow-2xl max-h-[92vh] flex flex-col overflow-hidden text-zinc-900 animate-fadeIn"
         onclick="event.stopPropagation();"
       >
         <!-- Horní akcentní pruh -->
@@ -1281,7 +1356,7 @@ function renderWelcomeModal(): string {
             Zajímá vás, koho byste volili v minulosti? Tato kalkulačka vám umožní porovnat vaše postoje s programy politických stran v dávno uplynulých volbách.
           </p>
 
-          <div class="bg-zinc-50 rounded-xl border border-zinc-200 p-4 sm:p-5 space-y-2.5">
+          <div class="bg-zinc-50 rounded-sm border border-zinc-200 p-4 sm:p-5 space-y-2.5">
             <h3 class="text-xs sm:text-sm font-bold text-zinc-900">
               Co všechno si tu můžete vyzkoušet?
             </h3>
@@ -1309,7 +1384,7 @@ function renderWelcomeModal(): string {
             </ul>
           </div>
 
-          <div class="bg-amber-50/70 rounded-xl border border-amber-200 p-4 text-xs sm:text-sm text-zinc-700 leading-relaxed">
+          <div class="bg-amber-50/70 rounded-sm border border-amber-200 p-4 text-xs sm:text-sm text-zinc-700 leading-relaxed">
             <strong class="text-zinc-900 font-semibold">Pomozte mi kalkulačku vylepšit.</strong> Kalkulačku jsem vytvořil, protože mi to přišlo jako fajn nápad, ale ani náhodou netvrdím, že je perfektní. Naopak. A víc hlav víc ví. Budu moc rád za jakoukoli zpětnou vazbu. Našli jste nepřesnost, chybí vám důležité téma, nebo máte tip na zlepšení? Dejte mi vědět na mail <a href="mailto:adam.simota@seznam.cz" class="font-semibold text-zinc-900 underline hover:text-amber-900 transition-colors">adam.simota@seznam.cz</a>.
           </div>
 
@@ -1323,7 +1398,7 @@ function renderWelcomeModal(): string {
           <button
             type="button"
             onclick="window.calcAcceptWelcome()"
-            class="w-full sm:w-auto px-6 py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs sm:text-sm tracking-tight transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+            class="w-full sm:w-auto px-6 py-3 rounded-sm bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs sm:text-sm tracking-tight transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer"
           >
             <span>Rozumím, chci začít</span>
             <span>→</span>
@@ -1345,30 +1420,30 @@ function renderPartyModal(): string {
       onclick="if (event.target.id === 'party-modal-backdrop') window.calcClosePartyModal();"
     >
       <div 
-        class="max-w-xl w-full bg-white rounded-2xl border border-zinc-200 shadow-2xl p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto animate-fadeIn text-zinc-900 overflow-hidden"
+        class="max-w-xl w-full bg-white rounded-sm border border-zinc-300 shadow-2xl p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto animate-fadeIn text-zinc-900 overflow-hidden"
         onclick="event.stopPropagation();"
       >
         <!-- Barevný proužek nahoře v barvě strany -->
-        <div class="h-2 w-full rounded-t-2xl -mt-6 sm:-mt-8 -mx-6 sm:-mx-8 mb-6" style="background-color: ${party.color};"></div>
+        <div class="h-2 w-full rounded-t-sm -mt-6 sm:-mt-8 -mx-6 sm:-mx-8 mb-6" style="background-color: ${party.color};"></div>
         
         <!-- Zavírací tlačítko -->
         <button 
           onclick="window.calcClosePartyModal()" 
           aria-label="Zavřít"
-          class="absolute top-5 right-5 w-8 h-8 rounded-full bg-zinc-100 hover:bg-zinc-200 text-zinc-600 hover:text-zinc-900 flex items-center justify-center text-sm font-bold transition-colors cursor-pointer"
+          class="absolute top-5 right-5 w-8 h-8 rounded-sm bg-zinc-100 hover:bg-zinc-200 text-zinc-600 hover:text-zinc-900 flex items-center justify-center text-sm font-bold transition-colors cursor-pointer"
         >
           ✕
         </button>
 
         <!-- Hlavička s barevným proužkem a dobovým názvem -->
         <div class="flex items-start gap-3.5 mb-5 pr-8">
-          <div class="w-2 h-14 rounded-full shrink-0 shadow-xs" style="background-color: ${party.color};"></div>
+          <div class="w-2 h-14 rounded-none shrink-0 shadow-xs" style="background-color: ${party.color};"></div>
           <div>
             <div class="flex flex-wrap items-center gap-2 mb-1.5">
-              <span class="text-xs font-bold px-2 py-0.5 rounded bg-zinc-900 text-white font-mono">
+              <span class="text-xs font-bold px-2 py-0.5 rounded-xs bg-zinc-900 text-white font-mono">
                 Volby ${year}
               </span>
-              <span class="text-xs font-semibold px-2 py-0.5 rounded bg-zinc-100 text-zinc-700 border border-zinc-200">
+              <span class="text-xs font-semibold px-2 py-0.5 rounded-xs bg-zinc-100 text-zinc-700 border border-zinc-200">
                 ${party.ideology}
               </span>
             </div>
@@ -1385,7 +1460,7 @@ function renderPartyModal(): string {
         </div>
 
         <!-- Statistiky volebního výsledku -->
-        <div class="grid grid-cols-2 gap-3 p-3.5 bg-zinc-50 rounded-xl border border-zinc-200 mb-5 text-xs">
+        <div class="grid grid-cols-2 gap-3 p-3.5 bg-zinc-50 rounded-sm border border-zinc-200 mb-5 text-xs">
           <div>
             <span class="text-zinc-500 block text-[11px]">Skutečný volební zisk v roce ${year}:</span>
             <strong class="text-base font-extrabold text-zinc-900 font-mono">${party.historicalPercentage} %</strong>
@@ -1413,7 +1488,7 @@ function renderPartyModal(): string {
         </div>
 
         <!-- Programový pilíř -->
-        <div class="p-3.5 rounded-lg bg-zinc-100 border border-zinc-200 text-xs text-zinc-800 leading-relaxed mb-6 text-justify [hyphens:auto]">
+        <div class="p-3.5 rounded-sm bg-zinc-100 border border-zinc-200 text-xs text-zinc-800 leading-relaxed mb-6 text-justify [hyphens:auto]">
           <strong class="text-zinc-900">Hlavní programová teze:</strong> ${party.programHighlight}
         </div>
 
@@ -1424,7 +1499,7 @@ function renderPartyModal(): string {
               href="${party.wikipediaUrl}" 
               target="_blank" 
               rel="noopener noreferrer" 
-              class="w-full sm:w-auto flex-1 px-4 py-2.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white font-semibold text-xs tracking-tight transition-colors text-center flex items-center justify-center gap-1.5 shadow-xs cursor-pointer border border-zinc-800"
+              class="w-full sm:w-auto flex-1 px-4 py-2.5 rounded-sm bg-zinc-900 hover:bg-zinc-800 text-white font-semibold text-xs tracking-tight transition-colors text-center flex items-center justify-center gap-1.5 shadow-xs cursor-pointer border border-zinc-800"
             >
               <span>Otevřít článek na Wikipedii</span>
               <span class="text-xs">↗</span>
@@ -1433,7 +1508,7 @@ function renderPartyModal(): string {
 
           <button 
             onclick="window.calcStartQuiz(${year}); window.calcClosePartyModal();"
-            class="w-full sm:w-auto px-4 py-2.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-900 font-semibold text-xs tracking-tight transition-colors text-center cursor-pointer border border-zinc-200"
+            class="w-full sm:w-auto px-4 py-2.5 rounded-sm bg-zinc-100 hover:bg-zinc-200 text-zinc-900 font-semibold text-xs tracking-tight transition-colors text-center cursor-pointer border border-zinc-200"
           >
             Spustit kalkulačku pro rok ${year}
           </button>
@@ -1455,7 +1530,7 @@ function renderSystemModal(): string {
       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-900/60 backdrop-blur-xs animate-fadeIn"
       onclick="if (event.target === this) window.calcCloseSystemModal()"
     >
-      <div class="bg-white rounded-xl max-w-2xl w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto shadow-2xl border border-zinc-200">
+      <div class="bg-white rounded-sm max-w-2xl w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto shadow-2xl border border-zinc-300">
         
         <!-- Hlavička modálu -->
         <div class="flex items-start justify-between gap-4 pb-4 border-b border-zinc-200 mb-6">
@@ -1478,7 +1553,7 @@ function renderSystemModal(): string {
           <!-- Zavírací křížek -->
           <button 
             onclick="window.calcCloseSystemModal()"
-            class="text-zinc-400 hover:text-zinc-800 p-1 rounded-lg hover:bg-zinc-100 transition-colors cursor-pointer shrink-0"
+            class="text-zinc-400 hover:text-zinc-800 p-1 rounded-sm hover:bg-zinc-100 transition-colors cursor-pointer shrink-0"
             aria-label="Zavřít"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1491,7 +1566,7 @@ function renderSystemModal(): string {
         <div class="space-y-4 mb-6">
           
           <!-- 1. Do jakého tělesa se volilo -->
-          <div class="p-4 rounded-lg bg-zinc-50 border border-zinc-200">
+          <div class="p-4 rounded-sm bg-zinc-50 border border-zinc-200">
             <div class="flex items-center gap-2 text-zinc-900 font-bold text-xs uppercase tracking-wider mb-1.5">
               <svg class="w-4 h-4 text-zinc-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -1504,7 +1579,7 @@ function renderSystemModal(): string {
           </div>
 
           <!-- 2. Volební systém a pravidla -->
-          <div class="p-4 rounded-lg bg-zinc-50 border border-zinc-200">
+          <div class="p-4 rounded-sm bg-zinc-50 border border-zinc-200">
             <div class="flex items-center gap-2 text-zinc-900 font-bold text-xs uppercase tracking-wider mb-1.5">
               <svg class="w-4 h-4 text-zinc-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
@@ -1520,7 +1595,7 @@ function renderSystemModal(): string {
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             
             <!-- Aktivní volební právo -->
-            <div class="p-4 rounded-lg bg-zinc-50 border border-zinc-200">
+            <div class="p-4 rounded-sm bg-zinc-50 border border-zinc-200">
               <div class="flex items-center gap-2 text-zinc-900 font-bold text-xs uppercase tracking-wider mb-1.5">
                 <svg class="w-4 h-4 text-zinc-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -1533,7 +1608,7 @@ function renderSystemModal(): string {
             </div>
 
             <!-- Pasivní volební právo -->
-            <div class="p-4 rounded-lg bg-zinc-50 border border-zinc-200">
+            <div class="p-4 rounded-sm bg-zinc-50 border border-zinc-200">
               <div class="flex items-center gap-2 text-zinc-900 font-bold text-xs uppercase tracking-wider mb-1.5">
                 <svg class="w-4 h-4 text-zinc-700 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -1548,7 +1623,7 @@ function renderSystemModal(): string {
           </div>
 
           <!-- Zajímavosti k volbám -->
-          <div class="p-4 rounded-lg bg-zinc-100/70 border border-zinc-200">
+          <div class="p-4 rounded-sm bg-zinc-100/70 border border-zinc-200">
             <div class="flex items-center gap-2 text-zinc-900 font-bold text-xs uppercase tracking-wider mb-2">
               <svg class="w-4 h-4 text-zinc-800 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
@@ -1571,14 +1646,14 @@ function renderSystemModal(): string {
         <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-zinc-200">
           <button 
             onclick="window.calcCloseSystemModal()"
-            class="w-full sm:w-auto px-4 py-2.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-semibold text-xs tracking-tight transition-colors text-center cursor-pointer border border-zinc-200"
+            class="w-full sm:w-auto px-4 py-2.5 rounded-sm bg-zinc-100 hover:bg-zinc-200 text-zinc-800 font-semibold text-xs tracking-tight transition-colors text-center cursor-pointer border border-zinc-200"
           >
             Zavřít okno
           </button>
 
           <button 
             onclick="window.calcStartQuiz(${year}); window.calcCloseSystemModal();"
-            class="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white font-semibold text-xs sm:text-sm tracking-tight transition-colors text-center flex items-center justify-center gap-2 shadow-xs cursor-pointer border border-zinc-800"
+            class="w-full sm:w-auto px-5 py-2.5 rounded-sm bg-zinc-900 hover:bg-zinc-800 text-white font-semibold text-xs sm:text-sm tracking-tight transition-colors text-center flex items-center justify-center gap-2 shadow-xs cursor-pointer border border-zinc-800"
           >
             <span>Spustit kalkulačku pro rok ${year}</span>
             <span>→</span>
@@ -1593,7 +1668,7 @@ function renderSystemModal(): string {
 function renderToast(): string {
   if (!state.toastMessage) return '';
   return `
-    <div class="fixed bottom-6 right-6 z-50 bg-zinc-900 text-white px-4 py-2.5 rounded-lg shadow-lg text-xs font-medium animate-fadeIn border border-zinc-700">
+    <div class="fixed bottom-6 right-6 z-50 bg-zinc-900 text-white px-4 py-2.5 rounded-sm shadow-lg text-xs font-medium animate-fadeIn border border-zinc-700">
       <span>${state.toastMessage}</span>
     </div>
   `;
@@ -1668,7 +1743,7 @@ function renderApp() {
   } catch (err) {
     console.error('Chyba při vykreslování Historické kalkulačky:', err);
     root.innerHTML = `
-      <div class="max-w-xl mx-auto my-12 p-6 bg-white rounded-xl border border-zinc-200 text-center font-sans">
+      <div class="max-w-xl mx-auto my-12 p-6 bg-white rounded-sm border border-zinc-300 text-center font-sans">
         <h2 class="text-base font-bold text-zinc-900 mb-2">Historická volební kalkulačka se načítá...</h2>
         <p class="text-xs text-zinc-500 mb-4">Pokud tato zpráva nezmizí, zkuste prosím obnovit stránku (F5 / Ctrl+R).</p>
       </div>
@@ -1736,12 +1811,17 @@ declare global {
     calcVerifyPassword: () => void;
     calcAdminLogout: () => void;
     calcAcceptWelcome: () => void;
+    calcToggleImportant: (qId: number) => void;
   }
 }
 
 window.calcAcceptWelcome = () => {
   state.hasAcceptedWelcome = true;
   document.body.classList.remove('overflow-hidden');
+  renderApp();
+};
+window.calcToggleImportant = (qId) => {
+  state.importantQuestions[qId] = !state.importantQuestions[qId];
   renderApp();
 };
 window.calcStartQuiz = (y) => startQuiz(y);
