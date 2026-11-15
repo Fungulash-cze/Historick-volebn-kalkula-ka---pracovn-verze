@@ -44,6 +44,7 @@ interface AppState {
   surveyState: SurveyState;
   dashboardState: DashboardState;
   ballotShareState: BallotShareState;
+  hasAcceptedWelcome: boolean;
 }
 
 const state: AppState = {
@@ -85,7 +86,8 @@ const state: AppState = {
     previewDataUrl: null,
     isGenerating: false,
     isModalOpen: false
-  }
+  },
+  hasAcceptedWelcome: false
 };
 
 function initBallotShareCard() {
@@ -632,22 +634,19 @@ function renderQuizView(): string {
       <!-- Hlavní dotazníková karta v bílošedém stylu -->
       <div class="bg-white border border-zinc-200 rounded-xl p-6 sm:p-8 shadow-xs mb-6 relative">
         
-        <!-- Kategorie a Otazníček s dobovým kontextem -->
-        <div class="flex items-center justify-between gap-3 mb-3 relative">
-          <span class="text-[11px] font-bold text-zinc-500 uppercase tracking-wider bg-zinc-100 px-2.5 py-1 rounded border border-zinc-200">
-            ${q.category}
-          </span>
-
-          ${(q.context || q.historicalNote) ? `
+        ${(q.context || q.historicalNote) ? `
+          <!-- Tlačítko s dobovým kontextem -->
+          <div class="flex items-center justify-end mb-4 relative">
             <div class="relative group/tooltip">
               <button 
                 type="button"
                 onclick="window.calcToggleContextTooltip(${q.id})"
-                class="w-7 h-7 rounded-full bg-zinc-100 hover:bg-zinc-200 text-zinc-800 hover:text-zinc-950 border border-zinc-300 font-bold text-xs flex items-center justify-center transition-all cursor-help shadow-2xs focus:outline-none focus:ring-2 focus:ring-zinc-400"
+                class="inline-flex items-center gap-2 pl-1.5 pr-3 py-1 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-950 border-2 border-amber-400 font-bold text-xs transition-all cursor-help shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-1 ${state.activeContextTooltipId === q.id ? 'bg-amber-200 ring-2 ring-amber-500 ring-offset-1' : ''}"
                 title="Dobový kontext otázky (najetím myší nebo kliknutím zobrazíte vysvětlení)"
-                aria-label="Dobový kontext otázky"
+                aria-label="Historický kontext otázky"
               >
-                ?
+                <span class="w-5 h-5 rounded-full bg-amber-500 text-white font-black text-xs flex items-center justify-center shadow-2xs shrink-0">?</span>
+                <span>Historický kontext</span>
               </button>
 
               <!-- Tooltip bublina (zobrazí se při najetí myší i při kliknutí/tapnutí) -->
@@ -673,8 +672,8 @@ function renderQuizView(): string {
                 </p>
               </div>
             </div>
-          ` : ''}
-        </div>
+          </div>
+        ` : ''}
 
         <!-- Tvrzení -->
         <h2 class="text-xl sm:text-2xl font-bold text-zinc-900 tracking-tight leading-snug mb-8">
@@ -1254,6 +1253,87 @@ function renderPartySlider(): string {
 // MODÁLNÍ OKNO DETAILU STRANY (POPIS + WIKIPEDIE)
 // -------------------------------------------------------------
 
+function renderWelcomeModal(): string {
+  if (state.hasAcceptedWelcome || state.view === 'admin') return '';
+
+  return `
+    <div 
+      id="welcome-modal-backdrop"
+      class="fixed inset-0 z-50 bg-zinc-900/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 animate-fadeIn"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="welcome-modal-title"
+    >
+      <div 
+        class="max-w-2xl w-full bg-white rounded-2xl border border-zinc-200 shadow-2xl max-h-[92vh] flex flex-col overflow-hidden text-zinc-900 animate-fadeIn"
+        onclick="event.stopPropagation();"
+      >
+        <!-- Horní akcentní pruh -->
+        <div class="h-1.5 w-full bg-zinc-900 shrink-0"></div>
+
+        <!-- Scrollovatelný obsah -->
+        <div class="p-5 sm:p-8 overflow-y-auto space-y-4 text-xs sm:text-sm text-zinc-700 leading-relaxed">
+          <h2 id="welcome-modal-title" class="text-xl sm:text-2xl font-extrabold text-zinc-900 tracking-tight leading-snug">
+            Vítejte v historické volební kalkulačce!
+          </h2>
+
+          <p class="text-zinc-700">
+            Zajímá vás, koho byste volili v minulosti? Tato kalkulačka vám umožní porovnat vaše postoje s programy politických stran v dávno uplynulých volbách.
+          </p>
+
+          <div class="bg-zinc-50 rounded-xl border border-zinc-200 p-4 sm:p-5 space-y-2.5">
+            <h3 class="text-xs sm:text-sm font-bold text-zinc-900">
+              Co všechno si tu můžete vyzkoušet?
+            </h3>
+            <ul class="space-y-2 text-xs sm:text-sm text-zinc-700">
+              <li class="flex items-start gap-2.5">
+                <span class="text-zinc-900 font-bold mt-0.5 shrink-0">•</span>
+                <span><strong class="text-zinc-900 font-semibold">Vyberte si volby:</strong> Zvolte si konkrétní historické volby, které vás zajímají.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-zinc-900 font-bold mt-0.5 shrink-0">•</span>
+                <span><strong class="text-zinc-900 font-semibold">Zvolte si délku kalkulačky:</strong> Můžete si vždy vybrat mezi zkrácenou verzí (15 otázek) pro rychlejší výsledek, nebo rozšířenou verzí (40 otázek).</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-zinc-900 font-bold mt-0.5 shrink-0">•</span>
+                <span><strong class="text-zinc-900 font-semibold">Odpovězte na otázky:</strong> Projděte si sadu otázek týkajících se tehdejších klíčových společenských a politických témat.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-zinc-900 font-bold mt-0.5 shrink-0">•</span>
+                <span><strong class="text-zinc-900 font-semibold">Přečtěte si dobový kontext:</strong> Pokud si u některého tématu nebudete jistí tehdejší situací, stačí najet myší na symbol otazníku vedle otázky; zobrazí se vám historické souvislosti.</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <span class="text-zinc-900 font-bold mt-0.5 shrink-0">•</span>
+                <span><strong class="text-zinc-900 font-semibold">Získejte výsledek:</strong> Zjistěte, která politická strana z dané doby se nejvíce blížila vašim názorům.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="bg-amber-50/70 rounded-xl border border-amber-200 p-4 text-xs sm:text-sm text-zinc-700 leading-relaxed">
+            <strong class="text-zinc-900 font-semibold">Pomozte mi kalkulačku vylepšit.</strong> Kalkulačku jsem vytvořil, protože mi to přišlo jako fajn nápad, ale ani náhodou netvrdím, že je perfektní. Naopak. A víc hlav víc ví. Budu moc rád za jakoukoli zpětnou vazbu. Našli jste nepřesnost, chybí vám důležité téma, nebo máte tip na zlepšení? Dejte mi vědět na mail <a href="mailto:adam.simota@seznam.cz" class="font-semibold text-zinc-900 underline hover:text-amber-900 transition-colors">adam.simota@seznam.cz</a>.
+          </div>
+
+          <p class="text-zinc-800 font-medium">
+            Díky moc, mějte se báječně a užijte si vyplňování (ať už byste tehdy volili kohokoli :)).
+          </p>
+        </div>
+
+        <!-- Spodní potvrzovací lišta -->
+        <div class="p-4 sm:px-8 sm:py-5 border-t border-zinc-200 bg-zinc-50 shrink-0 flex justify-end">
+          <button
+            type="button"
+            onclick="window.calcAcceptWelcome()"
+            class="w-full sm:w-auto px-6 py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs sm:text-sm tracking-tight transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+          >
+            <span>Rozumím, chci začít</span>
+            <span>→</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 function renderPartyModal(): string {
   if (!state.activeModalParty) return '';
   const { party, year } = state.activeModalParty;
@@ -1524,7 +1604,7 @@ function renderFooter(): string {
     <footer class="border-t border-zinc-200 py-8 px-4 sm:px-6 text-zinc-500 text-xs bg-[#f4f4f5]">
       <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
         <div class="text-[11px] text-zinc-500">
-          Díky moc všem za zpětnou vazbu <3 Adam
+          Díky moc všem za zpětnou vazbu &lt;3 Adam
         </div>
         <div class="flex items-center gap-2">
           <span class="font-bold text-zinc-900">Historická volební kalkulačka (HVK)</span>
@@ -1565,11 +1645,19 @@ function renderApp() {
 
     const showSlider = state.view !== 'survey' && state.view !== 'admin';
 
+    const isWelcomeBlocking = !state.hasAcceptedWelcome && state.view !== 'admin';
+    if (isWelcomeBlocking || state.ballotShareState.isModalOpen) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+
     root.innerHTML = `
       ${renderHeader()}
       ${viewContent}
       ${showSlider ? renderPartySlider() : ''}
       ${renderFooter()}
+      ${renderWelcomeModal()}
       ${renderPartyModal()}
       ${renderSystemModal()}
       ${renderBallotShareSection(state.year, state.quizMode, state.partyScores, state.ballotShareState)}
@@ -1647,9 +1735,15 @@ declare global {
     calcSelectCorrelationParty: (partyName: string) => void;
     calcVerifyPassword: () => void;
     calcAdminLogout: () => void;
+    calcAcceptWelcome: () => void;
   }
 }
 
+window.calcAcceptWelcome = () => {
+  state.hasAcceptedWelcome = true;
+  document.body.classList.remove('overflow-hidden');
+  renderApp();
+};
 window.calcStartQuiz = (y) => startQuiz(y);
 window.calcHandleAnswer = (val) => handleAnswer(val);
 window.calcPrevQuestion = () => {

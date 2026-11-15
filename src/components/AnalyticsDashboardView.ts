@@ -329,26 +329,37 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
         }
       </div>
 
-      <!-- Karta 5: Poslední anonymní záznamy -->
+      <!-- Karta 5: Všechna anonymní dokončení -->
       <div class="bg-white rounded-xl border border-zinc-200 shadow-xs overflow-hidden mb-8">
-        <div class="p-5 border-b border-zinc-200 flex items-center justify-between">
+        <div class="p-5 border-b border-zinc-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h2 class="text-sm font-bold text-zinc-900">Poslední anonymní dokončení kalkulačky</h2>
-            <p class="text-[11px] text-zinc-500 mt-0.5">Zobrazeno až 15 nejnovějších anonymních záznamů</p>
+            <div class="flex items-center gap-2">
+              <h2 class="text-sm font-bold text-zinc-900">Všechna anonymní dokončení kalkulačky</h2>
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-zinc-100 text-zinc-800 border border-zinc-200">
+                ${recentSubmissions.length} záznamů
+              </span>
+            </div>
+            <p class="text-[11px] text-zinc-500 mt-0.5">Zobrazeny všechny záznamy z databáze seřazené od nejnovějších</p>
           </div>
-          <button
-            type="button"
-            onclick="window.calcExportCSV()"
-            class="text-xs text-emerald-700 hover:text-emerald-900 font-bold underline cursor-pointer"
-          >
-            Stáhnout vše (CSV) →
-          </button>
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              onclick="window.calcExportCSV()"
+              class="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+            >
+              <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              <span>Stáhnout vše (CSV)</span>
+            </button>
+          </div>
         </div>
 
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto max-h-[640px] overflow-y-auto">
           <table class="w-full text-left text-xs text-zinc-700">
-            <thead class="bg-zinc-50 text-[11px] font-bold text-zinc-500 uppercase tracking-wider border-b border-zinc-200">
+            <thead class="bg-zinc-50 sticky top-0 z-10 text-[11px] font-bold text-zinc-500 uppercase tracking-wider border-b border-zinc-200 shadow-2xs">
               <tr>
+                <th class="px-4 py-2.5 w-12 text-zinc-400">#</th>
                 <th class="px-4 py-2.5">Čas</th>
                 <th class="px-4 py-2.5">Rok</th>
                 <th class="px-4 py-2.5">Verze</th>
@@ -359,7 +370,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
               </tr>
             </thead>
             <tbody class="divide-y divide-zinc-200">
-              ${recentSubmissions.slice(0, 15).map((s) => {
+              ${recentSubmissions.map((s, idx) => {
                 const dateStr = s.createdAt
                   ? new Date(s.createdAt).toLocaleDateString('cs-CZ', {
                       day: 'numeric',
@@ -370,6 +381,7 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
                   : 'Neznámý';
                 return `
                   <tr class="hover:bg-zinc-50 transition-colors">
+                    <td class="px-4 py-2 text-zinc-400 font-mono text-[11px]">${idx + 1}</td>
                     <td class="px-4 py-2 text-zinc-500 whitespace-nowrap">${dateStr}</td>
                     <td class="px-4 py-2 font-bold text-zinc-900">${s.year}</td>
                     <td class="px-4 py-2 text-zinc-500">${s.mode === 'expanded' ? 'Rozšířená (40)' : 'Základní (15)'}</td>
@@ -382,12 +394,19 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
               }).join('')}
               ${
                 recentSubmissions.length === 0
-                  ? '<tr><td colspan="7" class="px-4 py-6 text-center text-zinc-400">Zatím nebyly zaznamenány žádné dokončené kalkulačky.</td></tr>'
+                  ? '<tr><td colspan="8" class="px-4 py-8 text-center text-zinc-400">Zatím nebyly zaznamenány žádné dokončené kalkulačky.</td></tr>'
                   : ''
               }
             </tbody>
           </table>
         </div>
+        ${
+          recentSubmissions.length > 0
+            ? `<div class="p-3 bg-zinc-50 border-t border-zinc-200 text-center text-xs text-zinc-500 font-medium">
+                Celkem zobrazeno <strong>${recentSubmissions.length}</strong> vyplněných kalkulaček.
+              </div>`
+            : ''
+        }
       </div>
 
     </div>

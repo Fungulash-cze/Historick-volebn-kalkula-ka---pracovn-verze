@@ -136,9 +136,9 @@ export async function fetchAnalyticsSummary(): Promise<AnalyticsSummary> {
   }
 
   try {
-    // 2. Load recent submissions (up to 500 for fast client-side aggregation)
+    // 2. Load all submissions for client-side aggregation
     const submissionsSnap = await getDocs(
-      query(collection(db, 'calculator_submissions'), limit(500))
+      collection(db, 'calculator_submissions')
     );
 
     const submissions: CalculatorSubmission[] = [];
