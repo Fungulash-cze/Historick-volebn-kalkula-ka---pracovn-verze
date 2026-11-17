@@ -4,12 +4,12 @@ import {
   setDoc,
   addDoc,
   getDocs,
-  query,
-  limit,
   increment
 } from 'firebase/firestore';
 import { db } from '../firebase.ts';
-import { CalculatorSubmission, AnalyticsSummary, ElectionYear } from '../types.ts';
+import { CalculatorSubmission, AnalyticsSummary, DailyMetricDoc } from '../types.ts';
+import { isAdminSessionActive } from './adminAuthService.ts';
+import { fetchAllFeedback } from './feedbackService.ts';
 
 function getTodayString(): string {
   const now = new Date();
@@ -20,29 +20,57 @@ function getTodayString(): string {
 }
 
 /**
- * Anonymously records a page view once per browser session.
+ * Anonymously records a page view once per browser session and unique visitor once per browser per day.
+ * Skips automated headless browsers and active admin sessions.
  */
 export async function recordPageView(): Promise<void> {
   try {
-    const sessionKey = 'historicka_kalkulacka_pv_' + getTodayString();
-    if (sessionStorage.getItem(sessionKey)) {
-      return; // already counted in this session for today
+    if (typeof navigator !== 'undefined' && navigator.webdriver) {
+      return;
+    }
+    if (isAdminSessionActive()) {
+      return;
     }
 
     const today = getTodayString();
+    const sessionKey = 'historicka_kalkulacka_pv_' + today;
+    const uniqueKey = 'hvk_uv_' + today;
+
+    const hasSessionView = Boolean(sessionStorage.getItem(sessionKey));
+    let hasUniqueVisitor = false;
+    try {
+      hasUniqueVisitor = Boolean(localStorage.getItem(uniqueKey));
+    } catch {
+      hasUniqueVisitor = hasSessionView;
+    }
+
+    if (hasSessionView && hasUniqueVisitor) {
+      return;
+    }
+
     const metricRef = doc(db, 'site_metrics', today);
 
     await setDoc(
       metricRef,
       {
         date: today,
-        pageViews: increment(1),
+        pageViews: increment(hasSessionView ? 0 : 1),
+        uniqueVisitors: increment(hasUniqueVisitor ? 0 : 1),
         updatedAt: new Date().toISOString()
       },
       { merge: true }
     );
 
-    sessionStorage.setItem(sessionKey, '1');
+    if (!hasSessionView) {
+      sessionStorage.setItem(sessionKey, '1');
+    }
+    if (!hasUniqueVisitor) {
+      try {
+        localStorage.setItem(uniqueKey, '1');
+      } catch {
+        // Ignore storage errors in private mode
+      }
+    }
   } catch (err) {
     // Graceful silent fallback: analytics failure should never interrupt user
     console.warn('Analytics page view notice:', err);
@@ -109,11 +137,13 @@ export async function submitQuizResult(
 }
 
 /**
- * Fetches metrics and calculator submissions to calculate dashboard stats.
+ * Fetches metrics, calculator submissions, and user feedback for the admin dashboard.
  */
 export async function fetchAnalyticsSummary(): Promise<AnalyticsSummary> {
   const summary: AnalyticsSummary = {
     totalPageViews: 0,
+    totalUniqueVisitors: 0,
+    totalQuizStarts: 0,
     totalSubmissions: 0,
     submissionsByYear: { 1920: 0, 1946: 0, 1990: 0 },
     submissionsByMode: { standard: 0, expanded: 0 },
@@ -121,16 +151,40 @@ export async function fetchAnalyticsSummary(): Promise<AnalyticsSummary> {
     voted2021Distribution: {},
     topMatchesByYear: { 1920: {}, 1946: {}, 1990: {} },
     correlations: {},
-    recentSubmissions: []
+    recentSubmissions: [],
+    dailyMetrics: [],
+    feedbacks: []
   };
 
   try {
-    // 1. Sum up daily metrics
-    const metricsSnap = await getDocs(query(collection(db, 'site_metrics'), limit(100)));
+    // 1. Sum up all daily metrics (no limit(100) cap)
+    const metricsSnap = await getDocs(collection(db, 'site_metrics'));
+    const dailyList: DailyMetricDoc[] = [];
+
     metricsSnap.forEach((docSnap) => {
-      const data = docSnap.data();
-      summary.totalPageViews += Number(data.pageViews || 0);
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(docSnap.id)) return;
+      const data = docSnap.data() as DailyMetricDoc;
+      const pv = Number(data.pageViews || 0);
+      const uv = Number(data.uniqueVisitors || 0);
+      const qs = Number(data.quizStarts || 0);
+      const qc = Number(data.quizCompletions || 0);
+
+      summary.totalPageViews += pv;
+      summary.totalUniqueVisitors += uv;
+      summary.totalQuizStarts += qs;
+
+      dailyList.push({
+        date: data.date || docSnap.id,
+        pageViews: pv,
+        uniqueVisitors: uv,
+        quizStarts: qs,
+        quizCompletions: qc,
+        updatedAt: data.updatedAt
+      });
     });
+
+    dailyList.sort((a, b) => b.date.localeCompare(a.date));
+    summary.dailyMetrics = dailyList;
   } catch (e) {
     console.warn('Error loading site metrics:', e);
   }
@@ -196,9 +250,11 @@ export async function fetchAnalyticsSummary(): Promise<AnalyticsSummary> {
     console.warn('Error loading submissions:', e);
   }
 
-  // Ensure minimum pageViews is at least equal to submissions
-  if (summary.totalPageViews < summary.totalSubmissions) {
-    summary.totalPageViews = summary.totalSubmissions;
+  try {
+    // 3. Load all feedback entries
+    summary.feedbacks = await fetchAllFeedback();
+  } catch (e) {
+    console.warn('Error loading feedback:', e);
   }
 
   return summary;

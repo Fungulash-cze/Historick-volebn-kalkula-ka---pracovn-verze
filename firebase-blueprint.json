@@ -13,6 +13,10 @@
           "type": "number",
           "description": "Total page views for this day"
         },
+        "uniqueVisitors": {
+          "type": "number",
+          "description": "Approximate daily unique browsers counted via localStorage"
+        },
         "quizStarts": {
           "type": "number",
           "description": "Total quizzes started"

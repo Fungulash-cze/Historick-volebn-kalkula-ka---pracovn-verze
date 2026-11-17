@@ -1,6 +1,6 @@
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, getDocs, serverTimestamp, Timestamp } from 'firebase/firestore';
 import { db, auth } from '../firebase.ts';
-import { ElectionYear } from '../types.ts';
+import { ElectionYear, FeedbackEntry } from '../types.ts';
 
 export type CalculatorLengthLabel = 'zkrácená' | 'rozšířená';
 
@@ -86,3 +86,59 @@ export async function submitFeedback(payload: FeedbackSubmissionPayload): Promis
     handleFirestoreError(error, OperationType.CREATE, path);
   }
 }
+
+function normalizeTimestamp(raw: unknown): string | null {
+  if (!raw) return null;
+  if (raw instanceof Timestamp) {
+    return raw.toDate().toISOString();
+  }
+  if (typeof raw === 'object' && raw !== null && 'toDate' in raw && typeof (raw as { toDate: () => Date }).toDate === 'function') {
+    return (raw as { toDate: () => Date }).toDate().toISOString();
+  }
+  if (typeof raw === 'string') {
+    return raw;
+  }
+  if (raw instanceof Date) {
+    return raw.toISOString();
+  }
+  return null;
+}
+
+/**
+ * Načte všechny záznamy zpětné vazby z kolekce `feedback` pro administrátorský přehled.
+ */
+export async function fetchAllFeedback(): Promise<FeedbackEntry[]> {
+  const path = 'feedback';
+  try {
+    const snap = await getDocs(collection(db, path));
+    const entries: FeedbackEntry[] = [];
+
+    snap.forEach((docSnap) => {
+      const data = docSnap.data();
+      entries.push({
+        id: docSnap.id,
+        text: typeof data.text === 'string' ? data.text : '',
+        timestamp: normalizeTimestamp(data.timestamp),
+        electionId:
+          data.electionId === 1920 || data.electionId === 1946 || data.electionId === 1990
+            ? data.electionId
+            : null,
+        calculatorLength:
+          data.calculatorLength === 'zkrácená' || data.calculatorLength === 'rozšířená'
+            ? data.calculatorLength
+            : null
+      });
+    });
+
+    entries.sort((a, b) => {
+      const tA = a.timestamp ? new Date(a.timestamp).getTime() : 0;
+      const tB = b.timestamp ? new Date(b.timestamp).getTime() : 0;
+      return tB - tA;
+    });
+
+    return entries;
+  } catch (error) {
+    handleFirestoreError(error, OperationType.LIST, path);
+  }
+}
+

@@ -21,9 +21,10 @@ service cloud.firestore {
 
     function isValidDailyMetric(data) {
       return data.keys().hasAll(['date', 'pageViews']) &&
-             data.keys().hasOnly(['date', 'pageViews', 'quizStarts', 'quizCompletions', 'updatedAt']) &&
+             data.keys().hasOnly(['date', 'pageViews', 'uniqueVisitors', 'quizStarts', 'quizCompletions', 'updatedAt']) &&
              isValidDate(data.date) &&
              data.pageViews is number && data.pageViews >= 0 &&
+             (!('uniqueVisitors' in data) || (data.uniqueVisitors is number && data.uniqueVisitors >= 0)) &&
              (!('quizStarts' in data) || (data.quizStarts is number && data.quizStarts >= 0)) &&
              (!('quizCompletions' in data) || (data.quizCompletions is number && data.quizCompletions >= 0));
     }
@@ -70,9 +71,9 @@ service cloud.firestore {
       allow delete: if false;
     }
 
-    // User feedback messages (write once, immutable, private dropbox)
+    // User feedback messages (write once, immutable)
     match /feedback/{feedbackId} {
-      allow read: if false;
+      allow read: if true;
       allow create: if isValidId(feedbackId) && isValidFeedback(incoming());
       allow update: if false;
       allow delete: if false;

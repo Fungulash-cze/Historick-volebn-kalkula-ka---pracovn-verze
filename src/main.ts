@@ -2098,13 +2098,13 @@ window.calcShareResult = () => {
 };
 
 // Detekce skryté adresy statistik pouze přes URL (#statistiky, #stats, ?statistiky, ?stats, #admin atd.)
-function checkAdminRoute() {
+function isAdminStatsUrl(): boolean {
   const hash = (window.location.hash || '').toLowerCase();
   const search = (window.location.search || '').toLowerCase();
   const path = (window.location.pathname || '').toLowerCase();
   const urlParams = new URLSearchParams(window.location.search);
 
-  const isStatsRoute =
+  return (
     hash === '#statistiky' ||
     hash === '#stats' ||
     hash === '#admin' ||
@@ -2118,9 +2118,12 @@ function checkAdminRoute() {
     search.includes('stats') ||
     path.endsWith('/statistiky') ||
     path.endsWith('/stats') ||
-    path.endsWith('/admin');
+    path.endsWith('/admin')
+  );
+}
 
-  if (isStatsRoute) {
+function checkAdminRoute() {
+  if (isAdminStatsUrl()) {
     setView('admin');
   }
 }
@@ -2128,8 +2131,10 @@ function checkAdminRoute() {
 window.addEventListener('hashchange', checkAdminRoute);
 window.addEventListener('popstate', checkAdminRoute);
 
-// Záznam anonymního zobrazení stránky
-recordPageView();
+// Záznam anonymního zobrazení stránky (pouze mimo administrátorskou sekci)
+if (!isAdminStatsUrl()) {
+  recordPageView();
+}
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {

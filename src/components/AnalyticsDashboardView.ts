@@ -9,6 +9,15 @@ export interface DashboardState {
   isVerifying: boolean;
 }
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 export function renderAnalyticsDashboardView(state: DashboardState): string {
   // 1. Pokud administrátor ještě nezadal platné heslo -> Zobrazit zadání hesla
   if (!state.isAuthenticated) {
@@ -90,13 +99,17 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
 
   const {
     totalPageViews,
+    totalUniqueVisitors,
+    totalQuizStarts,
     totalSubmissions,
     submissionsByYear,
     submissionsByMode,
     ageDistribution,
     voted2021Distribution,
     correlations,
-    recentSubmissions
+    recentSubmissions,
+    dailyMetrics,
+    feedbacks
   } = state.summary;
 
   const totalCompleted = totalSubmissions || 1; // avoid division by 0
@@ -175,7 +188,9 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
           <div class="text-2xl sm:text-3xl font-black text-zinc-900">
             ${totalPageViews.toLocaleString('cs-CZ')}
           </div>
-          <div class="text-[11px] text-zinc-400 mt-1">zobrazení stránek celkem</div>
+          <div class="text-[11px] text-zinc-400 mt-1">
+            relací (1× na záložku/den)${totalUniqueVisitors > 0 ? ` · ${totalUniqueVisitors.toLocaleString('cs-CZ')} unik.` : ''}
+          </div>
         </div>
 
         <div class="bg-white p-4 sm:p-5 rounded-sm border border-zinc-200 shadow-xs">
@@ -185,7 +200,9 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
           <div class="text-2xl sm:text-3xl font-black text-zinc-900">
             ${totalSubmissions.toLocaleString('cs-CZ')}
           </div>
-          <div class="text-[11px] text-zinc-400 mt-1">dokončených průchodů</div>
+          <div class="text-[11px] text-zinc-400 mt-1">
+            ${totalQuizStarts > 0 ? `z ${totalQuizStarts.toLocaleString('cs-CZ')} spuštěných (${Math.round((totalSubmissions / totalQuizStarts) * 100)} %)` : 'dokončených průchodů'}
+          </div>
         </div>
 
         <div class="bg-white p-4 sm:p-5 rounded-sm border border-zinc-200 shadow-xs">
@@ -329,7 +346,110 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
         }
       </div>
 
-      <!-- Karta 5: Všechna anonymní dokončení -->
+      <!-- Karta 5: Zpětná vazba od uživatelů -->
+      <div class="bg-white rounded-sm border border-zinc-200 shadow-xs overflow-hidden mb-8">
+        <div class="p-5 border-b border-zinc-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 class="text-sm font-bold text-zinc-900">Zpětná vazba od uživatelů</h2>
+              <span class="inline-flex items-center px-2 py-0.5 rounded-xs text-[11px] font-bold bg-zinc-100 text-zinc-800 border border-zinc-200">
+                ${feedbacks.length} ${feedbacks.length === 1 ? 'zpráva' : feedbacks.length >= 2 && feedbacks.length <= 4 ? 'zprávy' : 'zpráv'}
+              </span>
+            </div>
+            <p class="text-[11px] text-zinc-500 mt-0.5">Textové vzkazy z formuláře v horní liště seřazené od nejnovějších</p>
+          </div>
+        </div>
+
+        <div class="divide-y divide-zinc-200 max-h-[480px] overflow-y-auto">
+          ${feedbacks
+            .map((fb) => {
+              const dateStr = fb.timestamp
+                ? new Date(fb.timestamp).toLocaleString('cs-CZ', {
+                    day: 'numeric',
+                    month: 'numeric',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })
+                : 'Čas neznámý';
+              return `
+                <div class="p-4 sm:p-5 hover:bg-zinc-50 transition-colors">
+                  <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                    <div class="flex flex-wrap items-center gap-1.5">
+                      ${
+                        fb.electionId
+                          ? `<span class="px-2 py-0.5 rounded-xs bg-zinc-900 text-white text-[10px] font-bold font-mono">Volby ${fb.electionId}</span>`
+                          : `<span class="px-2 py-0.5 rounded-xs bg-zinc-100 text-zinc-600 text-[10px] font-medium border border-zinc-200">Úvodní stránka</span>`
+                      }
+                      ${
+                        fb.calculatorLength
+                          ? `<span class="px-2 py-0.5 rounded-xs bg-zinc-100 text-zinc-700 text-[10px] font-semibold border border-zinc-200">${escapeHtml(fb.calculatorLength)} verze</span>`
+                          : ''
+                      }
+                    </div>
+                    <span class="text-[11px] text-zinc-400 font-mono">${dateStr}</span>
+                  </div>
+                  <p class="text-xs sm:text-sm text-zinc-800 leading-relaxed whitespace-pre-wrap">${escapeHtml(fb.text)}</p>
+                </div>
+              `;
+            })
+            .join('')}
+          ${
+            feedbacks.length === 0
+              ? '<div class="px-4 py-8 text-center text-xs text-zinc-400">Zatím nepřišla žádná textová zpětná vazba.</div>'
+              : ''
+          }
+        </div>
+      </div>
+
+      <!-- Karta 6: Denní přehled návštěvnosti -->
+      <div class="bg-white rounded-sm border border-zinc-200 shadow-xs overflow-hidden mb-8">
+        <div class="p-5 border-b border-zinc-200">
+          <div class="flex items-center gap-2">
+            <h2 class="text-sm font-bold text-zinc-900">Denní přehled návštěvnosti (site_metrics)</h2>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-xs text-[11px] font-bold bg-zinc-100 text-zinc-800 border border-zinc-200">
+              ${dailyMetrics.length} dnů
+            </span>
+          </div>
+          <p class="text-[11px] text-zinc-500 mt-0.5">
+            Počítá 1 zobrazení na záložku prohlížeče a den (bez návštěv správce a botů). Jeden uživatel může v jedné relaci dokončit i více voleb.
+          </p>
+        </div>
+
+        <div class="overflow-x-auto max-h-[320px] overflow-y-auto">
+          <table class="w-full text-left text-xs text-zinc-700">
+            <thead class="bg-zinc-50 sticky top-0 z-10 text-[11px] font-bold text-zinc-500 uppercase tracking-wider border-b border-zinc-200">
+              <tr>
+                <th class="px-4 py-2.5">Datum</th>
+                <th class="px-4 py-2.5">Zobrazení (relace)</th>
+                <th class="px-4 py-2.5">Unikátní prohlížeče</th>
+                <th class="px-4 py-2.5">Spuštěno kvízů</th>
+                <th class="px-4 py-2.5">Dokončeno kvízů</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-zinc-200">
+              ${dailyMetrics
+                .map((m) => `
+                  <tr class="hover:bg-zinc-50 transition-colors">
+                    <td class="px-4 py-2 font-mono font-bold text-zinc-900">${m.date}</td>
+                    <td class="px-4 py-2 font-mono">${m.pageViews}</td>
+                    <td class="px-4 py-2 font-mono text-zinc-500">${m.uniqueVisitors && m.uniqueVisitors > 0 ? m.uniqueVisitors : '–'}</td>
+                    <td class="px-4 py-2 font-mono">${m.quizStarts || 0}</td>
+                    <td class="px-4 py-2 font-mono font-semibold text-emerald-700">${m.quizCompletions || 0}</td>
+                  </tr>
+                `)
+                .join('')}
+              ${
+                dailyMetrics.length === 0
+                  ? '<tr><td colspan="5" class="px-4 py-6 text-center text-zinc-400">Zatím nejsou zaznamenány žádné denní metriky.</td></tr>'
+                  : ''
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Karta 7: Všechna anonymní dokončení -->
       <div class="bg-white rounded-sm border border-zinc-200 shadow-xs overflow-hidden mb-8">
         <div class="p-5 border-b border-zinc-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
@@ -387,8 +507,8 @@ export function renderAnalyticsDashboardView(state: DashboardState): string {
                     <td class="px-4 py-2 text-zinc-500">${s.mode === 'expanded' ? 'Rozšířená (40)' : 'Základní (15)'}</td>
                     <td class="px-4 py-2 font-bold text-zinc-900">${s.topPartyId.toUpperCase()}</td>
                     <td class="px-4 py-2 font-mono font-bold text-emerald-700">${s.topPartyMatch} %</td>
-                    <td class="px-4 py-2 text-zinc-600">${s.ageGroup}</td>
-                    <td class="px-4 py-2 text-zinc-600">${s.votedParty2021}</td>
+                    <td class="px-4 py-2 text-zinc-600">${escapeHtml(s.ageGroup)}</td>
+                    <td class="px-4 py-2 text-zinc-600">${escapeHtml(s.votedParty2021)}</td>
                   </tr>
                 `;
               }).join('')}

@@ -79,13 +79,24 @@ export interface CalculatorSubmission {
 export interface DailyMetricDoc {
   date: string;
   pageViews: number;
+  uniqueVisitors?: number;
   quizStarts?: number;
   quizCompletions?: number;
   updatedAt?: string;
 }
 
+export interface FeedbackEntry {
+  id: string;
+  text: string;
+  timestamp: string | null;
+  electionId: ElectionYear | null;
+  calculatorLength: 'zkrácená' | 'rozšířená' | null;
+}
+
 export interface AnalyticsSummary {
   totalPageViews: number;
+  totalUniqueVisitors: number;
+  totalQuizStarts: number;
   totalSubmissions: number;
   submissionsByYear: Record<ElectionYear, number>;
   submissionsByMode: { standard: number; expanded: number };
@@ -97,5 +108,6 @@ export interface AnalyticsSummary {
     [voted2021: string]: Record<string, number>;
   };
   recentSubmissions: CalculatorSubmission[];
+  dailyMetrics: DailyMetricDoc[];
+  feedbacks: FeedbackEntry[];
 }
-
