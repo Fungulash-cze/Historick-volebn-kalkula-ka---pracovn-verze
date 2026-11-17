@@ -69,6 +69,34 @@
         }
       },
       "required": ["year", "mode", "topPartyId", "topPartyMatch", "ageGroup", "votedParty2021", "answersCount"]
+    },
+    "Feedback": {
+      "title": "Feedback",
+      "description": "User text feedback submitted from the header feedback modal",
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000,
+          "description": "Feedback message text"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the feedback was created"
+        },
+        "electionId": {
+          "type": "number",
+          "description": "Selected election year (1920, 1946, or 1990) if active, otherwise null"
+        },
+        "calculatorLength": {
+          "type": "string",
+          "enum": ["zkrácená", "rozšířená"],
+          "description": "Calculator length being filled out, or null if not in an election"
+        }
+      },
+      "required": ["text", "timestamp"]
     }
   },
   "firestore": {
@@ -79,6 +107,10 @@
     "/calculator_submissions/{submissionId}": {
       "schema": "CalculatorSubmission",
       "description": "Individual anonymous submissions of calculator results and demographics"
+    },
+    "/feedback/{feedbackId}": {
+      "schema": "Feedback",
+      "description": "User text feedback messages with timestamp and election context"
     }
   }
 }

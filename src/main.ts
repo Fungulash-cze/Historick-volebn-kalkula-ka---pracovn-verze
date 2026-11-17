@@ -18,6 +18,8 @@ import {
 import { renderSurveyView, SurveyState } from './components/DemographicSurveyModal.ts';
 import { renderAnalyticsDashboardView, DashboardState } from './components/AnalyticsDashboardView.ts';
 import { renderBallotShareSection, BallotShareState } from './components/BallotShareSection.ts';
+import { renderFeedbackModal, FeedbackState } from './components/FeedbackModal.ts';
+import { submitFeedback, CalculatorLengthLabel } from './services/feedbackService.ts';
 import {
   generateBallotCardDataUrl,
   downloadBallotCard,
@@ -44,6 +46,7 @@ interface AppState {
   surveyState: SurveyState;
   dashboardState: DashboardState;
   ballotShareState: BallotShareState;
+  feedbackState: FeedbackState;
   hasAcceptedWelcome: boolean;
   importantQuestions: Record<number, boolean>;
 }
@@ -88,9 +91,32 @@ const state: AppState = {
     isGenerating: false,
     isModalOpen: false
   },
+  feedbackState: {
+    isOpen: false,
+    text: '',
+    isSubmitting: false,
+    isSubmitted: false,
+    error: null
+  },
   hasAcceptedWelcome: false,
   importantQuestions: {}
 };
+
+function getFeedbackContext(): {
+  electionId: ElectionYear | null;
+  calculatorLength: CalculatorLengthLabel | null;
+} {
+  if (state.view === 'quiz' || state.view === 'survey' || state.view === 'results') {
+    return {
+      electionId: state.year,
+      calculatorLength: state.quizMode === 'expanded' ? 'rozšířená' : 'zkrácená'
+    };
+  }
+  return {
+    electionId: null,
+    calculatorLength: null
+  };
+}
 
 function initBallotShareCard() {
   if (state.partyScores.length === 0) return;
@@ -417,16 +443,22 @@ function renderHeader(): string {
         </button>
 
         <!-- Navigace v bílošedém stylu -->
-        <nav class="flex items-center gap-2.5 text-xs font-medium">
+        <nav class="flex items-center gap-1.5 sm:gap-2.5 text-xs font-medium">
           <button 
             onclick="window.calcSetView('home')" 
-            class="px-3 py-1.5 rounded-sm transition-colors cursor-pointer ${state.view === 'home' ? 'bg-zinc-100 text-zinc-900 font-semibold' : 'text-zinc-600 hover:text-zinc-900'}"
+            class="px-2.5 sm:px-3 py-1.5 rounded-sm transition-colors cursor-pointer ${state.view === 'home' ? 'bg-zinc-100 text-zinc-900 font-semibold' : 'text-zinc-600 hover:text-zinc-900'}"
           >
             Výběr voleb
           </button>
+          <button 
+            onclick="window.calcOpenFeedbackModal()" 
+            class="px-2.5 sm:px-3 py-1.5 rounded-sm transition-colors cursor-pointer ${state.feedbackState.isOpen ? 'bg-zinc-100 text-zinc-900 font-semibold' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100'}"
+          >
+            Zpětná vazba
+          </button>
           ${state.view === 'quiz' || state.view === 'results' ? `
-            <span class="text-zinc-300">/</span>
-            <span class="text-zinc-800 font-semibold px-2 py-0.5 bg-zinc-100 rounded text-[11px] border border-zinc-200">
+            <span class="hidden sm:inline text-zinc-300">/</span>
+            <span class="hidden sm:inline-block text-zinc-800 font-semibold px-2 py-0.5 bg-zinc-100 rounded-xs text-[11px] border border-zinc-200">
               Volby ${state.year}
             </span>
           ` : ''}
@@ -1721,7 +1753,7 @@ function renderApp() {
     const showSlider = state.view !== 'survey' && state.view !== 'admin';
 
     const isWelcomeBlocking = !state.hasAcceptedWelcome && state.view !== 'admin';
-    if (isWelcomeBlocking || state.ballotShareState.isModalOpen) {
+    if (isWelcomeBlocking || state.ballotShareState.isModalOpen || state.feedbackState.isOpen) {
       document.body.classList.add('overflow-hidden');
     } else {
       document.body.classList.remove('overflow-hidden');
@@ -1735,6 +1767,7 @@ function renderApp() {
       ${renderWelcomeModal()}
       ${renderPartyModal()}
       ${renderSystemModal()}
+      ${renderFeedbackModal(state.feedbackState, getFeedbackContext())}
       ${renderBallotShareSection(state.year, state.quizMode, state.partyScores, state.ballotShareState)}
       ${renderToast()}
     `;
@@ -1758,6 +1791,12 @@ function attachEventListeners() {
 // Klávesa Escape zavírá modální okna
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
+    if (state.feedbackState.isOpen) {
+      state.feedbackState.isOpen = false;
+      document.body.classList.remove('overflow-hidden');
+      renderApp();
+      return;
+    }
     if (state.ballotShareState?.isModalOpen) {
       state.ballotShareState.isModalOpen = false;
       document.body.classList.remove('overflow-hidden');
@@ -1812,6 +1851,10 @@ declare global {
     calcAdminLogout: () => void;
     calcAcceptWelcome: () => void;
     calcToggleImportant: (qId: number) => void;
+    calcOpenFeedbackModal: () => void;
+    calcCloseFeedbackModal: () => void;
+    calcUpdateFeedbackText: (text: string) => void;
+    calcSubmitFeedback: () => void;
   }
 }
 
@@ -1819,6 +1862,67 @@ window.calcAcceptWelcome = () => {
   state.hasAcceptedWelcome = true;
   document.body.classList.remove('overflow-hidden');
   renderApp();
+};
+window.calcOpenFeedbackModal = () => {
+  state.feedbackState = {
+    isOpen: true,
+    text: '',
+    isSubmitting: false,
+    isSubmitted: false,
+    error: null
+  };
+  renderApp();
+  requestAnimationFrame(() => {
+    const textarea = document.getElementById('feedback-textarea') as HTMLTextAreaElement | null;
+    textarea?.focus();
+  });
+};
+window.calcCloseFeedbackModal = () => {
+  state.feedbackState.isOpen = false;
+  state.feedbackState.error = null;
+  document.body.classList.remove('overflow-hidden');
+  renderApp();
+};
+window.calcUpdateFeedbackText = (text) => {
+  state.feedbackState.text = text;
+};
+window.calcSubmitFeedback = async () => {
+  if (state.feedbackState.isSubmitting) return;
+
+  const textareaEl = document.getElementById('feedback-textarea') as HTMLTextAreaElement | null;
+  const rawText = textareaEl ? textareaEl.value : state.feedbackState.text;
+  const trimmed = rawText.trim();
+
+  if (!trimmed) {
+    state.feedbackState.text = rawText;
+    state.feedbackState.error = 'Napište prosím nejprve zprávu.';
+    renderApp();
+    return;
+  }
+
+  state.feedbackState.text = rawText;
+  state.feedbackState.isSubmitting = true;
+  state.feedbackState.error = null;
+  renderApp();
+
+  try {
+    const context = getFeedbackContext();
+    await submitFeedback({
+      text: trimmed,
+      electionId: context.electionId,
+      calculatorLength: context.calculatorLength
+    });
+    state.feedbackState.isSubmitting = false;
+    state.feedbackState.isSubmitted = true;
+    state.feedbackState.text = '';
+    state.feedbackState.error = null;
+    renderApp();
+  } catch (err) {
+    console.error('Chyba při ukládání zpětné vazby:', err);
+    state.feedbackState.isSubmitting = false;
+    state.feedbackState.error = 'Nepodařilo se odeslat zpětnou vazbu. Zkuste to prosím znovu.';
+    renderApp();
+  }
 };
 window.calcToggleImportant = (qId) => {
   state.importantQuestions[qId] = !state.importantQuestions[qId];

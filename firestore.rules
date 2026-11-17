@@ -40,6 +40,15 @@ service cloud.firestore {
              data.answersCount is number && data.answersCount >= 0 && data.answersCount <= 100;
     }
 
+    function isValidFeedback(data) {
+      return data.keys().hasAll(['text', 'timestamp', 'electionId', 'calculatorLength']) &&
+             data.keys().hasOnly(['text', 'timestamp', 'electionId', 'calculatorLength']) &&
+             data.text is string && data.text.size() >= 1 && data.text.size() <= 2000 &&
+             data.timestamp == request.time &&
+             (data.electionId == null || data.electionId == 1920 || data.electionId == 1946 || data.electionId == 1990) &&
+             (data.calculatorLength == null || data.calculatorLength == 'zkrácená' || data.calculatorLength == 'rozšířená');
+    }
+
     // Default deny
     match /{document=**} {
       allow read, write: if false;
@@ -57,6 +66,14 @@ service cloud.firestore {
     match /calculator_submissions/{submissionId} {
       allow read: if true;
       allow create: if isValidId(submissionId) && isValidCalculatorSubmission(incoming());
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    // User feedback messages (write once, immutable, private dropbox)
+    match /feedback/{feedbackId} {
+      allow read: if false;
+      allow create: if isValidId(feedbackId) && isValidFeedback(incoming());
       allow update: if false;
       allow delete: if false;
     }
