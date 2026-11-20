@@ -1417,7 +1417,7 @@ function renderWelcomeModal(): string {
           </div>
 
           <div class="bg-amber-50/70 rounded-sm border border-amber-200 p-4 text-xs sm:text-sm text-zinc-700 leading-relaxed">
-            <strong class="text-zinc-900 font-semibold">Pomozte mi kalkulačku vylepšit.</strong> Kalkulačku jsem vytvořil, protože mi to přišlo jako fajn nápad, ale ani náhodou netvrdím, že je perfektní. Naopak. A víc hlav víc ví. Budu moc rád za jakoukoli zpětnou vazbu. Našli jste nepřesnost, chybí vám důležité téma, nebo máte tip na zlepšení? Dejte mi vědět na mail <a href="mailto:adam.simota@seznam.cz" class="font-semibold text-zinc-900 underline hover:text-amber-900 transition-colors">adam.simota@seznam.cz</a>.
+            <strong class="text-zinc-900 font-semibold">Pomozte mi kalkulačku vylepšit.</strong> Kalkulačku jsem vytvořil, protože mi to přišlo jako fajn nápad, ale ani náhodou netvrdím, že je perfektní. Naopak. A víc hlav víc ví. Budu moc rád za jakoukoli zpětnou vazbu. Našli jste nepřesnost, chybí vám důležité téma, nebo máte tip na zlepšení? Dejte mi vědět prostřednictvím tlačítka na horní liště nebo na mail <a href="mailto:adam.simota@seznam.cz" class="font-semibold text-zinc-900 underline hover:text-amber-900 transition-colors">adam.simota@seznam.cz</a>.
           </div>
 
           <p class="text-zinc-800 font-medium">
